@@ -53,8 +53,6 @@ class TestScene(stage: PunStage): PunScene("testScene",stage,GlobalAccess.virtua
                 }else{
                     if(newPos>=0.5){
                         newPos = 0.5
-                    }else{
-
                     }
                     it.moveOnConveyor(newPos)
                 }
@@ -66,7 +64,6 @@ class TestScene(stage: PunStage): PunScene("testScene",stage,GlobalAccess.virtua
 
 
     suspend fun openLevel(a: WorkshopPuntainer) {
-        //(puntainers.first { id=="workshopPuntainer" } as WorkshopPuntainer)
         a.openLevel(listOf("apple","apple","orange","cucumber","eggplant","cucumber"))
 
     }
