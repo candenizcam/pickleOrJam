@@ -11,12 +11,14 @@ import pungine.uiElements.Button
 import pungine.uiElements.PunImage
 
 class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Puntainer("workshopPuntainer",relativeRectangle) {
-    private val fruitList= mutableListOf<Bitmap>()
+    private val fruitList= mutableListOf<Basket>()
     var conveyorPos: Double = 1.2
         private set
     var jarChosen: Boolean = false
         private set
     private val choicePos = 0.5
+    var onChoice = {foodId: String, choice: Int->} //choice 0-> pickle; choice 1-> jam
+    private var activeFood = ""
     private suspend fun init() {
         resourcesVfs["grid44.png"].readBitmap().also {
             punImage("id", Rectangle(0.0,1.0,0.0,1.0), bitmap = it)
@@ -30,7 +32,6 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
         val b1 = Button("pickleButton",Rectangle(0.1,0.3,0.1,0.3),resourcesVfs["buttons/pickle_jar.png"].readBitmap())
 
         val b2 = Button("jamButton",Rectangle(0.7,0.9,0.1,0.3),resourcesVfs["buttons/jam_jar.png"].readBitmap())
-        b1.clickFunction
         b1.clickFunction = {picklePressed()}
         b2.clickFunction = {jamPressed()}
 
@@ -42,6 +43,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
         if(choicePos==conveyorPos){
             jarChosen = true
             (puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.GREEN.korgeColor
+            onChoice(activeFood,0)
         }
 
     }
@@ -50,6 +52,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
         if(choicePos==conveyorPos){
             jarChosen=true
             (puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.RED.korgeColor
+            onChoice(activeFood,1)
         }
 
     }
@@ -62,14 +65,16 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
 
     suspend fun openConveyorFood(l: List<String>){
         fruitList.clear()
-        fruitList.addAll(l.map { resourcesVfs["fruits/$it.png"].readBitmap() })
+        fruitList.addAll(l.map { Basket(it, resourcesVfs["fruits/$it.png"].readBitmap()) })
     }
 
     fun deployNewFood(){
         puntainers.first { it.id == "fruitBasket" }.also {
             puntainers.remove(it)
             removeChild(it)
-            punImage("fruitBasket",Rectangle(-180.0/GlobalAccess.windowSize.width,0.0,0.5,0.5+180.0/GlobalAccess.windowSize.height),fruitList.random())
+            val chosenBasket = fruitList.random()
+            punImage("fruitBasket",Rectangle(-180.0/GlobalAccess.windowSize.width,0.0,0.5,0.5+180.0/GlobalAccess.windowSize.height),chosenBasket.bitmap)
+            activeFood = chosenBasket.id
         }
         conveyorPos=-0.1
         jarChosen = false
@@ -84,6 +89,9 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
         }
 
     }
+
+    data class Basket(val id: String, val bitmap: Bitmap)
+
 
     companion object {
         suspend fun create(relativeRectangle: Rectangle
