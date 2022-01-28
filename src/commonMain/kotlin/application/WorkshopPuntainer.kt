@@ -33,27 +33,37 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
         val b1 = Button("pickleButton",Rectangle(0.1,0.3,0.1,0.3),resourcesVfs["buttons/pickle_jar.png"].readBitmap())
 
         val b2 = Button("jamButton",Rectangle(0.7,0.9,0.1,0.3),resourcesVfs["buttons/jam_jar.png"].readBitmap())
-        b1.clickFunction = {picklePressed()}
-        b2.clickFunction = {jamPressed()}
+
+        b1.clickFunction = {
+            if(GlobalAccess.gameState.vinegar>0){
+                picklePressed()
+            }
+        }
+        b2.clickFunction = {
+            if(GlobalAccess.gameState.sugar>0){
+                jamPressed()
+            }
+        }
 
         addPuntainer(b1)
         addPuntainer(b2)
+
     }
 
     fun picklePressed(){
         if(choicePos==conveyorPos){
-            (puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.GREEN.korgeColor
-            activeBasket!!.status = 0
-            onChoice(activeBasket!!.id,activeBasket!!.status)
+                (puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.GREEN.korgeColor
+                activeBasket!!.status = 0
+                onChoice(activeBasket!!.id, activeBasket!!.status)
         }
 
     }
 
     fun jamPressed(){
         if(choicePos==conveyorPos){
-            (puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.RED.korgeColor
-            activeBasket!!.status = 1
-            onChoice(activeBasket!!.id,activeBasket!!.status)
+                (puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.RED.korgeColor
+                activeBasket!!.status = 1
+                onChoice(activeBasket!!.id, activeBasket!!.status)
         }
 
     }
