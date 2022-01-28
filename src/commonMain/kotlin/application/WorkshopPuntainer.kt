@@ -21,6 +21,8 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
     private set
     val fruitRectangle = Rectangle(Vector(0.0,0.0), 180.0/GlobalAccess.windowSize.width,180.0/GlobalAccess.windowSize.height)
     private suspend fun init() {
+
+
         resourcesVfs["grid44.png"].readBitmap().also {
             punImage("id", Rectangle(0.0,1.0,0.0,1.0), bitmap = it)
             punImage("fruitBasket", Rectangle(1.25,1.5,0.25,0.5), bitmap = it)
@@ -38,6 +40,9 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
 
         addPuntainer(b1)
         addPuntainer(b2)
+
+        addPuntainer(ConveyorBeltPuntainer.create(Rectangle(0.0,1.0,0.2,0.8)))
+
     }
 
     fun picklePressed(){
@@ -82,10 +87,15 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
     }
 
     fun moveOnConveyor(setX: Double=conveyorPos.x, setY: Double=conveyorPos.y){
+        if(setX!=conveyorPos.x){
+            (puntainers.first { it.id == "conveyorBeltPuntainer" } as ConveyorBeltPuntainer).update( (setX-conveyorPos.x)*10.0)
+        }
         conveyorPos = Vector(setX,setY)
         puntainers.first { it.id == "fruitBasket" }.also {
             it.resizeRect(Rectangle(conveyorPos,it.relativeRectangle.width,it.relativeRectangle.height))
         }
+
+
 
     }
 
