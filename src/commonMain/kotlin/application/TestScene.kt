@@ -47,7 +47,19 @@ class TestScene(stage: PunStage): PunScene("testScene",stage,GlobalAccess.virtua
             if(it.conveyorPos>1.1){
                 it.deployNewFood()
             }else{
-                it.moveOnConveyor(it.conveyorPos+ms*0.2)
+                var newPos = it.conveyorPos+ms*0.5
+                if(it.jarChosen){
+                    it.moveOnConveyor(newPos)
+                }else{
+                    if(newPos>=0.5){
+                        newPos = 0.5
+                    }else{
+
+                    }
+                    it.moveOnConveyor(newPos)
+                }
+
+
             }
         }
     }

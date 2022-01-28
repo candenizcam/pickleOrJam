@@ -14,6 +14,9 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
     private val fruitList= mutableListOf<Bitmap>()
     var conveyorPos: Double = 1.2
         private set
+    var jarChosen: Boolean = false
+        private set
+    private val choicePos = 0.5
     private suspend fun init() {
         resourcesVfs["grid44.png"].readBitmap().also {
             punImage("id", Rectangle(0.0,1.0,0.0,1.0), bitmap = it)
@@ -36,11 +39,19 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
     }
 
     fun picklePressed(){
-        (puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.GREEN.korgeColor
+        if(choicePos==conveyorPos){
+            jarChosen = true
+            (puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.GREEN.korgeColor
+        }
+
     }
 
     fun jamPressed(){
-        (puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.RED.korgeColor
+        if(choicePos==conveyorPos){
+            jarChosen=true
+            (puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.RED.korgeColor
+        }
+
     }
 
 
@@ -61,6 +72,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
             punImage("fruitBasket",Rectangle(-180.0/GlobalAccess.windowSize.width,0.0,0.5,0.5+180.0/GlobalAccess.windowSize.height),fruitList.random())
         }
         conveyorPos=-0.1
+        jarChosen = false
 
 
     }
