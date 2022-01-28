@@ -12,11 +12,16 @@ import pungine.uiElements.PunImage
 
 class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Puntainer("workshopPuntainer",relativeRectangle) {
     private val fruitList= mutableListOf<Bitmap>()
-
+    var conveyorPos: Double = 1.2
+        private set
     private suspend fun init() {
         resourcesVfs["grid44.png"].readBitmap().also {
             punImage("id", Rectangle(0.0,1.0,0.0,1.0), bitmap = it)
             punImage("fruitBasket", Rectangle(1.25,1.5,0.25,0.5), bitmap = it)
+        }
+
+        resourcesVfs["game_logo.png"].readBitmap().also {
+            punImage("logo", Rectangle(0.5-240.0/GlobalAccess.windowSize.width,0.5+240.0/GlobalAccess.windowSize.width,1.0-310.0/GlobalAccess.windowSize.height,1.0), bitmap = it)
         }
 
         val b1 = Button("pickleButton",Rectangle(0.1,0.3,0.1,0.3),resourcesVfs["buttons/pickle_jar.png"].readBitmap())
@@ -55,18 +60,15 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
             removeChild(it)
             punImage("fruitBasket",Rectangle(-180.0/GlobalAccess.windowSize.width,0.0,0.5,0.5+180.0/GlobalAccess.windowSize.height),fruitList.random())
         }
+        conveyorPos=-0.1
 
 
     }
 
-    fun moveOnConveyor(relativeX: Double){
+    fun moveOnConveyor(setX: Double){
+        conveyorPos = setX
         puntainers.first { it.id == "fruitBasket" }.also {
-            if(it.relativeRectangle.left>1.0){
-                deployNewFood()
-            }else{
-                it.translateRelative(Vector(relativeX,0.0))
-            }
-
+            it.resizeRect(Rectangle(Vector(conveyorPos,it.relativeRectangle.centre.y),it.relativeRectangle.width,it.relativeRectangle.height))
         }
 
     }

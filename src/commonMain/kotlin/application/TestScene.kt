@@ -44,8 +44,11 @@ class TestScene(stage: PunStage): PunScene("testScene",stage,GlobalAccess.virtua
 
     override fun update(ms: Double) {
         toPuntainer("workshopPuntainer", forceReshape = true){ it as WorkshopPuntainer
-            it.moveOnConveyor(ms*0.2)
-
+            if(it.conveyorPos>1.1){
+                it.deployNewFood()
+            }else{
+                it.moveOnConveyor(it.conveyorPos+ms*0.2)
+            }
         }
     }
 
