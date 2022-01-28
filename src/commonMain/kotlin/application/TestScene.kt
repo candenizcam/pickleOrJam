@@ -47,20 +47,26 @@ class TestScene(stage: PunStage) : PunScene(
     }
 
     override fun update(ms: Double) {
-        toPuntainer("workshopPuntainer", forceReshape = true) {
-            it as WorkshopPuntainer
-            if (it.conveyorPos > 1.1) {
+        toPuntainer("workshopPuntainer", forceReshape = true){ it as WorkshopPuntainer
+            if(it.conveyorPos.x !in -0.1..1.1){
                 it.deployNewFood()
-            } else {
-                var newPos = it.conveyorPos + ms * 0.5
-                if (it.jarChosen) {
-                    it.moveOnConveyor(newPos)
-                } else {
-                    if (newPos >= 0.5) {
-                        newPos = 0.5
+            }else{
+                if(it.activeBasket!!.status==-1){
+                    var newPosY = it.conveyorPos.y-ms*0.5
+                    if(newPosY<=0.5){
+                        newPosY = 0.5
                     }
-                    it.moveOnConveyor(newPos)
+                    it.moveOnConveyor(setY = newPosY)
+                }else{
+                    val newPosX = if(it.activeBasket!!.status==1){
+                        it.conveyorPos.x+ms*0.5
+                    }else{
+                        it.conveyorPos.x-ms*0.5
+                    }
+                    it.moveOnConveyor(setX = newPosX)
                 }
+
+
 
 
             }
