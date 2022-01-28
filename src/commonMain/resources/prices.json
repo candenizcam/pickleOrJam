@@ -1,0 +1,22 @@
+[
+  {
+    "type": "apple",
+    "pickle": 100,
+    "jam": 300
+  },
+  {
+    "type": "orange",
+    "pickle": 200,
+    "jam": 500
+  },
+  {
+    "type": "cucumber",
+    "pickle": 300,
+    "jam": 100
+  },
+  {
+    "type": "eggplant",
+    "pickle": 500,
+    "jam": 200
+  }
+]
