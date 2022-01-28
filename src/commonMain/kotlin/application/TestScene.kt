@@ -1,14 +1,9 @@
 package application
 
 import com.soywiz.klock.TimeSpan
-import com.soywiz.korge.input.onClick
 import com.soywiz.korge.view.*
-import com.soywiz.korim.color.Colors
-import com.soywiz.korim.color.RGBA
 import com.soywiz.korim.format.readBitmap
-import com.soywiz.korio.async.launchImmediately
 import com.soywiz.korio.file.std.resourcesVfs
-import com.soywiz.korma.geom.Angle
 import modules.basic.Colour
 import pungine.PunScene
 import pungine.PunStage
@@ -39,11 +34,25 @@ class TestScene(stage: PunStage): PunScene("testScene",stage,GlobalAccess.virtua
      */
 
     override suspend fun sceneInit() {
-        openingCrawl()
+        //openingCrawl()
+        val a = WorkshopPuntainer.create(oneRectangle())
+        addPuntainer(a)
+
+        openLevel(a)
 
     }
 
     override fun update(ms: Double) {
+        toPuntainer("workshopPuntainer", forceReshape = true){ it as WorkshopPuntainer
+            it.moveOnConveyor(ms*0.2)
+
+        }
+    }
+
+
+    suspend fun openLevel(a: WorkshopPuntainer) {
+        //(puntainers.first { id=="workshopPuntainer" } as WorkshopPuntainer)
+        a.openLevel(listOf("apple","apple","orange","cucumber","eggplant","cucumber"))
 
     }
 
