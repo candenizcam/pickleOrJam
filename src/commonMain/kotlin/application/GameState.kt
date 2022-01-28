@@ -7,14 +7,20 @@ class GameState(var money: Int, var vinegar: Int = 10, var sugar: Int = 10) {
     fun pickleIt(input: String) {
         val fruit = GlobalAccess.inputList.find{it.type == input}
         money += fruit?.pickle ?: 0
-        vinegar --
+        vinegar--
+        pickles++
         println ("MONEY: $money, VINEGAR: $vinegar, SUGAR: $sugar")
+
+        // if money < 0 gameover
     }
 
     fun jamIt(input: String) {
         val fruit = GlobalAccess.inputList.find{it.type == input}
         money += fruit?.jam ?: 0
-        sugar --
+        sugar--
+        jams++
         println ("MONEY: $money, VINEGAR: $vinegar, SUGAR: $sugar")
+
+        // if money < 0 gameover
     }
 }

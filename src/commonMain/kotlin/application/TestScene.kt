@@ -27,7 +27,6 @@ class TestScene(stage: PunStage) : PunScene(
         val a = WorkshopPuntainer.create(oneRectangle())
         addPuntainer(a)
 
-        openLevel(a)
         /*
         val layers = mutableListOf<String>()
         layers.add("aitu1.mp3")
@@ -36,6 +35,8 @@ class TestScene(stage: PunStage) : PunScene(
         musicPlayer.open(layers, true)
          */
         GlobalAccess.initInputs()
+
+        openLevel(a)
 
         a.onChoice = { type, choice ->
             if (choice == 0) {
@@ -65,18 +66,13 @@ class TestScene(stage: PunStage) : PunScene(
                     }
                     it.moveOnConveyor(setX = newPosX)
                 }
-
-
-
-
             }
         }
     }
 
 
     suspend fun openLevel(a: WorkshopPuntainer) {
-        a.openLevel(listOf("apple", "apple", "orange", "cucumber", "eggplant", "cucumber"))
-
+        a.openLevel(GlobalAccess.inputList.map {it.type})
     }
 
 
