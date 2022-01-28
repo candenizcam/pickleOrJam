@@ -14,8 +14,6 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
     private val fruitList= mutableListOf<Basket>()
     var conveyorPos = Vector(1.2,0.5)
         private set
-    var jarChosen: Boolean = false
-        private set
     private val choicePos = Vector(0.5,0.5)
     var onChoice = {foodId: String, choice: Int->} //choice 0-> pickle; choice 1-> jam
 
@@ -44,7 +42,6 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
 
     fun picklePressed(){
         if(choicePos==conveyorPos){
-            jarChosen = true
             (puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.GREEN.korgeColor
             activeBasket!!.status = 0
             onChoice(activeBasket!!.id,activeBasket!!.status)
@@ -54,7 +51,6 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
 
     fun jamPressed(){
         if(choicePos==conveyorPos){
-            jarChosen=true
             (puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.RED.korgeColor
             activeBasket!!.status = 1
             onChoice(activeBasket!!.id,activeBasket!!.status)
@@ -81,7 +77,6 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
             punImage("fruitBasket",Rectangle(Vector(0.5,1.1),fruitRectangle.width,fruitRectangle.height),activeBasket!!.bitmap)
         }
         conveyorPos= Vector(0.5,1.1)
-        jarChosen = false
 
 
     }
