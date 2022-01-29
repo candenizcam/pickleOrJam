@@ -1,9 +1,8 @@
 package application
 
-import com.soywiz.klock.TimeSpan
-import com.soywiz.korge.view.addUpdater
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.file.std.resourcesVfs
+import kotlinx.coroutines.DelicateCoroutinesApi
 import modules.basic.Colour
 import pungine.PunScene
 import pungine.PunStage
@@ -16,6 +15,7 @@ import pungine.uiElements.Button
  *
  */
 
+@OptIn(DelicateCoroutinesApi::class)
 class TestScene(stage: PunStage) : PunScene(
     "testScene",
     stage,
@@ -23,18 +23,13 @@ class TestScene(stage: PunStage) : PunScene(
     GlobalAccess.virtualSize.height.toDouble(),
     Colour.GRIZEL
 ) {
-    var vinegar = 0
-    var sugar = 0
-
-    var clockStep = 0.0
-    var oscillator = 0.0
-    val hardwareClockPulseTime = 0.05
+    private var clockStep = 0.0
+    private var oscillator = 0.0
+    private val hardwareClockPulseTime = 0.05
 
     override suspend fun sceneInit() {
-        //openingCrawl()
         val a = WorkshopPuntainer.create(oneRectangle())
         addPuntainer(a)
-
 
         addPuntainer(
             Button(
@@ -48,9 +43,8 @@ class TestScene(stage: PunStage) : PunScene(
                     )
                 ),
                 resourcesVfs["buttons/pause_button.png"].readBitmap()
-            ).also {
-                it.clickFunction = {
-                    // todo pause button
+            ).also { button ->
+                button.clickFunction = {
                     toPuntainer("pauseMenuPuntainer") {
                         it.visible = true
                     }
@@ -63,15 +57,15 @@ class TestScene(stage: PunStage) : PunScene(
             })
 
 
-        addPuntainer(PauseMenuPuntainer.create(oneRectangle()).also {
-            it.onReturn = {
+        addPuntainer(PauseMenuPuntainer.create(oneRectangle()).also { puntainer ->
+            puntainer.onReturn = {
                 toPuntainer("workshopPuntainer") {
                     it.visible = true
                 }
-                it.visible = false
+                puntainer.visible = false
                 pauseGame(false)
             }
-            it.visible = false
+            puntainer.visible = false
         })
 
         addPuntainer(
@@ -103,16 +97,11 @@ class TestScene(stage: PunStage) : PunScene(
             )
         )
 
-        /*
-        val layers = mutableListOf<String>()
-        layers.add("aitu1.mp3")
-        layers.add("aitu2.mp3")
-        layers.add("aitu3.mp3")
-        musicPlayer.open(layers, true)
-         */
-        GlobalAccess.initInputs()
+        musicPlayer.open("SlowDay.mp3", true)
+        GlobalAccess.initLevels()
+        val l = Level(GlobalAccess.inputList, 120)
 
-        openLevel(a)
+        openLevel(a, l)
 
         a.onChoice = { type, choice ->
             if (choice == 0 && GlobalAccess.gameState.vinegar > 0) {
@@ -124,69 +113,28 @@ class TestScene(stage: PunStage) : PunScene(
     }
 
 
-    fun pauseGame(pause: Boolean) {
+    private fun pauseGame(pause: Boolean) {
         active = !pause
     }
 
 
-    fun updateMoneyDisplay(value: Int) {
+    private fun updateMoneyDisplay() {
         toPuntainer("moneyPuntainer", forceReshape = true) {
             it as MoneyPuntainer
             it.setMoney(GlobalAccess.gameState.money)
         }
     }
 
-    fun updateClock(sec: Int) {
+    private fun updateClock(sec: Int) {
         toPuntainer("clockPuntainer", forceReshape = true) {
             it as ClockPuntainer
             it.setTimeAsSeconds(sec)
         }
     }
 
-    override fun update(ms: Double) {
-        vinegar = GlobalAccess.gameState.vinegar
-        sugar = GlobalAccess.gameState.sugar
-        /*
-        toPuntainer("workshopPuntainer", forceReshape = true){ it as WorkshopPuntainer
-            if(it.fruitPos.x !in -0.1..1.1){
-                it.deployNewFood()
-            }else{
-                if(it.activeBasket!!.status==-1){
-                    var newPosY = it.fruitPos.y-ms*0.5
-                    if(newPosY<=it.choicePos.y){
-                        newPosY = it.choicePos.y
-                    }
-
-                    it.moveOnConveyor(setY = newPosY)
-                }else{
-                    val newPosX = if(it.activeBasket!!.status==1){
-                            it.fruitPos.x + ms * 0.5
-                    }else{
-                            it.fruitPos.x - ms * 0.5
-                    }
-                    it.moveOnConveyor(setX = newPosX)
-                    // conveyor moves by 30 pixels
-                }
-            }
-
-
-            /*
-
-            if(newSec.toInt()!=sec.toInt()){
-                //it.updateClockBySec(newSec.toInt())
-                //(puntainers.first { it.id == "clockPuntainer" } as ClockPuntainer).setTimeAsSeconds(sec.toInt())
-                updateClock(sec.toInt())
-                updateMoneyDisplay(newSec.toInt())
-            }
-            sec = newSec
-
-             */
-
-        }
-
-         */
-
-        val newSec = oscillator + ms
+    override fun update(sec: Double) {
+        super.update(sec)
+        val newSec = oscillator + sec
         oscillator = if (newSec > hardwareClockPulseTime) {
             hardwareClockUpdateEmulator()
             newSec.rem(hardwareClockPulseTime)
@@ -195,14 +143,10 @@ class TestScene(stage: PunStage) : PunScene(
         }
     }
 
-    fun hardwareClockUpdateEmulator() {
+    private fun hardwareClockUpdateEmulator() {
         clockStep += 1
-        val sec = clockStep * hardwareClockPulseTime
-        if ((sec + 0.005).rem(0.5) < 0.01) {
-            updateClock(sec.toInt())
-        }
 
-        updateMoneyDisplay(sec.toInt())
+        updateMoneyDisplay()
         toPuntainer("workshopPuntainer", forceReshape = true) {
             it as WorkshopPuntainer
             if (it.fruitPos.x !in -0.1..1.1) {
@@ -223,13 +167,22 @@ class TestScene(stage: PunStage) : PunScene(
     }
 
 
-    suspend fun openLevel(a: WorkshopPuntainer) {
-        a.openLevel(GlobalAccess.inputList.map { it.type })
+    private suspend fun openLevel(a: WorkshopPuntainer, l: Level) {
+        a.openLevel(l.fruitList.map { it.type })
+        val timer = CountdownTimer(l.timeLimit)
+        timer.onUpdate = {
+            updateClock(timer.left) }
+        timer.onComplete = {
+            stage.scenesToAdd.add(Pair(LevelEndScene(stage), true))
+            stage.scenesToRemove.add("testScene")
+        }
+        updatables.add(timer)
     }
 
 
     // delete from all under here for a new scene
 
+    /*
     suspend fun openingCrawl() {
 
         val bg = solidRect("id", Rectangle(0.0, 1.0, 0.0, 1.0), Colour.rgba(0.04, 0.02, 0.04, 1.0))
@@ -270,4 +223,5 @@ class TestScene(stage: PunStage) : PunScene(
         }
 
     }
+     */
 }
