@@ -22,6 +22,7 @@ class TestScene(stage: PunStage) : PunScene(
     Colour.GRIZEL
 ) {
 
+    var sec = 0.0
     override suspend fun sceneInit() {
         //openingCrawl()
         val a = WorkshopPuntainer.create(oneRectangle())
@@ -65,11 +66,13 @@ class TestScene(stage: PunStage) : PunScene(
                     }
                     it.moveOnConveyor(setX = newPosX)
                 }
-
-
-
-
             }
+            val newSec= sec + ms
+            if(newSec.toInt()!=sec.toInt()){
+                it.updateClockBySeconds(sec.toInt())
+            }
+            sec = newSec
+
         }
     }
 

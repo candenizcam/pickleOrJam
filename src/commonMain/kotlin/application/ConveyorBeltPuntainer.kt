@@ -5,6 +5,9 @@ import com.soywiz.korio.file.std.resourcesVfs
 import pungine.Puntainer
 import pungine.geometry2D.Rectangle
 
+/** This class is used in particular for the conveyor belt
+ * it can read an arbitrary number of images from belt folder, and rotate them clockwise or counterclockwise based on the input
+ */
 class ConveyorBeltPuntainer private constructor(relativeRectangle: Rectangle): Puntainer("conveyorBeltPuntainer",relativeRectangle) {
     private suspend fun init() {
         (1..4).forEach { i->
@@ -17,6 +20,9 @@ class ConveyorBeltPuntainer private constructor(relativeRectangle: Rectangle): P
     private var activeFrame = 0.0
     private val visualList = mutableListOf<Puntainer>()
 
+    /** updates belt clockwise or counterclockise on every int increment
+     * actual direction depends on the order of images (böyle şeyleri kimse bilemez)
+     */
     fun update(n: Double=0.0){
         activeFrame = (activeFrame+n).rem(visualList.size.toDouble())
         if(activeFrame<0) activeFrame += visualList.size

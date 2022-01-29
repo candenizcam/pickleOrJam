@@ -7,6 +7,7 @@ import modules.basic.Colour
 import pungine.Puntainer
 import pungine.geometry2D.Rectangle
 import pungine.geometry2D.Vector
+import pungine.geometry2D.oneRectangle
 import pungine.uiElements.Button
 import pungine.uiElements.PunImage
 
@@ -20,6 +21,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
     var activeBasket: Basket? = null
     private set
     val fruitRectangle = Rectangle(Vector(0.0,0.0), 180.0/GlobalAccess.windowSize.width,180.0/GlobalAccess.windowSize.height)
+
     private suspend fun init() {
 
 
@@ -43,6 +45,14 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
 
         addPuntainer(ConveyorBeltPuntainer.create(Rectangle(0.0,1.0,0.2,0.8)))
 
+        addPuntainer(
+            ClockPuntainer.create(
+                GlobalAccess.virtualRect.toRated( Rectangle(Vector(1116.0,704.0),148.0,68.0, cornerType = Rectangle.Corners.TOP_LEFT )),
+                Rectangle(0.0,148.0,0.0,68.0))
+        )
+
+
+
     }
 
     fun picklePressed(){
@@ -61,6 +71,10 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
             onChoice(activeBasket!!.id,activeBasket!!.status)
         }
 
+    }
+
+    fun updateClockBySeconds(sec: Int){
+        (puntainers.first { it.id == "clockPuntainer" } as ClockPuntainer).setTimeAsSeconds(sec)
     }
 
 
