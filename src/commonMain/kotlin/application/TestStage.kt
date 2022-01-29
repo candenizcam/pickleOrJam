@@ -19,15 +19,8 @@ class TestStage: PunStage() {
     var testScene = TestScene(this)
 
     @OptIn(ExperimentalTime::class)
-    override suspend fun Container.sceneMain(): Unit{
+    override suspend fun Container.sceneMain(){
         testScene.initialize()
-
-        addChild(testScene.scenePuntainer)
         scenesToAdd.add(Pair(testScene,true))
-
-        addUpdater { dt->
-            testScene.update(dt.seconds)
-        }
     }
-
 }

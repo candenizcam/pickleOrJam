@@ -47,6 +47,11 @@ open class PunStage(var width: Double = InternalGlobalAccess.virtualSize.width.t
     val scenesToAdd = mutableListOf<Pair<PunScene, Boolean>>()
     val scenesToRemove = mutableListOf<String>()
 
+    override suspend fun Container.sceneInit() {
+        addUpdater { dt->
+            update(dt)
+        }
+    }
     fun add(scene: PunScene, active: Boolean) {
         if (scenes.any { it.id == scene.id }) {
             throw Exception("A scene with this id already exists: " + scene.id)
@@ -70,6 +75,7 @@ open class PunStage(var width: Double = InternalGlobalAccess.virtualSize.width.t
                 sceneContainer.removeChild(s.scenePuntainer)
             }
             scenesToAdd.forEach {
+                scenePuntainer.addChild(it.first.scenePuntainer)
                 add(it.first, it.second)
             }
 
