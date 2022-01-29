@@ -39,6 +39,44 @@ class JarPuntainer private constructor(relativeRectangle: Rectangle): Puntainer(
 
     var onReturn = {}
 
+
+    fun signVisible(n: Int){
+        when(n){
+            -1 -> {
+                puntainers.first { it.id=="liquid" }.visible = false
+                puntainers.first { it.id=="jar" }.visible = true
+                puntainers.first { it.id=="pickle" }.visible = false
+                puntainers.first { it.id=="jam" }.visible = false
+            }
+            0 -> {
+                puntainers.first { it.id=="liquid" }.also {
+                    it.visible = true
+                    it.colorMul = Colour.rgba256(241,287,57,120).korgeColor
+                }
+
+                puntainers.first { it.id=="jar" }.visible = true
+                puntainers.first { it.id=="pickle" }.visible = true
+                puntainers.first { it.id=="jam" }.visible = false
+            }
+            1->{
+                puntainers.first { it.id=="liquid" }.also {
+                    it.visible = true
+                    it.colorMul = Colour.rgba256(100,28,58,120).korgeColor
+                }
+                puntainers.first { it.id=="jar" }.visible = true
+                puntainers.first { it.id=="pickle" }.visible = false
+                puntainers.first { it.id=="jam" }.visible = true
+            }
+            else ->{
+                puntainers.first { it.id=="liquid" }.visible = false
+                puntainers.first { it.id=="jar" }.visible = false
+                puntainers.first { it.id=="pickle" }.visible = false
+                puntainers.first { it.id=="jam" }.visible = false
+            }
+        }
+
+    }
+
     companion object {
         suspend fun create(relativeRectangle: Rectangle
         ): JarPuntainer {

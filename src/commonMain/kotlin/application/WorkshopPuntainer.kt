@@ -24,7 +24,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
     val fruitRectangle = Rectangle(Vector(0.0,0.0), 200.0/GlobalAccess.windowSize.width,200.0/GlobalAccess.windowSize.height)
 
     private suspend fun init() {
-        resourcesVfs["grid44.png"].readBitmap().also {
+        resourcesVfs["workshop/background.png"].readBitmap().also {
             punImage("id", Rectangle(0.0,1.0,0.0,1.0), bitmap = it)
             punImage("fruitBasket", Rectangle(1.25,1.5,0.25,0.5), bitmap = it)
         }
@@ -93,8 +93,9 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
     fun picklePressed(){
         if(choicePos==fruitPos){
             buttonsActive(false)
-            (puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.GREEN.korgeColor
+            //(puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.GREEN.korgeColor
             activeBasket!!.status = 0
+            ((puntainers.first { it.id=="jarPuntainer" }) as JarPuntainer).signVisible(0)
             onChoice(activeBasket!!.id,activeBasket!!.status)
         }
 
@@ -103,8 +104,9 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
     fun jamPressed(){
         if(choicePos==fruitPos){
             buttonsActive(false)
-            (puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.RED.korgeColor
+            //(puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.RED.korgeColor
             activeBasket!!.status = 1
+            ((puntainers.first { it.id=="jarPuntainer" }) as JarPuntainer).signVisible(1)
             onChoice(activeBasket!!.id,activeBasket!!.status)
         }
 
@@ -134,6 +136,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
         val toUp = puntainers.first { it.id=="jarPuntainer" }
         removeChild(toUp)
         addChild(toUp)
+        ((puntainers.first { it.id=="jarPuntainer" }) as JarPuntainer).signVisible(-2)
         fruitPos= Vector(0.5,836.0/GlobalAccess.windowSize.height)
     }
 
@@ -154,6 +157,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
             if(fruitPos.y-horizontalStep*0.5<= choicePos.y){
                 buttonsActive(true)
                 fruitPos = Vector(fruitPos.x,choicePos.y)
+                ((puntainers.first { it.id=="jarPuntainer" }) as JarPuntainer).signVisible(-1)
                 return
             }
         }else{
