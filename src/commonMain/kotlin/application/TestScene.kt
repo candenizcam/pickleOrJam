@@ -21,6 +21,8 @@ class TestScene(stage: PunStage) : PunScene(
     GlobalAccess.virtualSize.height.toDouble(),
     Colour.GRIZEL
 ) {
+    var vinegar = 0
+    var sugar = 0
 
     var sec = 0.0
     override suspend fun sceneInit() {
@@ -28,7 +30,6 @@ class TestScene(stage: PunStage) : PunScene(
         val a = WorkshopPuntainer.create(oneRectangle())
         addPuntainer(a)
 
-        openLevel(a)
         /*
         val layers = mutableListOf<String>()
         layers.add("aitu1.mp3")
@@ -38,16 +39,20 @@ class TestScene(stage: PunStage) : PunScene(
          */
         GlobalAccess.initInputs()
 
+        openLevel(a)
+
         a.onChoice = { type, choice ->
-            if (choice == 0) {
+            if (choice == 0 && GlobalAccess.gameState.vinegar>0) {
                 GlobalAccess.gameState.pickleIt(type)
-            } else if (choice == 1) {
+            } else if (choice == 1 && GlobalAccess.gameState.sugar>0) {
                 GlobalAccess.gameState.jamIt(type)
             }
         }
     }
 
     override fun update(ms: Double) {
+        vinegar = GlobalAccess.gameState.vinegar
+        sugar = GlobalAccess.gameState.sugar
         toPuntainer("workshopPuntainer", forceReshape = true){ it as WorkshopPuntainer
             if(it.conveyorPos.x !in -0.1..1.1){
                 it.deployNewFood()
@@ -60,9 +65,9 @@ class TestScene(stage: PunStage) : PunScene(
                     it.moveOnConveyor(setY = newPosY)
                 }else{
                     val newPosX = if(it.activeBasket!!.status==1){
-                        it.conveyorPos.x+ms*0.5
+                            it.conveyorPos.x + ms * 0.5
                     }else{
-                        it.conveyorPos.x-ms*0.5
+                            it.conveyorPos.x - ms * 0.5
                     }
                     it.moveOnConveyor(setX = newPosX)
                 }
@@ -78,8 +83,7 @@ class TestScene(stage: PunStage) : PunScene(
 
 
     suspend fun openLevel(a: WorkshopPuntainer) {
-        a.openLevel(listOf("apple", "apple", "orange", "cucumber", "eggplant", "cucumber"))
-
+        a.openLevel(GlobalAccess.inputList.map {it.type})
     }
 
 
