@@ -6,21 +6,67 @@ import com.soywiz.korio.file.std.resourcesVfs
 import modules.basic.Colour
 import pungine.Puntainer
 import pungine.geometry2D.Rectangle
+import pungine.geometry2D.Vector
 import pungine.geometry2D.oneRectangle
+import pungine.uiElements.Button
 
 class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Puntainer("pauseMenuPuntainer",relativeRectangle) {
 
     private suspend fun init() {
         solidRect("bg", oneRectangle(), colour = Colour.GRIZEL).also {
             it.onUp {
-                onReturn()
+                //onReturn()
             }
         }
 
+        val thisRectangle = GlobalAccess.virtualRect.fromRated(relativeRectangle)
 
-        resourcesVfs["grid44.png"].readBitmap().also {
-            punImage("menuImage", Rectangle(0.2,0.8,0.2,0.8), bitmap = it)
+
+        resourcesVfs["game_logo.png"].readBitmap().also {
+            punImage("menuImage", thisRectangle.toRated(Rectangle(Vector(524.0,566.0),232.0,240.0,Rectangle.Corners.TOP_LEFT)), bitmap = it).also {
+                it.onUp {
+
+                }
+            }
         }
+
+        val start_button_on = resourcesVfs["game_logo.png"].readBitmap()
+
+
+        addPuntainer(
+            Button("start", thisRectangle.toRated(Rectangle(Vector(566.0,524.0),148.0,44.0,Rectangle.Corners.TOP_LEFT)),start_button_on).also {
+                it.clickFunction = {
+                    // TODO start game
+                }
+            }
+        )
+
+        addPuntainer(
+            Button("resume", thisRectangle.toRated(Rectangle(Vector(566.0,524.0),148.0,44.0,Rectangle.Corners.TOP_LEFT)),start_button_on).also {
+                it.visible = false
+                it.clickFunction = {
+                    onReturn()
+                }
+            }
+        )
+
+        addPuntainer(
+            Button("sound", thisRectangle.toRated(Rectangle(Vector(566.0,468.0),148.0,44.0,Rectangle.Corners.TOP_LEFT)),start_button_on).also {
+                it.clickFunction = {
+                    // TODO sound on off
+                }
+            }
+        )
+
+        addPuntainer(
+            Button("credits", thisRectangle.toRated(Rectangle(Vector(566.0,412.0),148.0,44.0,Rectangle.Corners.TOP_LEFT)),start_button_on).also {
+                it.clickFunction = {
+                    // TODO credits
+                }
+            }
+        )
+
+
 
     }
 
