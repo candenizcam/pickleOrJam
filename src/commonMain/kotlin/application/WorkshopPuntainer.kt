@@ -77,11 +77,13 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
                 picklePressed()
             }
         }
+        b1.inactive = true
         b2.clickFunction = {
             if(GlobalAccess.gameState.sugar>0){
                 jamPressed()
             }
         }
+        b2.inactive=true
 
         addPuntainer(b1)
         addPuntainer(b2)
@@ -93,7 +95,6 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
     fun picklePressed(){
         if(choicePos==fruitPos){
             buttonsActive(false)
-            //(puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.GREEN.korgeColor
             activeBasket!!.status = 0
             ((puntainers.first { it.id=="jarPuntainer" }) as JarPuntainer).signVisible(0)
             onChoice(activeBasket!!.id,activeBasket!!.status)
@@ -104,7 +105,6 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
     fun jamPressed(){
         if(choicePos==fruitPos){
             buttonsActive(false)
-            //(puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.RED.korgeColor
             activeBasket!!.status = 1
             ((puntainers.first { it.id=="jarPuntainer" }) as JarPuntainer).signVisible(1)
             onChoice(activeBasket!!.id,activeBasket!!.status)
