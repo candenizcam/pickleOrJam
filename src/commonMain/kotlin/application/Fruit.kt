@@ -1,5 +1,5 @@
 package application
 
 
-data class Fruit(val type: String, val pickle: Int, val jam: Int, val normality: Boolean) {
+data class Fruit(val type: String, val pickle: Int, val jam: Int) {
 }
