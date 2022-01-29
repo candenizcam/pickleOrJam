@@ -20,9 +20,9 @@ object GlobalAccess {
     var levels = mutableListOf<Level>()
 
     fun initLevels() {
-        val fList = listOf("apple", "lemon", "bowling", "cherry", "duck", "cucumber", "eggplant", "orange")
+        val fList = listOf("Apple", "lemon", "Bowling_Ball", "Cherry", "Rubber_Duck", "Cucumber", "Eggplant", "orange")
         val pList = listOf(44, 37, 0, 38, 60, 94, 82, 12)
-        val fList1 = listOf("Tomato", "Lemon", "Apricot", "Rubber Duck", "Onion", "Cucumber", "Hamburger", "Cherry")
+        val fList1 = listOf("Lavender", "Lemon", "Snowman", "Rubber Duck", "Onion", "Cucumber", "Hamburger", "Cherry")
         val pList1 = listOf(44, 37, 0, 38, 60, 94, 82, 12)
         val fList2 = listOf("Tomato", "Lemon", "Apricot", "Rubber Duck", "Onion", "Cucumber", "Hamburger", "Cherry")
         val pList2 = listOf(44, 37, 0, 38, 60, 94, 82, 12)
@@ -36,14 +36,14 @@ object GlobalAccess {
 
     val anormalFlist = listOf(
         "Cat",
-        "Game Jam",
+        "Game_Jam",
         "Snowman",
-        "Bubble Gum",
+        "Bubble_Gum",
         "Donut",
-        "Nail Polish",
+        "Nail_Polish",
         "Mug",
         "Notebook",
-        "Rubber Duck",
+        "Rubber_Duck",
         "Tent",
         "Headphones",
         "Watch",
@@ -51,7 +51,7 @@ object GlobalAccess {
         "Spaghetti",
         "Plane",
         "Fridge",
-        "Water Bottle",
+        "Water_Bottle",
         "Lamp",
         "CD",
         "Plate",
@@ -62,8 +62,8 @@ object GlobalAccess {
         "Laptop",
         "Hamburger",
         "Socks",
-        "Bowling Ball",
-        "Charging Cable",
+        "Bowling_Ball",
+        "Charging_Cable",
         "Atom"
     )
     val normalFlist = listOf(
@@ -78,7 +78,7 @@ object GlobalAccess {
         "Cherry",
         "Pumpkin",
         "Dandelion",
-        "Pine Cone",
+        "Pine_Cone",
         "Cinnamon",
         "Ginger",
         "Lemon",
@@ -86,7 +86,7 @@ object GlobalAccess {
         "Carrot",
         "Eggplant",
         "Onion",
-        "Red Pepper",
+        "Red_Pepper",
         "Egg",
         "Shrimp",
         "Tobasco",
@@ -94,8 +94,8 @@ object GlobalAccess {
         "Garlic",
         "Broccoli",
         "Olive",
-        "Red Cabbage",
-        "Green Beans",
+        "Red_Cabbage",
+        "Green_Beans",
         "Cucumber"
     )
     val pNormalList = listOf(
