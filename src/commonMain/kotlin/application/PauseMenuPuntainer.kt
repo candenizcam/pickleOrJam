@@ -13,11 +13,8 @@ import pungine.uiElements.Button
 class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Puntainer("pauseMenuPuntainer",relativeRectangle) {
 
     private suspend fun init() {
-        solidRect("bg", oneRectangle(), colour = Colour.GRIZEL).also {
-            it.onUp {
-                //onReturn()
-            }
-        }
+
+        punImage("bg", oneRectangle(), resourcesVfs["workshop/background.png"].readBitmap())
 
         val thisRectangle = GlobalAccess.virtualRect.fromRated(relativeRectangle)
 
