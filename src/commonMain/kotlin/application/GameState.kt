@@ -1,6 +1,6 @@
 package application
 
-class GameState(var money: Int, var vinegar: Int = 10, var sugar: Int = 2) {
+class GameState(var money: Int, var vinegar: Int = 10, var sugar: Int = 10) {
     var jams = 0
     var pickles = 0
 
