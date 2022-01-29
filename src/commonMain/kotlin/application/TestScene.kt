@@ -1,6 +1,7 @@
 package application
 
 import com.soywiz.korim.format.readBitmap
+import com.soywiz.korio.async.launchImmediately
 import com.soywiz.korio.file.std.resourcesVfs
 import kotlinx.coroutines.DelicateCoroutinesApi
 import modules.basic.Colour
@@ -147,6 +148,13 @@ class TestScene(stage: PunStage) : PunScene(
         clockStep += 1
 
         updateMoneyDisplay()
+
+        toPuntainer("clockPuntainer", forceReshape = true) {
+            it as ClockPuntainer
+            it.updateClockDisplayer()
+        }
+
+
         toPuntainer("workshopPuntainer", forceReshape = true) {
             it as WorkshopPuntainer
             if (it.fruitPos.x !in -0.1..1.1) {
@@ -173,7 +181,8 @@ class TestScene(stage: PunStage) : PunScene(
         timer.onUpdate = {
             updateClock(timer.left) }
         timer.onComplete = {
-            stage.scenesToAdd.add(Pair(LevelEndScene(stage), true))
+            val les = LevelEndScene(stage)
+            stage.scenesToAdd.add(Pair(les, true))
             stage.scenesToRemove.add("testScene")
         }
         updatables.add(timer)
