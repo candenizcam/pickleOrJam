@@ -1,9 +1,12 @@
 package application
 
+import com.soywiz.kds.iterators.fastForEachReverse
+import com.soywiz.korge.input.onUp
 import com.soywiz.korim.bitmap.Bitmap
 import com.soywiz.korim.bitmap.BitmapSlice
 import com.soywiz.korim.bitmap.sliceWithBounds
 import com.soywiz.korim.format.readBitmap
+import com.soywiz.korio.dynamic.KDynamic.Companion.toInt
 import com.soywiz.korio.file.std.resourcesVfs
 import modules.basic.Colour
 import pungine.Puntainer
@@ -11,11 +14,12 @@ import pungine.geometry2D.Rectangle
 import pungine.geometry2D.Vector
 import pungine.geometry2D.oneRectangle
 
-class ClockPuntainer private constructor(relativeRectangle: Rectangle, pixelSize: Rectangle): Puntainer("clockPuntainer",relativeRectangle)  {
+class MoneyPuntainer private constructor(relativeRectangle: Rectangle, pixelSize: Rectangle): Puntainer("moneyPuntainer",relativeRectangle)  {
     init {
     }
     val pixelSize = pixelSize
     val clockRectList = mutableListOf<Rectangle>()
+    val digitNo = 7
 
     private suspend fun init() {
         val sheet = resourcesVfs["number_sheet.png"].readBitmap()
@@ -31,23 +35,31 @@ class ClockPuntainer private constructor(relativeRectangle: Rectangle, pixelSize
         val hNumber = h/pixelSize.height
 
         clockRectList.addAll(
-            (0 until 5).map {
-                Rectangle(Vector(0.5,0.5),wNumber,hNumber).fromRated(Rectangle(it/5.0,(it+1)/5.0,0.0,1.0))
+            (0 until digitNo).map {
+                Rectangle(Vector(0.5,0.5),wNumber,hNumber).fromRated(Rectangle(it/digitNo.toDouble(),(it+1)/digitNo.toDouble(),0.0,1.0))
             }
         )
-
+        solidRect("bg", oneRectangle(), colour = Colour.CYAN)
 
         //punImage("test", oneRectangle(),slices[0])
 
         //punImage("id",oneRectangle(),resourcesVfs["number_sheet.png"].readBitmap())
-        solidRect("bg", oneRectangle(), colour = Colour.YELLOW)
 
-        punImage("digit_1",clockRectList[0],slices[0])
-        punImage("digit_2",clockRectList[1],slices[0])
-        punImage("digit_3",clockRectList[3],slices[0])
-        punImage("digit_4",clockRectList[4],slices[0])
+        clockRectList.forEachIndexed { index, rectangle ->
+            if(index==digitNo-1){
+                punImage("pundollarSign",clockRectList[index],slices[0])
+            }else{
+                punImage("digit_$index",clockRectList[index],slices[0])
+            }
 
-        punImage("birVarmisBirYokmus",clockRectList[2], slices[10] )
+        }
+
+
+        //punImage("digit_2",clockRectList[1],slices[0])
+        //punImage("digit_3",clockRectList[3],slices[0])
+        //punImage("digit_4",clockRectList[4],slices[0])
+
+        //punImage("birVarmisBirYokmus",clockRectList[2], slices[10] )
 
         /*
         oneRectangle().split(cols=listOf(0.23,0.23,0.08,0.23,0.23)).also {
@@ -69,26 +81,28 @@ class ClockPuntainer private constructor(relativeRectangle: Rectangle, pixelSize
 
 
 
-    fun setTimeAsSeconds(t: Int){
-        val min = t/60
-        val sec = t%60
-        val s1 = sec%10
-        val s2 = sec/10
-        val m1 = min%10
-        val m2 = min/10
+
+    fun setMoney(v: Int){
+        val vs = v.toString().padStart(6,'0')
 
         puntainers.filter { it.id!!.contains("digit") }.forEach {
             puntainers.remove(it)
             removeChild(it)
         }
 
-        punImage("digit_1",clockRectList[0],sliceList[m2])
-        punImage("digit_2",clockRectList[1],sliceList[m1])
-        punImage("digit_3",clockRectList[3],sliceList[s2])
-        punImage("digit_4",clockRectList[4],sliceList[s1])
 
-        puntainers.first { it.id == "birVarmisBirYokmus" }.also {
-            it.visible = !it.visible
+        clockRectList.forEachIndexed { index, rectangle ->
+            if(index==digitNo-1){
+                //punImage("pundollarSign",clockRectList[0],slices[0])
+            }else{
+                val ind = if(vs.length>index){
+                    vs[index].toString().toInt()
+                }else{
+                    0
+                }
+                punImage("digit_$index",rectangle,sliceList[ind])
+            }
+
         }
 
     }
@@ -96,8 +110,8 @@ class ClockPuntainer private constructor(relativeRectangle: Rectangle, pixelSize
 
     companion object {
         suspend fun create(relativeRectangle: Rectangle, pixelSize: Rectangle
-        ): ClockPuntainer {
-            return ClockPuntainer(relativeRectangle, pixelSize).also {
+        ): MoneyPuntainer {
+            return MoneyPuntainer(relativeRectangle, pixelSize).also {
                 it.init()
             }
         }

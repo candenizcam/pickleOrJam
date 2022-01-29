@@ -7,20 +7,20 @@ import modules.basic.Colour
 import pungine.Puntainer
 import pungine.geometry2D.Rectangle
 import pungine.geometry2D.Vector
-import pungine.geometry2D.oneRectangle
 import pungine.uiElements.Button
 import pungine.uiElements.PunImage
 
 class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Puntainer("workshopPuntainer",relativeRectangle) {
     private val fruitList= mutableListOf<Basket>()
-    var conveyorPos = Vector(1.2,0.5)
+    var fruitPos = Vector(836.0/GlobalAccess.windowSize.height,0.5)
         private set
-    private val choicePos = Vector(0.5,0.5)
+    val choicePos = Vector(0.5,536.0/GlobalAccess.windowSize.height)
     var onChoice = {foodId: String, choice: Int->} //choice 0-> pickle; choice 1-> jam
+    var conveyorHolder = 0.0
 
     var activeBasket: Basket? = null
     private set
-    val fruitRectangle = Rectangle(Vector(0.0,0.0), 180.0/GlobalAccess.windowSize.width,180.0/GlobalAccess.windowSize.height)
+    val fruitRectangle = Rectangle(Vector(0.0,0.0), 200.0/GlobalAccess.windowSize.width,200.0/GlobalAccess.windowSize.height)
 
     private suspend fun init() {
 
@@ -52,23 +52,26 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
         addPuntainer(b1)
         addPuntainer(b2)
 
+        val rectByPixel = GlobalAccess.virtualRect.fromRated(relativeRectangle)
 
-        addPuntainer(ConveyorBeltPuntainer.create(Rectangle(0.0,1.0,0.2,0.8)))
 
-        addPuntainer(
-            ClockPuntainer.create(
-                GlobalAccess.virtualRect.toRated( Rectangle(Vector(1116.0,704.0),148.0,68.0, cornerType = Rectangle.Corners.TOP_LEFT )),
-                Rectangle(0.0,148.0,0.0,68.0))
+        addPuntainer(ConveyorBeltPuntainer.create(Rectangle(0.0,1.0,360.0/rectByPixel.height,620.0/rectByPixel.height)))
+
+
+
+
+
+        addPuntainer(JarPuntainer.create(
+            rectByPixel.toRated(Rectangle(Vector(520.0,700.0),240.0,280.0,Rectangle.Corners.TOP_LEFT)))
         )
-
-
+        println("jarring")
 
 
 
     }
 
     fun picklePressed(){
-        if(choicePos==conveyorPos){
+        if(choicePos==fruitPos){
             (puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.GREEN.korgeColor
             activeBasket!!.status = 0
             onChoice(activeBasket!!.id,activeBasket!!.status)
@@ -77,7 +80,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
     }
 
     fun jamPressed(){
-        if(choicePos==conveyorPos){
+        if(choicePos==fruitPos){
             (puntainers.first { it.id == "fruitBasket" } as PunImage).colorMul = Colour.RED.korgeColor
             activeBasket!!.status = 1
             onChoice(activeBasket!!.id,activeBasket!!.status)
@@ -105,20 +108,74 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
             puntainers.remove(it)
             removeChild(it)
             activeBasket = fruitList.random().copy()
-            punImage("fruitBasket",Rectangle(Vector(0.5,1.1),fruitRectangle.width,fruitRectangle.height),activeBasket!!.bitmap)
+            punImage("fruitBasket",Rectangle(Vector(0.5,836.0/GlobalAccess.windowSize.height),fruitRectangle.width,fruitRectangle.height),activeBasket!!.bitmap)
+
+
+
         }
-        conveyorPos= Vector(0.5,1.1)
+        val toUp = puntainers.first { it.id=="jarPuntainer" }
+        removeChild(toUp)
+        addChild(toUp)
+
+        fruitPos= Vector(0.5,836.0/GlobalAccess.windowSize.height)
 
 
     }
 
-    fun moveOnConveyor(setX: Double=conveyorPos.x, setY: Double=conveyorPos.y){
-        if(setX!=conveyorPos.x){
-            (puntainers.first { it.id == "conveyorBeltPuntainer" } as ConveyorBeltPuntainer).update( (setX-conveyorPos.x)*10.0)
+
+    /** This moves by step in relative fashion
+     *
+     */
+    fun discreteMove(x: Int, y: Int, xStep: Double = 30.0, yStep: Double=30.0){
+        val rectByPixel = GlobalAccess.virtualRect.fromRated(relativeRectangle)
+        val verticalStep = xStep/rectByPixel.width
+        val horizontalStep = yStep/rectByPixel.height
+
+        if(x!=0){
+            (puntainers.first { it.id == "conveyorBeltPuntainer" } as ConveyorBeltPuntainer).update( x.toDouble())
+        }else if(y!=0){
+            if(fruitPos.y-horizontalStep*0.5<= choicePos.y){
+                fruitPos = Vector(fruitPos.x,choicePos.y)
+                return
+            }
+        }else{
+            return
         }
-        conveyorPos = Vector(setX,setY)
+        fruitPos = Vector(fruitPos.x + verticalStep*x,fruitPos.y + horizontalStep*y)
+
+        puntainers.first { it.id == "jarPuntainer" }.also {
+            it.resizeRect(Rectangle(Vector(fruitPos.x,choicePos.y+24.0/rectByPixel.height),it.relativeRectangle.width,it.relativeRectangle.height))
+        }
+
         puntainers.first { it.id == "fruitBasket" }.also {
-            it.resizeRect(Rectangle(conveyorPos,it.relativeRectangle.width,it.relativeRectangle.height))
+            it.resizeRect(Rectangle(fruitPos,it.relativeRectangle.width,it.relativeRectangle.height))
+        }
+
+
+
+
+        //(puntainers.first { it.id == "conveyorBeltPuntainer" } as ConveyorBeltPuntainer).update( x.toDouble())
+
+
+    }
+
+    fun moveOnConveyor(setX: Double=fruitPos.x, setY: Double=fruitPos.y){
+        if(setX!=fruitPos.x){
+            //(puntainers.first { it.id == "conveyorBeltPuntainer" } as ConveyorBeltPuntainer).update( (setX-jarPos.x)*10.0)
+        }
+        conveyorHolder+= (setX-fruitPos.x)*1000
+        println(conveyorHolder)
+        if(conveyorHolder>30.0){
+            (puntainers.first { it.id == "conveyorBeltPuntainer" } as ConveyorBeltPuntainer).update( 1.0)
+            conveyorHolder = conveyorHolder.rem(30.0)
+        }else if (conveyorHolder< -30.0){
+            (puntainers.first { it.id == "conveyorBeltPuntainer" } as ConveyorBeltPuntainer).update( -1.0)
+            conveyorHolder = conveyorHolder.rem(-30.0)
+        }
+
+        fruitPos = Vector(setX,setY)
+        puntainers.first { it.id == "fruitBasket" }.also {
+            it.resizeRect(Rectangle(fruitPos,it.relativeRectangle.width,it.relativeRectangle.height))
         }
 
 

@@ -26,7 +26,10 @@ class TestScene(stage: PunStage) : PunScene(
     var vinegar = 0
     var sugar = 0
 
-    var sec = 0.0
+    var clockStep = 0.0
+    var oscillator = 0.0
+    val hardwareClockPulseTime = 0.05
+
     override suspend fun sceneInit() {
         //openingCrawl()
         val a = WorkshopPuntainer.create(oneRectangle())
@@ -59,6 +62,22 @@ class TestScene(stage: PunStage) : PunScene(
             it.visible=false
         })
 
+        addPuntainer(
+            ClockPuntainer.create(
+                GlobalAccess.virtualRect.toRated( Rectangle(Vector(1116.0,704.0),148.0,68.0, cornerType = Rectangle.Corners.TOP_LEFT )),
+                Rectangle(0.0,148.0,0.0,68.0))
+        )
+
+
+        addPuntainer(
+            MoneyPuntainer.create(
+                GlobalAccess.virtualRect.toRated( Rectangle(Vector(952.0,704.0),148.0,68.0, cornerType = Rectangle.Corners.TOP_LEFT )),
+                Rectangle(0.0,148.0,0.0,68.0)
+
+
+            )
+        )
+
         /*
         val layers = mutableListOf<String>()
         layers.add("aitu1.mp3")
@@ -84,35 +103,94 @@ class TestScene(stage: PunStage) : PunScene(
 
     }
 
+
+    fun updateMoneyDisplay(value: Int){
+        toPuntainer("moneyPuntainer", forceReshape = true){ it as MoneyPuntainer
+            it.setMoney(GlobalAccess.gameState.money)
+        }
+    }
+
+    fun updateClock(sec: Int){
+        toPuntainer("clockPuntainer", forceReshape = true){ it as ClockPuntainer
+            it.setTimeAsSeconds(sec)
+        }
+    }
+
     override fun update(ms: Double) {
         vinegar = GlobalAccess.gameState.vinegar
         sugar = GlobalAccess.gameState.sugar
+        /*
         toPuntainer("workshopPuntainer", forceReshape = true){ it as WorkshopPuntainer
-            if(it.conveyorPos.x !in -0.1..1.1){
+            if(it.fruitPos.x !in -0.1..1.1){
                 it.deployNewFood()
             }else{
                 if(it.activeBasket!!.status==-1){
-                    var newPosY = it.conveyorPos.y-ms*0.5
-                    if(newPosY<=0.5){
-                        newPosY = 0.5
+                    var newPosY = it.fruitPos.y-ms*0.5
+                    if(newPosY<=it.choicePos.y){
+                        newPosY = it.choicePos.y
                     }
+
                     it.moveOnConveyor(setY = newPosY)
                 }else{
                     val newPosX = if(it.activeBasket!!.status==1){
-                            it.conveyorPos.x + ms * 0.5
+                            it.fruitPos.x + ms * 0.5
                     }else{
-                            it.conveyorPos.x - ms * 0.5
+                            it.fruitPos.x - ms * 0.5
                     }
                     it.moveOnConveyor(setX = newPosX)
+                    // conveyor moves by 30 pixels
                 }
             }
-            val newSec= sec + ms
-            if(newSec.toInt()!=sec.toInt()){
-                it.updateClockBySec(newSec.toInt())
 
+
+            /*
+
+            if(newSec.toInt()!=sec.toInt()){
+                //it.updateClockBySec(newSec.toInt())
+                //(puntainers.first { it.id == "clockPuntainer" } as ClockPuntainer).setTimeAsSeconds(sec.toInt())
+                updateClock(sec.toInt())
+                updateMoneyDisplay(newSec.toInt())
             }
             sec = newSec
 
+             */
+
+        }
+
+         */
+
+        val newSec= oscillator + ms
+        oscillator = if(newSec>hardwareClockPulseTime){
+            hardwareClockUpdateEmulator()
+            newSec.rem(hardwareClockPulseTime)
+        }else{
+            newSec
+        }
+    }
+
+    fun hardwareClockUpdateEmulator(){
+        clockStep += 1
+        val sec = clockStep*hardwareClockPulseTime
+        if((sec+0.005).rem(0.5)<0.01){
+            updateClock(sec.toInt())
+        }
+
+        updateMoneyDisplay(sec.toInt())
+        toPuntainer("workshopPuntainer", forceReshape = true){ it as WorkshopPuntainer
+            if(it.fruitPos.x !in -0.1..1.1){
+                it.deployNewFood()
+            }else{
+                if(it.activeBasket!!.status==-1){
+                    it.discreteMove(x=0,y=-1)
+                }else{
+                    if(it.activeBasket!!.status==1){
+                        it.discreteMove(x=1,y=0)
+                    }else{
+                        it.discreteMove(x=-1,y=0)
+                    }
+                    // conveyor moves by 30 pixels
+                }
+            }
         }
     }
 
