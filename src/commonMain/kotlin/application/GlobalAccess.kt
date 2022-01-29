@@ -18,14 +18,20 @@ object GlobalAccess {
     val gameState = GameState(0)
     var inputList = mutableListOf<Fruit>()
 
-    fun initInputs() {
+    var levels = mutableListOf<Level>()
+
+    fun initLevels() {
         val fList = listOf("apple", "orange", "cucumber", "eggplant")
         val pList = listOf(100, 200, 300, 500)
         val jList = listOf(300, 500, 100, 200)
+        val fruitList = mutableListOf<Fruit>()
         fList.indices.forEach {
-            inputList.add(Fruit(fList[it], pList[it], jList[it]))
+            fruitList.add(Fruit(fList[it], pList[it], jList[it]))
         }
+
+        levels.add(Level(fruitList, 120))
     }
+
 
 
 
