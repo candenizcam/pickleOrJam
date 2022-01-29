@@ -47,7 +47,9 @@ class MoneyPuntainer private constructor(relativeRectangle: Rectangle, pixelSize
 
         clockRectList.forEachIndexed { index, rectangle ->
             if(index==digitNo-1){
-                punImage("pundollarSign",clockRectList[index],slices[0])
+
+
+                punImage("pundollarSign",clockRectList[index],resourcesVfs["Pundollar.png"].readBitmap())
             }else{
                 punImage("digit_$index",clockRectList[index],slices[0])
             }
