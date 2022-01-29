@@ -36,45 +36,70 @@ class TestScene(stage: PunStage) : PunScene(
         addPuntainer(a)
 
 
-        addPuntainer(Button("pauseButton", GlobalAccess.virtualRect.toRated( Rectangle(Vector(16.0,704.0),68.0,68.0,Rectangle.Corners.TOP_LEFT)), resourcesVfs["buttons/pause_button.png"].readBitmap()).also {
-            it.clickFunction = {
-                // todo pause button
-                toPuntainer("pauseMenuPuntainer"){
-                    it.visible = true
-                }
+        addPuntainer(
+            Button(
+                "pauseButton",
+                GlobalAccess.virtualRect.toRated(
+                    Rectangle(
+                        Vector(16.0, 704.0),
+                        68.0,
+                        68.0,
+                        Rectangle.Corners.TOP_LEFT
+                    )
+                ),
+                resourcesVfs["buttons/pause_button.png"].readBitmap()
+            ).also {
+                it.clickFunction = {
+                    // todo pause button
+                    toPuntainer("pauseMenuPuntainer") {
+                        it.visible = true
+                    }
 
-                toPuntainer("workshopPuntainer"){
-                    it.visible=false
+                    toPuntainer("workshopPuntainer") {
+                        it.visible = false
+                    }
+                    pauseGame(true)
                 }
-                pauseGame(true)
-            }
-        })
+            })
 
 
         addPuntainer(PauseMenuPuntainer.create(oneRectangle()).also {
             it.onReturn = {
-                toPuntainer("workshopPuntainer"){
+                toPuntainer("workshopPuntainer") {
                     it.visible = true
                 }
-                it.visible=false
+                it.visible = false
                 pauseGame(false)
             }
-            it.visible=false
+            it.visible = false
         })
 
         addPuntainer(
             ClockPuntainer.create(
-                GlobalAccess.virtualRect.toRated( Rectangle(Vector(1116.0,704.0),148.0,68.0, cornerType = Rectangle.Corners.TOP_LEFT )),
-                Rectangle(0.0,148.0,0.0,68.0))
+                GlobalAccess.virtualRect.toRated(
+                    Rectangle(
+                        Vector(1116.0, 704.0),
+                        148.0,
+                        68.0,
+                        cornerType = Rectangle.Corners.TOP_LEFT
+                    )
+                ),
+                Rectangle(0.0, 148.0, 0.0, 68.0)
+            )
         )
 
 
         addPuntainer(
             MoneyPuntainer.create(
-                GlobalAccess.virtualRect.toRated( Rectangle(Vector(952.0,704.0),148.0,68.0, cornerType = Rectangle.Corners.TOP_LEFT )),
-                Rectangle(0.0,148.0,0.0,68.0)
-
-
+                GlobalAccess.virtualRect.toRated(
+                    Rectangle(
+                        Vector(952.0, 704.0),
+                        148.0,
+                        68.0,
+                        cornerType = Rectangle.Corners.TOP_LEFT
+                    )
+                ),
+                Rectangle(0.0, 148.0, 0.0, 68.0)
             )
         )
 
@@ -90,28 +115,30 @@ class TestScene(stage: PunStage) : PunScene(
         openLevel(a)
 
         a.onChoice = { type, choice ->
-            if (choice == 0 && GlobalAccess.gameState.vinegar>0) {
+            if (choice == 0 && GlobalAccess.gameState.vinegar > 0) {
                 GlobalAccess.gameState.pickleIt(type)
-            } else if (choice == 1 && GlobalAccess.gameState.sugar>0) {
+            } else if (choice == 1 && GlobalAccess.gameState.sugar > 0) {
                 GlobalAccess.gameState.jamIt(type)
             }
         }
     }
 
 
-    fun pauseGame(pause: Boolean){
-
+    fun pauseGame(pause: Boolean) {
+        active = !pause
     }
 
 
-    fun updateMoneyDisplay(value: Int){
-        toPuntainer("moneyPuntainer", forceReshape = true){ it as MoneyPuntainer
+    fun updateMoneyDisplay(value: Int) {
+        toPuntainer("moneyPuntainer", forceReshape = true) {
+            it as MoneyPuntainer
             it.setMoney(GlobalAccess.gameState.money)
         }
     }
 
-    fun updateClock(sec: Int){
-        toPuntainer("clockPuntainer", forceReshape = true){ it as ClockPuntainer
+    fun updateClock(sec: Int) {
+        toPuntainer("clockPuntainer", forceReshape = true) {
+            it as ClockPuntainer
             it.setTimeAsSeconds(sec)
         }
     }
@@ -159,34 +186,35 @@ class TestScene(stage: PunStage) : PunScene(
 
          */
 
-        val newSec= oscillator + ms
-        oscillator = if(newSec>hardwareClockPulseTime){
+        val newSec = oscillator + ms
+        oscillator = if (newSec > hardwareClockPulseTime) {
             hardwareClockUpdateEmulator()
             newSec.rem(hardwareClockPulseTime)
-        }else{
+        } else {
             newSec
         }
     }
 
-    fun hardwareClockUpdateEmulator(){
+    fun hardwareClockUpdateEmulator() {
         clockStep += 1
-        val sec = clockStep*hardwareClockPulseTime
-        if((sec+0.005).rem(0.5)<0.01){
+        val sec = clockStep * hardwareClockPulseTime
+        if ((sec + 0.005).rem(0.5) < 0.01) {
             updateClock(sec.toInt())
         }
 
         updateMoneyDisplay(sec.toInt())
-        toPuntainer("workshopPuntainer", forceReshape = true){ it as WorkshopPuntainer
-            if(it.fruitPos.x !in -0.1..1.1){
+        toPuntainer("workshopPuntainer", forceReshape = true) {
+            it as WorkshopPuntainer
+            if (it.fruitPos.x !in -0.1..1.1) {
                 it.deployNewFood()
-            }else{
-                if(it.activeBasket!!.status==-1){
-                    it.discreteMove(x=0,y=-1)
-                }else{
-                    if(it.activeBasket!!.status==1){
-                        it.discreteMove(x=1,y=0)
-                    }else{
-                        it.discreteMove(x=-1,y=0)
+            } else {
+                if (it.activeBasket!!.status == -1) {
+                    it.discreteMove(x = 0, y = -1)
+                } else {
+                    if (it.activeBasket!!.status == 1) {
+                        it.discreteMove(x = 1, y = 0)
+                    } else {
+                        it.discreteMove(x = -1, y = 0)
                     }
                     // conveyor moves by 30 pixels
                 }
@@ -195,9 +223,8 @@ class TestScene(stage: PunStage) : PunScene(
     }
 
 
-
     suspend fun openLevel(a: WorkshopPuntainer) {
-        a.openLevel(GlobalAccess.inputList.map {it.type})
+        a.openLevel(GlobalAccess.inputList.map { it.type })
     }
 
 
