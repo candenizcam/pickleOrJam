@@ -8,7 +8,9 @@ import modules.basic.Colour
 import pungine.PunScene
 import pungine.PunStage
 import pungine.geometry2D.Rectangle
+import pungine.geometry2D.Vector
 import pungine.geometry2D.oneRectangle
+import pungine.uiElements.Button
 
 /** This scene is the template for a PunGineIV game
  *
@@ -30,6 +32,33 @@ class TestScene(stage: PunStage) : PunScene(
         val a = WorkshopPuntainer.create(oneRectangle())
         addPuntainer(a)
 
+
+        addPuntainer(Button("pauseButton", GlobalAccess.virtualRect.toRated( Rectangle(Vector(16.0,704.0),68.0,68.0,Rectangle.Corners.TOP_LEFT)), resourcesVfs["buttons/pause_button.png"].readBitmap()).also {
+            it.clickFunction = {
+                // todo pause button
+                toPuntainer("pauseMenuPuntainer"){
+                    it.visible = true
+                }
+
+                toPuntainer("workshopPuntainer"){
+                    it.visible=false
+                }
+                pauseGame(true)
+            }
+        })
+
+
+        addPuntainer(PauseMenuPuntainer.create(oneRectangle()).also {
+            it.onReturn = {
+                toPuntainer("workshopPuntainer"){
+                    it.visible = true
+                }
+                it.visible=false
+                pauseGame(false)
+            }
+            it.visible=false
+        })
+
         /*
         val layers = mutableListOf<String>()
         layers.add("aitu1.mp3")
@@ -48,6 +77,11 @@ class TestScene(stage: PunStage) : PunScene(
                 GlobalAccess.gameState.jamIt(type)
             }
         }
+    }
+
+
+    fun pauseGame(pause: Boolean){
+
     }
 
     override fun update(ms: Double) {
@@ -74,12 +108,14 @@ class TestScene(stage: PunStage) : PunScene(
             }
             val newSec= sec + ms
             if(newSec.toInt()!=sec.toInt()){
-                it.updateClockBySeconds(sec.toInt())
+                it.updateClockBySec(newSec.toInt())
+
             }
             sec = newSec
 
         }
     }
+
 
 
     suspend fun openLevel(a: WorkshopPuntainer) {

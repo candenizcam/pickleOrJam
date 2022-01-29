@@ -63,6 +63,8 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
 
 
 
+
+
     }
 
     fun picklePressed(){
@@ -83,10 +85,10 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
 
     }
 
-    fun updateClockBySeconds(sec: Int){
-        (puntainers.first { it.id == "clockPuntainer" } as ClockPuntainer).setTimeAsSeconds(sec)
-    }
+    fun updateClockBySec(sec: Int){
 
+        (puntainers.first { it.id == "clockPuntainer" } as ClockPuntainer).setTimeAsSeconds(sec.toInt())
+    }
 
     suspend fun openLevel(foodToOpen: List<String>){
 
