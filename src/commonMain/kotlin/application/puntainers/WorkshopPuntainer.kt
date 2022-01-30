@@ -31,18 +31,6 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
             punImage("fruitBasket", Rectangle(1.25, 1.5, 0.25, 0.5), bitmap = it)
         }
 
-        resourcesVfs["game_logo.png"].readBitmap().also {
-            punImage(
-                "logo",
-                Rectangle(
-                    0.5 - 240.0 / GlobalAccess.windowSize.width,
-                    0.5 + 240.0 / GlobalAccess.windowSize.width,
-                    1.0 - 310.0 / GlobalAccess.windowSize.height,
-                    1.0
-                ),
-                bitmap = it
-            )
-        }
 
         val rectByPixel = GlobalAccess.virtualRect.fromRated(relativeRectangle)
 
@@ -103,7 +91,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
             Rectangle(0.0, 0.4, 0.0, 620.0 / rectByPixel.height),
             transparentBlock,
             transparentBlock,
-            hoverBitmap = resourcesVfs["buttons/pickle_jar.png"].readBitmap()
+            hoverBitmap = resourcesVfs["workshop/vinegar_glow.png"].readBitmap()
         )
 
         val b2 = Button(
@@ -111,7 +99,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
             Rectangle(0.6, 1.0, 0.0, 620.0 / rectByPixel.height),
             transparentBlock,
             transparentBlock,
-            hoverBitmap = resourcesVfs["buttons/jam_jar.png"].readBitmap()
+            hoverBitmap = resourcesVfs["workshop/sugar_glow.png"].readBitmap()
         )
 
         b1.clickFunction = {
