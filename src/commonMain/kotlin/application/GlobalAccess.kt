@@ -21,7 +21,7 @@ object GlobalAccess {
             virtualRect.fromRated(relativeRect)
         }else{
             virtualRect
-        }.toRated(Rectangle(corner, width.toDouble(), virtualSize.height-height.toDouble(), cornerType = Rectangle.Corners.TOP_LEFT))
+        }.toRated(Rectangle(Vector(corner.x,virtualSize.height-corner.y), width.toDouble(), height.toDouble(), cornerType = Rectangle.Corners.TOP_LEFT))
     }
 
     val gameState = GameState(level= 0, money= 0)

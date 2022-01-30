@@ -1,0 +1,42 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ffbe354fb26, pid=7880, tid=15348
+#
+# JRE version: OpenJDK Runtime Environment (17.0.1+12) (build 17.0.1+12-39)
+# Java VM: OpenJDK 64-Bit Server VM (17.0.1+12-39, mixed mode, sharing, tiered, compressed oops, compressed class ptrs, g1 gc, windows-amd64)
+# Problematic frame:
+# C  [igxelpicd64.dll+0x3bfb26]
+#
+# No core dump will be written. Minidumps are not enabled by default on client versions of Windows
+#
+# If you would like to submit a bug report, please visit:
+#   https://bugreport.java.com/bugreport/
+# The crash happened outside the Java Virtual Machine in native code.
+# See problematic frame for where to report the bug.
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -Daction.aware.typeAhead=false -Dcom.jetbrains.suppressWindowRaise=false -DdisableJbScreenMenuBar=true -Dfile.separator=\ -Dide.native.launcher=true -Didea.active=true -Didea.cycle.buffer.size=1024 -Didea.debugger.dispatch.addr=127.0.0.1 -Didea.debugger.dispatch.port=52792 -Didea.dynamic.classpath=false -Didea.fatal.error.notification=disabled -Didea.jre.check=true -Didea.max.content.load.filesize=20000 -Didea.max.intellisense.filesize=2500 -Didea.no.launcher=false -Didea.paths.selector=IntelliJIdea2021.3 -Didea.popup.weight=heavy -Didea.vendor.name=JetBrains -Didea.version=2021.3.1 -Didea.xdebug.key=-Xdebug -Dio.netty.allocator.cacheTrimIntervalMillis=600000 -Dio.netty.allocator.numDirectArenas=1 -Dio.netty.allocator.numHeapArenas=1 -Dio.netty.allocator.useCacheForAllThreads=false -Dio.netty.machineId=28:f0:76:ff:fe:16:65:0e -Dio.netty.processId=35784 -Dio.netty.serviceThreadPrefix=Netty  -Djava.class.version=61.0 -Djava.home=C:\Users\cdcth\.jdks\openjdk-17.0.1 -Djava.library.path=C:\Users\cdcth\.jdks\openjdk-17.0.1\bin;C:\WINDOWS\Sun\Java\bin;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Users\cdcth\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\cdcth\AppData\Local\Programs\Python\Python39\;C:\Users\cdcth\AppData\Local\Microsoft\WindowsApps;C:\jetbrains\IntelliJ IDEA 2021.2\bin;C:\jetbrains\PyCharm 2021.2\bin;C:\Users\cdcth\AppData\Local\Programs\MiKTeX\miktex\bin\x64\;C:\gradle\bin;C:\Program Files\JetBrains\JetBrains Rider 2021.2.2\bin;C:\Users\cdcth\AppData\Local\atom\bin;C:\Users\cdcth\AppData\Roaming\npm;. -Djava.rmi.server.disableHttp=true -Djava.rmi.server.hostname=127.0.0.1 -Djava.runtime.name=OpenJDK Runtime Environment -Djava.runtime.version=17.0.1+12-39 -Djava.specification.name=Java Platform API Specification -Djava.specification.vendor=Oracle Corporation -Djava.specification.version=17 -Djava.util.concurrent.ForkJoinPool.common.threadFactory=com.intellij.concurrency.IdeaForkJoinWorkerThreadFactory -Djava.vendor=Oracle Corporation -Djava.vendor.url=https://java.oracle.com/ -Djava.vendor.url.bug=https://bugreport.java.com/bugreport/ -Djava.vendor.version=JBR-11.0.13.7-1751.21-jcef -Djava.version=17.0.1 -Djava.version.date=2021-10-19 -Djava.vm.compressedOopsMode=32-bit -Djava.vm.info=mixed mode -Djava.vm.name=OpenJDK 64-Bit Server VM -Djava.vm.specification.name=Java Virtual Machine Specification -Djava.vm.specification.vendor=Oracle Corporation -Djava.vm.specification.version=17 -Djava.vm.vendor=Oracle Corporation -Djava.vm.version=17.0.1+12-39 -Djavax.swing.rebaseCssSizeMap=true -Djb.vmOptionsFile=C:\Users\cdcth\AppData\Roaming\JetBrains\IntelliJIdea2021.3\idea64.exe.vmoptions -Djdk.attach.allowAttachSelf=true -Djdk.debug=release -Djdk.http.auth.tunneling.disabledSchemes= -Djdk.module.illegalAccess.silent=true -Djna.loaded=true -Djna.nosys=true -Djna.tmpdir=C:\Users\cdcth\AppData\Local\JetBrains\IntelliJIdea2021.3/tmp -Djnidispatch.path=C:\Users\cdcth\AppData\Local\JetBrains\IntelliJIdea2021.3\tmp\jna15980477713983045426.dll -Dkotlinx.coroutines.debug=off -Dlibrary.jansi.path=C:\Users\cdcth\.gradle\native\jansi\1.18\windows64 -Dline.separator=
+ -Dlog4j.defaultInitOverride=true -Dnative.encoding=Cp1252 -Dos.arch=amd64 -Dos.name=Windows 10 -Dos.version=10.0 -Dpath.separator=; -Dpty4j.preferred.native.folder=C:\jetbrains\IntelliJ IDEA 2021.2\lib\pty4j-native -Dpty4j.tmpdir=C:\Users\cdcth\AppData\Local\JetBrains\IntelliJIdea2021.3/tmp -Dsplash=true -Dsun.arch.data.model=64 -Dsun.boot.library.path=C:\Users\cdcth\.jdks\openjdk-17.0.1\bin -Dsun.cpu.endian=little -Dsun.cpu.isalist=amd64 -Dsun.io.unicode.encoding=UnicodeLittle -Dsun.jnu.encoding=Cp1252 -Dsun.management.compiler=HotSpot 64-Bit Tiered Compilers -Dsun.os.patch.level -Dswing.bufferPerWindow=false -Duser.dir=C:\supreme_command\kotlin_projects\pungo\pickleOrJam -Duser.home=C:\Users\cdcth -Duser.name=dreadnought -Duser.script -Duser.timezone=Asia/Istanbul -Dwinp.folder.preferred=C:\Users\cdcth\AppData\Local\JetBrains\IntelliJIdea2021.3/tmp --add-opens=java.desktop/sun.java2d.opengl=ALL-UNNAMED --add-opens=java.desktop/java.awt=ALL-UNNAMED --add-opens=java.desktop/sun.awt=ALL-UNNAMED -agentlib:jdwp=transport=dt_socket,server=n,suspend=y,address=127.0.0.1:52802 -Dfile.encoding=UTF-8 -Djava.io.tmpdir=C:\Users\cdcth\AppData\Local\Temp\ -Duser.country=GB -Duser.language=en -Duser.variant MainKt
+
+Host: 11th Gen Intel(R) Core(TM) i7-11800H @ 2.30GHz, 16 cores, 31G,  Windows 10 , 64 bit Build 22000 (10.0.22000.434)
+Time: Sun Jan 30 10:16:12 2022 Turkey Standard Time elapsed time: 17.085621 seconds (0d 0h 0m 17s)
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000002116498faf0):  JavaThread "JDWP Transport Listener: dt_socket" daemon [_thread_in_native, id=15348, stack(0x000000c7bcb00000,0x000000c7bcc00000)]
+
+Stack: [0x000000c7bcb00000,0x000000c7bcc00000],  sp=0x000000c7bcbfe760,  free space=1017k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+C  [igxelpicd64.dll+0x3bfb26]
+
+
+siginfo: EXCEPTION_ACCESS_VIOLATION (0xc0000005), reading address 0x0000000000035468
+
+
+Register to memory mapping:
+
+RIP=0x00007ffbe354fb26 igxelpicd64.dll
+RAX=
