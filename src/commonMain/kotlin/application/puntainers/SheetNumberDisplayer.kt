@@ -12,13 +12,17 @@ import pungine.geometry2D.Rectangle
 import pungine.geometry2D.Vector
 import pungine.geometry2D.oneRectangle
 
-class SheetNumberDisplayer private constructor(id: String? =null, relativeRectangle: Rectangle, pixelSize: Rectangle, val digitNo: Int, val bg: Boolean=true): Puntainer(id,relativeRectangle)  {
+class SheetNumberDisplayer private constructor(id: String? =null, relativeRectangle: Rectangle, pixelSize: Rectangle, val digitNo: Int, val bg: Boolean=true, val moneySign: Boolean=false): Puntainer(id,relativeRectangle)  {
     init {
     }
     val pixelSize = pixelSize
     val colRectList = mutableListOf<Rectangle>()
+    val activeDigitNo: Int
+    get() {
+        return digitNo+ if(moneySign) 1 else 0
+    }
 
-    private suspend fun init() {
+        private suspend fun init() {
         val sheet = resourcesVfs["number_sheet.png"].readBitmap()
         val h = sheet.height
         val w = sheet.width/11
@@ -28,12 +32,12 @@ class SheetNumberDisplayer private constructor(id: String? =null, relativeRectan
 
 
 
-        val wNumber = w*digitNo/pixelSize.width
+        val wNumber = w*activeDigitNo/pixelSize.width
         val hNumber = h/pixelSize.height
 
         colRectList.addAll(
-            (0 until digitNo).map {
-                Rectangle(Vector(0.5,0.5),wNumber,hNumber).fromRated(Rectangle(it/digitNo.toDouble(),(it+1)/digitNo.toDouble(),0.0,1.0))
+            (0 until activeDigitNo).map {
+                Rectangle(Vector(0.5,0.5),wNumber,hNumber).fromRated(Rectangle(it/activeDigitNo.toDouble(),(it+1)/activeDigitNo.toDouble(),0.0,1.0))
             }
         )
         if(bg){
@@ -46,7 +50,12 @@ class SheetNumberDisplayer private constructor(id: String? =null, relativeRectan
         //punImage("id",oneRectangle(),resourcesVfs["number_sheet.png"].readBitmap())
 
         colRectList.forEachIndexed { index, rectangle ->
-            punImage("digit_$index",colRectList[index],slices[0])
+            if(moneySign && index==colRectList.size-1){
+                punImage("pundollarSign",rectangle,resourcesVfs["Pundollar.png"].readBitmap())
+            }else{
+                punImage("digit_$index",colRectList[index],slices[0])
+            }
+
 
         }
     }
@@ -65,8 +74,7 @@ class SheetNumberDisplayer private constructor(id: String? =null, relativeRectan
 
 
         colRectList.forEachIndexed { index, rectangle ->
-            if(index==digitNo){
-                //punImage("pundollarSign",clockRectList[0],slices[0])
+            if(moneySign &&(index==colRectList.size-1)){
             }else{
                 val ind = if(vs.length>index){
                     vs[index].toString().toInt()
@@ -82,9 +90,9 @@ class SheetNumberDisplayer private constructor(id: String? =null, relativeRectan
 
 
     companion object {
-        suspend fun create(id: String?=null, relativeRectangle: Rectangle, pixelSize: Rectangle, digitNo: Int,  bg: Boolean=true
+        suspend fun create(id: String?=null, relativeRectangle: Rectangle, pixelSize: Rectangle, digitNo: Int,  bg: Boolean=true, moneySign: Boolean=false
         ): SheetNumberDisplayer {
-            return SheetNumberDisplayer(id,relativeRectangle, pixelSize,digitNo, bg).also {
+            return SheetNumberDisplayer(id,relativeRectangle, pixelSize,digitNo, bg, moneySign).also {
                 it.init()
             }
         }

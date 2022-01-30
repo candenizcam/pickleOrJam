@@ -15,7 +15,6 @@ object GlobalAccess {
             return Rectangle(0.0, windowSize.width.toDouble(), 0.0, windowSize.height.toDouble())
         }
 
-
     fun rectFromXD(corner: Vector, width: Int, height: Int, relativeRect: Rectangle?=null): Rectangle {
         return if(relativeRect!=null){
             virtualRect.fromRated(relativeRect)

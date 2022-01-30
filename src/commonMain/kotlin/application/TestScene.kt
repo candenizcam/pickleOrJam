@@ -49,7 +49,9 @@ class TestScene(stage: PunStage) : PunScene(
                         Rectangle.Corners.TOP_LEFT
                     )
                 ),
-                resourcesVfs["buttons/pause_button.png"].readBitmap()
+                resourcesVfs["UI/pause_normal.png"].readBitmap(),
+                resourcesVfs["UI/pause_pushed.png"].readBitmap(),
+                resourcesVfs["UI/pause_hover.png"].readBitmap()
             ).also { button ->
                 button.clickFunction = {
                     toPuntainer("pauseMenuPuntainer") {
@@ -79,13 +81,13 @@ class TestScene(stage: PunStage) : PunScene(
             ClockPuntainer.create(
                 GlobalAccess.virtualRect.toRated(
                     Rectangle(
-                        Vector(1116.0, 704.0),
-                        148.0,
+                        Vector(1076.0, 704.0),
+                        196.0,
                         68.0,
                         cornerType = Rectangle.Corners.TOP_LEFT
                     )
                 ),
-                Rectangle(0.0, 148.0, 0.0, 68.0)
+                Rectangle(0.0, 196.0, 0.0, 68.0)
             )
         )
 
@@ -94,18 +96,19 @@ class TestScene(stage: PunStage) : PunScene(
             MoneyPuntainer.create(
                 GlobalAccess.virtualRect.toRated(
                     Rectangle(
-                        Vector(952.0, 704.0),
-                        148.0,
+                        Vector(874.0, 704.0),
+                        196.0,
                         68.0,
                         cornerType = Rectangle.Corners.TOP_LEFT
                     )
                 ),
-                Rectangle(0.0, 148.0, 0.0, 68.0)
+                Rectangle(0.0, 196.0, 0.0, 68.0)
             )
         )
 
         musicPlayer.open("SlowDay.mp3", true)
-        musicPlayer.open("cash-register.mp3", false)
+//        musicPlayer.open("cash-register.mp3", false)
+        sfxPlayer.play("cash-register.mp3")
 
         GlobalAccess.initLevels()
         val l = GlobalAccess.levels[gameState.level]
