@@ -86,7 +86,7 @@ class MoneyPuntainer private constructor(relativeRectangle: Rectangle, pixelSize
 
 
     fun setMoney(v: Int){
-        val vs = v.toString().padStart(6,'0')
+        val vs = v.toString().padStart(digitNo,'0')
 
         puntainers.filter { it.id!!.contains("digit") }.forEach {
             puntainers.remove(it)
