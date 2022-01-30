@@ -5,13 +5,10 @@ import application.puntainers.MoneyPuntainer
 import application.puntainers.PauseMenuPuntainer
 import application.puntainers.WorkshopPuntainer
 import com.soywiz.korim.format.readBitmap
-import com.soywiz.korio.async.launch
-import com.soywiz.korio.async.launchAsap
 import com.soywiz.korio.async.launchImmediately
-import com.soywiz.korio.async.runBlockingNoSuspensions
 import com.soywiz.korio.file.std.resourcesVfs
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import modules.basic.Colour
 import pungine.PunScene
 import pungine.PunStage
@@ -35,6 +32,7 @@ class TestScene(stage: PunStage) : PunScene(
     private var clockStep = 0.0
     private var oscillator = 0.0
     private val hardwareClockPulseTime = 0.05
+    val gameState = GameState(level= 0, money= 0, vinegar = 1, sugar = 1)
 
     override suspend fun sceneInit() {
         val a = WorkshopPuntainer.create(oneRectangle())
@@ -108,15 +106,24 @@ class TestScene(stage: PunStage) : PunScene(
 
         musicPlayer.open("SlowDay.mp3", true)
         GlobalAccess.initLevels()
-        val l = Level(GlobalAccess.levels[GlobalAccess.gameState.level].fruitList, 2)
+        val l = GlobalAccess.levels[gameState.level]
 
         openLevel(a, l)
 
+        gameState.gameOver = {
+            val levelEnd = LevelEndScene(stage)
+            GlobalScope.launchImmediately {
+                levelEnd.initialize()
+                stage.scenesToAdd.add(Pair(levelEnd, true))
+                stage.scenesToRemove.add("testScene")
+            }
+        }
+
         a.onChoice = { type, choice ->
-            if (choice == 0 && GlobalAccess.gameState.vinegar > 0) {
-                GlobalAccess.gameState.pickleIt(type)
-            } else if (choice == 1 && GlobalAccess.gameState.sugar > 0) {
-                GlobalAccess.gameState.jamIt(type)
+            if (choice == 0 && gameState.vinegar > 0) {
+                gameState.pickleIt(type)
+            } else if (choice == 1 && gameState.sugar > 0) {
+                gameState.jamIt(type)
             }
         }
     }
@@ -130,7 +137,7 @@ class TestScene(stage: PunStage) : PunScene(
     private fun updateMoneyDisplay() {
         toPuntainer("moneyPuntainer", forceReshape = true) {
             it as MoneyPuntainer
-            it.setMoney(GlobalAccess.gameState.money)
+            it.setMoney(gameState.money)
         }
     }
 
@@ -187,66 +194,16 @@ class TestScene(stage: PunStage) : PunScene(
         a.openLevel(l.fruitList.map { it.type })
         val timer = CountdownTimer(l.timeLimit)
         timer.onUpdate = {
-            updateClock(timer.left) }
+            updateClock(timer.left)
+        }
         timer.onComplete = {
-            launchAsap(stage.coroutineContext){
-                val les = LevelEndScene(stage)
-                les.initialize()
-                stage.scenesToAdd.add(Pair(les, true))
+            val levelEnd = LevelEndScene(stage)
+            GlobalScope.launchImmediately {
+                levelEnd.initialize()
+                stage.scenesToAdd.add(Pair(levelEnd, true))
                 stage.scenesToRemove.add("testScene")
             }
-
-
-
-
-
         }
         updatables.add(timer)
     }
-
-
-    // delete from all under here for a new scene
-
-    /*
-    suspend fun openingCrawl() {
-
-        val bg = solidRect("id", Rectangle(0.0, 1.0, 0.0, 1.0), Colour.rgba(0.04, 0.02, 0.04, 1.0))
-
-
-        val img = punImage(
-            "id",
-            Rectangle(
-                390.0 / scenePuntainer.width,
-                890.0 / scenePuntainer.width,
-                110.0 / scenePuntainer.height,
-                610.0 / scenePuntainer.height
-            ),
-            resourcesVfs["pungo_transparent.png"].readBitmap()
-        ).also {
-            it.visible = false
-        }
-
-        val resource = resourcesVfs["PunGine.png"].readBitmap()
-        punImage("fader", oneRectangle(), bitmap = resource).also {
-            it.alpha = 0.0
-            var counter = 0.0
-            it.addUpdater { dt: TimeSpan ->
-                if (counter < 3.0) {
-                    bg.alpha = 1.0
-                    counter += dt.seconds
-                    if (counter < 1.2) {
-                        it.alpha = counter / 1.2
-                    } else if (counter > 1.8) {
-                        it.alpha = (3.0 - counter) / 1.2
-                    }
-                } else {
-                    it.alpha = 0.0
-                    bg.alpha = 0.0
-                    img.visible = true
-                }
-            }
-        }
-
-    }
-     */
 }
