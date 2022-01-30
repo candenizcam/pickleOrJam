@@ -41,7 +41,9 @@ class ClockPuntainer private constructor(relativeRectangle: Rectangle, pixelSize
         //punImage("test", oneRectangle(),slices[0])
 
         //punImage("id",oneRectangle(),resourcesVfs["number_sheet.png"].readBitmap())
-        solidRect("bg", oneRectangle(), colour = Colour.YELLOW)
+        punImage("bg", oneRectangle(),
+            resourcesVfs["UI/money.png"].readBitmap()
+        )
 
         punImage("digit_1",clockRectList[0],slices[0])
         punImage("digit_2",clockRectList[1],slices[0])

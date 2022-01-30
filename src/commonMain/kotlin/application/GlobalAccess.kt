@@ -30,25 +30,50 @@ object GlobalAccess {
     fun initLevels() {
         val fList = listOf("Apple", "Lemon", "Bowling_Ball", "Cherry", "Rubber_Duck", "Cucumber", "Eggplant", "orange")
         val pList = listOf(44, 37, 0, 38, 60, 94, 82, 12) //min 195
-        val fList1 = listOf("Apricot", "Cherry", "Lemon", "Carrot", "Tomato", "Onion", "Red_Cabbage", "Cucumber")
-        val pList1 = listOf(0, 12, 37, 53, 44, 60, 87, 94) //min 199
+
+        val fList1 = listOf("Apricot", "Cherry", "Lemon", "Carrot", "Tomato", "Onion", "Broccoli", "Cucumber")
+        val pList1 = listOf(0, 12, 37, 53, 44, 60, 80, 94) //min 199
+        val fruitList1 = mutableListOf<Fruit>()
+        fList1.indices.forEach {
+            fruitList1.add(Fruit(fList1[it], pList1[it], 100-pList1[it]))
+        }
+        levels.add(Level(fruitList1,30,levels.size*50+300))
+
         val fList2 = listOf("Lavender", "Cherry", "Lemon", "Hamburger", "Dandelion", "Shrimp", "Garlic", "Egg")
         val pList2 = listOf(6, 12, 37, 82, 19, 71, 80, 69) //min 172
+        val fruitList2 = mutableListOf<Fruit>()
+        fList2.indices.forEach {
+            fruitList2.add(Fruit(fList2[it], pList2[it], 100-pList2[it]))
+        }
+        levels.add(Level(fruitList2,30,levels.size*50+300))
+
         val fList3 = listOf("Peach", "Grape", "Donut", "Mug", "Tomato", "Onion", "Lamp", "Shrimp", "Pizza", "Olive")
         val pList3 = listOf(4, 6, 19, 28, 44, 60, 65, 71, 71, 81) //253
-        val fList4 = listOf("Snowman", "Grape", "Pumpkin", "Bubble_Gum", "Nail_Polish", "Pine_Cone", "Rubber_Duck", "Onion", "Fridge", "Car", "Bowling_ball", "Green_Beans")
-        val pList4 = listOf(6, 6, 13, 19, 21, 30, 38, 60, 63, 69, 88, 94) //259
-        val fList5 = listOf("Peach", "Grape", "Donut", "Mug", "Tomato", "Onion", "Lamp", "Shrimp", "Pizza", "Olive")
-        val pList5 = listOf(4, 6, 19, 28, 44, 60, 65, 71, 71, 81)
-        val fruitList = mutableListOf<Fruit>()
-        fList.indices.forEach {
-            fruitList.add(Fruit(fList[it], pList[it], 100-pList[it]))
+        val fruitList3 = mutableListOf<Fruit>()
+        fList3.indices.forEach {
+            fruitList3.add(Fruit(fList3[it], pList3[it], 100-pList3[it]))
         }
+        levels.add(Level(fruitList3,30,levels.size*50+300))
 
-        levels.add(Level(fruitList, 30, 300))
+        val fList4 = listOf("Snowman", "Grape", "Pumpkin", "Bubble_Gum", "Nail_Polish", "Pine_Cone", "Rubber_Duck", "Onion", "Plane", "Car", "Bowling_ball", "Atom")
+        val pList4 = listOf(6, 6, 13, 19, 21, 30, 38, 60, 62, 69, 88, 100) //254
+        val fruitList4 = mutableListOf<Fruit>()
+        fList4.indices.forEach {
+            fruitList4.add(Fruit(fList4[it], pList4[it], 100-pList4[it]))
+        }
+        levels.add(Level(fruitList4,30,levels.size*50+300))
+
+        val fList5 = listOf("Banana", "Strawberry", "Rose", "Cat", "Apple", "Game_Jam", "Donut", "Cinnamon", "Ginger", "Headphones", "Watch", "Controller", "Eggplant", "Anchovy", "Broccoli", "Socks")
+        val pList5 = listOf(0, 0, 0, 100, 0, 0, 19, 31, 33, 52, 53, 54, 59, 77, 80, 88)
+        val fruitList5 = mutableListOf<Fruit>()
+        fList5.indices.forEach {
+            fruitList5.add(Fruit(fList5[it], pList5[it], 100-pList5[it]))
+        }
+        levels.add(Level(fruitList5,30,levels.size*50+300))
+
     }
 
-    val anormalFlist = listOf(
+    val fullFlist = listOf(
         "Cat",
         "Game_Jam",
         "Snowman",
@@ -58,27 +83,46 @@ object GlobalAccess {
         "Mug",
         "Notebook",
         "Rubber_Duck",
-        "Tent",
         "Headphones",
         "Watch",
         "Controller",
-        "Spaghetti",
         "Plane",
-        "Fridge",
-        "Water_Bottle",
         "Lamp",
-        "CD",
         "Plate",
         "Car",
         "Pizza",
-        "Table",
-        "Mask",
-        "Laptop",
         "Hamburger",
         "Socks",
         "Bowling_Ball",
-        "Charging_Cable",
-        "Atom"
+        "Atom",
+        "Banana",
+        "Strawberry",
+        "Rose",
+        "Apricot",
+        "Apple",
+        "Peach",
+        "Lavender",
+        "Grape",
+        "Cherry",
+        "Pumpkin",
+        "Dandelion",
+        "Pine_Cone",
+        "Cinnamon",
+        "Ginger",
+        "Lemon",
+        "Tomato",
+        "Carrot",
+        "Eggplant",
+        "Onion",
+        "Red_Pepper",
+        "Egg",
+        "Shrimp",
+        "Tobasco_Pepper",
+        "Anchovy",
+        "Garlic",
+        "Broccoli",
+        "Olive",
+        "Cucumber"
     )
     val normalFlist = listOf(
         "Banana",
@@ -103,13 +147,11 @@ object GlobalAccess {
         "Red_Pepper",
         "Egg",
         "Shrimp",
-        "Tobasco",
+        "Tobasco_Pepper",
         "Anchovy",
         "Garlic",
         "Broccoli",
         "Olive",
-        "Red_Cabbage",
-        "Green_Beans",
         "Cucumber"
     )
     val pNormalList = listOf(
@@ -140,11 +182,9 @@ object GlobalAccess {
         80,
         80,
         81,
-        87,
-        94,
         94
     )
-    val pAnormalList = listOf(
+    val pFullList = listOf(
         100,
         0,
         6,
@@ -154,26 +194,45 @@ object GlobalAccess {
         28,
         38,
         38,
-        50,
         52,
         53,
         54,
-        60,
         62,
         63,
-        63,
-        65,
-        65,
         69,
         69,
         71,
-        76,
-        81,
-        81,
         82,
         88,
         88,
-        94,
-        100
+        100,
+        0,
+        0,
+        0,
+        0,
+        0,
+        4,
+        6,
+        6,
+        12,
+        13,
+        19,
+        30,
+        31,
+        33,
+        37,
+        44,
+        53,
+        59,
+        60,
+        60,
+        69,
+        71,
+        76,
+        77,
+        80,
+        80,
+        81,
+        94
     )
 }
