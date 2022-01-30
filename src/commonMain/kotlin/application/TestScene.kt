@@ -1,9 +1,6 @@
 package application
 
-import application.puntainers.ClockPuntainer
-import application.puntainers.MoneyPuntainer
-import application.puntainers.PauseMenuPuntainer
-import application.puntainers.WorkshopPuntainer
+import application.puntainers.*
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.async.launchImmediately
 import com.soywiz.korio.file.std.resourcesVfs
@@ -16,6 +13,7 @@ import pungine.geometry2D.Rectangle
 import pungine.geometry2D.Vector
 import pungine.geometry2D.oneRectangle
 import pungine.uiElements.Button
+import pungine.uiElements.PunImage
 
 /** This scene is the template for a PunGineIV game
  *
@@ -93,7 +91,7 @@ class TestScene(stage: PunStage) : PunScene(
 
 
         addPuntainer(
-            MoneyPuntainer.create(
+            SheetNumberDisplayer.create("moneyPuntainer",
                 GlobalAccess.virtualRect.toRated(
                     Rectangle(
                         Vector(874.0, 704.0),
@@ -102,9 +100,13 @@ class TestScene(stage: PunStage) : PunScene(
                         cornerType = Rectangle.Corners.TOP_LEFT
                     )
                 ),
-                Rectangle(0.0, 196.0, 0.0, 68.0)
+                Rectangle(0.0, 196.0, 0.0, 68.0),
+                5,
+                false,
+                moneySign = true
             )
         )
+
 
         musicPlayer.open("SlowDay.mp3", true)
         sfxPlayer.loadSounds(listOf("cash-register.mp3"))
@@ -146,8 +148,8 @@ fun generateLevel(level: Int) {
 
     private fun updateMoneyDisplay() {
         toPuntainer("moneyPuntainer", forceReshape = true) {
-            it as MoneyPuntainer
-            it.setMoney(gameState.money)
+            it as SheetNumberDisplayer
+            it.setValue(gameState.money)
         }
     }
 
