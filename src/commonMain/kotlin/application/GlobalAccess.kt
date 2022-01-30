@@ -24,7 +24,6 @@ object GlobalAccess {
         }.toRated(Rectangle(Vector(corner.x,virtualSize.height-corner.y), width.toDouble(), height.toDouble(), cornerType = Rectangle.Corners.TOP_LEFT))
     }
 
-    val gameState = GameState(level= 0, money= 0)
     var inputList = mutableListOf<Fruit>()
 
     var levels = mutableListOf<Level>()
@@ -172,7 +171,4 @@ object GlobalAccess {
         94,
         100
     )
-
-    //newInput
-    //type
 }

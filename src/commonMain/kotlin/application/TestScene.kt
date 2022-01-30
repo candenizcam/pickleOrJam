@@ -6,14 +6,9 @@ import application.puntainers.PauseMenuPuntainer
 import application.puntainers.WorkshopPuntainer
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.async.launchImmediately
-import com.soywiz.korio.async.launch
-import com.soywiz.korio.async.launchAsap
-import com.soywiz.korio.async.launchImmediately
-import com.soywiz.korio.async.runBlockingNoSuspensions
 import com.soywiz.korio.file.std.resourcesVfs
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Dispatchers
 import modules.basic.Colour
 import pungine.PunScene
 import pungine.PunStage
@@ -37,17 +32,7 @@ class TestScene(stage: PunStage) : PunScene(
     private var clockStep = 0.0
     private var oscillator = 0.0
     private val hardwareClockPulseTime = 0.05
-
-    fun checkEnd() {
-        if(GlobalAccess.gameState.vinegar == 0 && GlobalAccess.gameState.sugar == 0) {
-            val levelEnd = LevelEndScene(stage)
-            GlobalScope.launchImmediately {
-                levelEnd.initialize()
-                stage.scenesToAdd.add(Pair(levelEnd, true))
-                stage.scenesToRemove.add("testScene")
-            }
-        }
-    }
+    val gameState = GameState(level= 0, money= 0, vinegar = 1, sugar = 1)
 
     override suspend fun sceneInit() {
         val a = WorkshopPuntainer.create(oneRectangle())
@@ -121,17 +106,24 @@ class TestScene(stage: PunStage) : PunScene(
 
         musicPlayer.open("SlowDay.mp3", true)
         GlobalAccess.initLevels()
-        val l = GlobalAccess.levels[GlobalAccess.gameState.level]
+        val l = GlobalAccess.levels[gameState.level]
 
         openLevel(a, l)
 
+        gameState.gameOver = {
+            val levelEnd = LevelEndScene(stage)
+            GlobalScope.launchImmediately {
+                levelEnd.initialize()
+                stage.scenesToAdd.add(Pair(levelEnd, true))
+                stage.scenesToRemove.add("testScene")
+            }
+        }
+
         a.onChoice = { type, choice ->
-            if (choice == 0 && GlobalAccess.gameState.vinegar > 0) {
-                GlobalAccess.gameState.pickleIt(type)
-                checkEnd()
-            } else if (choice == 1 && GlobalAccess.gameState.sugar > 0) {
-                GlobalAccess.gameState.jamIt(type)
-                checkEnd()
+            if (choice == 0 && gameState.vinegar > 0) {
+                gameState.pickleIt(type)
+            } else if (choice == 1 && gameState.sugar > 0) {
+                gameState.jamIt(type)
             }
         }
     }
@@ -145,7 +137,7 @@ class TestScene(stage: PunStage) : PunScene(
     private fun updateMoneyDisplay() {
         toPuntainer("moneyPuntainer", forceReshape = true) {
             it as MoneyPuntainer
-            it.setMoney(GlobalAccess.gameState.money)
+            it.setMoney(gameState.money)
         }
     }
 
