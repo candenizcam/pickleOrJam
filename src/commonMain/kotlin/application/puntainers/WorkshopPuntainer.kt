@@ -103,7 +103,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
             Rectangle(0.0, 0.4, 0.0, 620.0 / rectByPixel.height),
             transparentBlock,
             transparentBlock,
-            hoverBitmap = resourcesVfs["buttons/pickle_jar.png"].readBitmap()
+            hoverBitmap = resourcesVfs["workshop/vinegar_glow.png"].readBitmap()
         )
 
         val b2 = Button(
@@ -111,7 +111,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
             Rectangle(0.6, 1.0, 0.0, 620.0 / rectByPixel.height),
             transparentBlock,
             transparentBlock,
-            hoverBitmap = resourcesVfs["buttons/jam_jar.png"].readBitmap()
+            hoverBitmap = resourcesVfs["workshop/sugar_glow.png"].readBitmap()
         )
 
         b1.clickFunction = {
