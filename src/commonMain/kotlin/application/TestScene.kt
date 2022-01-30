@@ -107,6 +107,24 @@ class TestScene(stage: PunStage) : PunScene(
             )
         )
 
+        addPuntainer(
+            SheetLetterDisplayer.create("text",
+                    GlobalAccess.rectFromXD(Vector(490.0,372.0),300,60),
+                    Rectangle(0.0, 300.0, 0.0, 60.0),
+                    16,
+                    false,
+                ).also {
+                    it.setValue("VALUE")
+            }
+        )
+
+
+        /**
+         * top: 372px;
+        left: 490px;
+        width: 300px;
+        height: 60px;
+         */
 
         musicPlayer.open("SlowDay.mp3", true)
         sfxPlayer.loadSounds(listOf("cash-register.mp3"))
@@ -136,13 +154,21 @@ class TestScene(stage: PunStage) : PunScene(
         }
     }
 
-fun generateLevel(level: Int) {
-    val fruitList6 = mutableListOf<Fruit>()
-    GlobalAccess.fullFlist.indices.forEach {
-        fruitList6.add(Fruit(GlobalAccess.fullFlist[it], GlobalAccess.pFullList[it], 100- GlobalAccess.pFullList[it]))
+
+    fun setFruitText(s: String){
+        toPuntainer("text"){ it as SheetLetterDisplayer
+            it.setValue(s)
+        }
     }
-    GlobalAccess.levels.add(Level(fruitList6,30, GlobalAccess.levels.size*50+300))
-}
+
+    fun generateLevel(level: Int) {
+        val fruitList6 = mutableListOf<Fruit>()
+        GlobalAccess.fullFlist.indices.forEach {
+            fruitList6.add(Fruit(GlobalAccess.fullFlist[it], GlobalAccess.pFullList[it], 100- GlobalAccess.pFullList[it]))
+        }
+        GlobalAccess.levels.add(Level(fruitList6,30, GlobalAccess.levels.size*50+300))
+    }
+
     private fun pauseGame(pause: Boolean) {
         active = !pause
     }
