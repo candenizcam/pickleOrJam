@@ -7,6 +7,7 @@ import com.soywiz.korim.bitmap.Bitmap
 import com.soywiz.korim.bitmap.BitmapSlice
 import modules.basic.Colour
 import pungine.audio.MusicPlayer
+import pungine.audio.SfxPlayer
 import pungine.geometry2D.Rectangle
 import pungine.geometry2D.Vector
 import pungine.geometry2D.oneRectangle
@@ -23,6 +24,7 @@ open class PunScene(var id: String, open var stage: PunStage, rectangle: Rectang
     val bgColour=bgColour
     val updatables = mutableListOf<Updatable>()
     lateinit var musicPlayer: MusicPlayer
+    lateinit var sfxPlayer: SfxPlayer
     lateinit var sceneInput: Input
     lateinit var scenePuntainer: Puntainer
         protected set
@@ -39,6 +41,7 @@ open class PunScene(var id: String, open var stage: PunStage, rectangle: Rectang
         setBg(sceneRect.width,sceneRect.height,bgColour)
         sceneInput = stage.views.input
         musicPlayer = stage.musicPlayer
+        sfxPlayer = stage.sfxPlayer
     }
 
     open suspend fun sceneInit(){

@@ -15,7 +15,6 @@ object GlobalAccess {
             return Rectangle(0.0, windowSize.width.toDouble(), 0.0, windowSize.height.toDouble())
         }
 
-
     fun rectFromXD(corner: Vector, width: Int, height: Int, relativeRect: Rectangle?=null): Rectangle {
         return if(relativeRect!=null){
             virtualRect.fromRated(relativeRect)
@@ -29,18 +28,24 @@ object GlobalAccess {
     var levels = mutableListOf<Level>()
 
     fun initLevels() {
-        val fList = listOf("Apple", "lemon", "Bowling_Ball", "Cherry", "Rubber_Duck", "Cucumber", "Eggplant", "orange")
-        val pList = listOf(44, 37, 0, 38, 60, 94, 82, 12)
-        val fList1 = listOf("Lavender", "Lemon", "Snowman", "Rubber Duck", "Onion", "Cucumber", "Hamburger", "Cherry")
-        val pList1 = listOf(44, 37, 0, 38, 60, 94, 82, 12)
-        val fList2 = listOf("Tomato", "Lemon", "Apricot", "Rubber Duck", "Onion", "Cucumber", "Hamburger", "Cherry")
-        val pList2 = listOf(44, 37, 0, 38, 60, 94, 82, 12)
+        val fList = listOf("Apple", "Lemon", "Bowling_Ball", "Cherry", "Rubber_Duck", "Cucumber", "Eggplant", "orange")
+        val pList = listOf(44, 37, 0, 38, 60, 94, 82, 12) //min 195
+        val fList1 = listOf("Apricot", "Cherry", "Lemon", "Carrot", "Tomato", "Onion", "Red_Cabbage", "Cucumber")
+        val pList1 = listOf(0, 12, 37, 53, 44, 60, 87, 94) //min 199
+        val fList2 = listOf("Lavender", "Cherry", "Lemon", "Hamburger", "Dandelion", "Shrimp", "Garlic", "Egg")
+        val pList2 = listOf(6, 12, 37, 82, 19, 71, 80, 69) //min 172
+        val fList3 = listOf("Peach", "Grape", "Donut", "Mug", "Tomato", "Onion", "Lamp", "Shrimp", "Pizza", "Olive")
+        val pList3 = listOf(4, 6, 19, 28, 44, 60, 65, 71, 71, 81) //253
+        val fList4 = listOf("Snowman", "Grape", "Pumpkin", "Bubble_Gum", "Nail_Polish", "Pine_Cone", "Rubber_Duck", "Onion", "Fridge", "Car", "Bowling_ball", "Green_Beans")
+        val pList4 = listOf(6, 6, 13, 19, 21, 30, 38, 60, 63, 69, 88, 94) //259
+        val fList5 = listOf("Peach", "Grape", "Donut", "Mug", "Tomato", "Onion", "Lamp", "Shrimp", "Pizza", "Olive")
+        val pList5 = listOf(4, 6, 19, 28, 44, 60, 65, 71, 71, 81)
         val fruitList = mutableListOf<Fruit>()
         fList.indices.forEach {
             fruitList.add(Fruit(fList[it], pList[it], 100-pList[it]))
         }
 
-        levels.add(Level(fruitList, 120))
+        levels.add(Level(fruitList, 30, 300))
     }
 
     val anormalFlist = listOf(

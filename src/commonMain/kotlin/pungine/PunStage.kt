@@ -9,6 +9,7 @@ import com.soywiz.korim.color.Colors
 import com.soywiz.korim.color.RGBA
 import com.soywiz.korio.async.launchImmediately
 import pungine.audio.MusicPlayer
+import pungine.audio.SfxPlayer
 
 import pungine.geometry2D.Rectangle
 import pungine.geometry2D.Vector
@@ -43,11 +44,13 @@ open class PunStage(var width: Double = InternalGlobalAccess.virtualSize.width.t
         }
 
     val musicPlayer = MusicPlayer()
+    val sfxPlayer = SfxPlayer()
     val scenes = mutableListOf<PunScene>()
     val scenesToAdd = mutableListOf<Pair<PunScene, Boolean>>()
     val scenesToRemove = mutableListOf<String>()
 
     override suspend fun Container.sceneInit() {
+        sfxPlayer.loadSounds()
         addUpdater { dt->
             update(dt)
         }

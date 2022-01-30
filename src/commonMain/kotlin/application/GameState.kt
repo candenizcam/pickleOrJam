@@ -3,12 +3,12 @@ package application
 import com.soywiz.korio.async.launchImmediately
 import kotlinx.coroutines.GlobalScope
 
+
 class GameState(var level: Int = 0, var money: Int, var vinegar: Int = 10, var sugar: Int = 10) {
     var jams = 0
     var pickles = 0
     var sugarPrice = 20
     var vinegarPrice = 20
-    var rent = 200
     var gameOver = {money: Int -> }
 
     fun getFruit(input: String): Fruit? {
@@ -50,7 +50,7 @@ class GameState(var level: Int = 0, var money: Int, var vinegar: Int = 10, var s
     }
 
     fun payRent() {
-        money -= rent
+        money -= GlobalAccess.levels[level].rent
         if(money<0) {
             gameOver(money)
         }
