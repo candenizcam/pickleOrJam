@@ -1,4 +1,4 @@
-package application
+package application.puntainers
 
 import com.soywiz.korim.bitmap.Bitmap
 import com.soywiz.korim.bitmap.BitmapSlice
@@ -16,6 +16,7 @@ class ClockPuntainer private constructor(relativeRectangle: Rectangle, pixelSize
     }
     val pixelSize = pixelSize
     val clockRectList = mutableListOf<Rectangle>()
+    var setTime = 0
 
     private suspend fun init() {
         val sheet = resourcesVfs["number_sheet.png"].readBitmap()
@@ -68,8 +69,8 @@ class ClockPuntainer private constructor(relativeRectangle: Rectangle, pixelSize
     val sliceList = mutableListOf<BitmapSlice<Bitmap>>()
 
 
-
-    fun setTimeAsSeconds(t: Int){
+    fun updateClockDisplayer(){
+        val t = setTime
         val min = t/60
         val sec = t%60
         val s1 = sec%10
@@ -87,10 +88,14 @@ class ClockPuntainer private constructor(relativeRectangle: Rectangle, pixelSize
         punImage("digit_3",clockRectList[3],sliceList[s2])
         punImage("digit_4",clockRectList[4],sliceList[s1])
 
-        puntainers.first { it.id == "birVarmisBirYokmus" }.also {
-            it.visible = !it.visible
-        }
+        //puntainers.first { it.id == "birVarmisBirYokmus" }.also {
+        //    it.visible = !it.visible
+        //}
+    }
 
+
+    fun setTimeAsSeconds(t: Int){
+        setTime = t
     }
 
 

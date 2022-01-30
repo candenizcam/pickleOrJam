@@ -1,9 +1,9 @@
-package application
+package application.puntainers
 
+import application.GlobalAccess
 import com.soywiz.korge.input.onUp
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.file.std.resourcesVfs
-import modules.basic.Colour
 import pungine.Puntainer
 import pungine.geometry2D.Rectangle
 import pungine.geometry2D.Vector
@@ -13,11 +13,8 @@ import pungine.uiElements.Button
 class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Puntainer("pauseMenuPuntainer",relativeRectangle) {
 
     private suspend fun init() {
-        solidRect("bg", oneRectangle(), colour = Colour.GRIZEL).also {
-            it.onUp {
-                //onReturn()
-            }
-        }
+
+        punImage("bg", oneRectangle(), resourcesVfs["workshop/background.png"].readBitmap())
 
         val thisRectangle = GlobalAccess.virtualRect.fromRated(relativeRectangle)
 

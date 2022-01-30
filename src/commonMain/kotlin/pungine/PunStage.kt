@@ -78,7 +78,8 @@ open class PunStage(var width: Double = InternalGlobalAccess.virtualSize.width.t
                 scenePuntainer.addChild(it.first.scenePuntainer)
                 add(it.first, it.second)
             }
-
+        }catch (e: Exception){
+            println("Error in scene change ${e.message}")
         } finally {
             scenesToAdd.clear()
             scenesToRemove.clear()

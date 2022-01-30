@@ -1,10 +1,19 @@
 package application
 
+import application.puntainers.ClockPuntainer
+import application.puntainers.MoneyPuntainer
+import application.puntainers.PauseMenuPuntainer
+import application.puntainers.WorkshopPuntainer
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.async.launchImmediately
+import com.soywiz.korio.async.launch
+import com.soywiz.korio.async.launchAsap
+import com.soywiz.korio.async.launchImmediately
+import com.soywiz.korio.async.runBlockingNoSuspensions
 import com.soywiz.korio.file.std.resourcesVfs
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Dispatchers
 import modules.basic.Colour
 import pungine.PunScene
 import pungine.PunStage
@@ -162,6 +171,13 @@ class TestScene(stage: PunStage) : PunScene(
         clockStep += 1
 
         updateMoneyDisplay()
+
+        toPuntainer("clockPuntainer", forceReshape = true) {
+            it as ClockPuntainer
+            it.updateClockDisplayer()
+        }
+
+
         toPuntainer("workshopPuntainer", forceReshape = true) {
             it as WorkshopPuntainer
             if (it.fruitPos.x !in -0.1..1.1) {

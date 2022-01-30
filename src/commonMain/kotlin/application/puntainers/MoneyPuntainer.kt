@@ -1,7 +1,5 @@
-package application
+package application.puntainers
 
-import com.soywiz.kds.iterators.fastForEachReverse
-import com.soywiz.korge.input.onUp
 import com.soywiz.korim.bitmap.Bitmap
 import com.soywiz.korim.bitmap.BitmapSlice
 import com.soywiz.korim.bitmap.sliceWithBounds

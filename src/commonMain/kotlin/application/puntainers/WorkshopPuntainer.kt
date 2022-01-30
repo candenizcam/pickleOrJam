@@ -1,5 +1,6 @@
-package application
+package application.puntainers
 
+import application.GlobalAccess
 import com.soywiz.korim.bitmap.Bitmap
 import com.soywiz.korim.bitmap.Bitmap32
 import com.soywiz.korim.bitmap.context2d
@@ -11,17 +12,16 @@ import pungine.Puntainer
 import pungine.geometry2D.Rectangle
 import pungine.geometry2D.Vector
 import pungine.uiElements.Button
-import pungine.uiElements.PunImage
 
 class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Puntainer("workshopPuntainer",relativeRectangle) {
     private val fruitList= mutableListOf<Basket>()
-    var fruitPos = Vector(836.0/GlobalAccess.windowSize.height,0.5)
+    var fruitPos = Vector(836.0/ GlobalAccess.windowSize.height,0.5)
         private set
-    val choicePos = Vector(0.5,536.0/GlobalAccess.windowSize.height)
+    val choicePos = Vector(0.5,536.0/ GlobalAccess.windowSize.height)
     var onChoice = {foodId: String, choice: Int->} //choice 0-> pickle; choice 1-> jam
     var activeBasket: Basket? = null
     private set
-    val fruitRectangle = Rectangle(Vector(0.0,0.0), 200.0/GlobalAccess.windowSize.width,200.0/GlobalAccess.windowSize.height)
+    val fruitRectangle = Rectangle(Vector(0.0,0.0), 200.0/ GlobalAccess.windowSize.width,200.0/ GlobalAccess.windowSize.height)
 
     private suspend fun init() {
         resourcesVfs["workshop/background.png"].readBitmap().also {
@@ -30,7 +30,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
         }
 
         resourcesVfs["game_logo.png"].readBitmap().also {
-            punImage("logo", Rectangle(0.5-240.0/GlobalAccess.windowSize.width,0.5+240.0/GlobalAccess.windowSize.width,1.0-310.0/GlobalAccess.windowSize.height,1.0), bitmap = it)
+            punImage("logo", Rectangle(0.5-240.0/ GlobalAccess.windowSize.width,0.5+240.0/ GlobalAccess.windowSize.width,1.0-310.0/ GlobalAccess.windowSize.height,1.0), bitmap = it)
         }
 
         val rectByPixel = GlobalAccess.virtualRect.fromRated(relativeRectangle)
@@ -42,7 +42,16 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
 
 
 
-        addPuntainer(ConveyorBeltPuntainer.create(Rectangle(0.0,1.0,360.0/rectByPixel.height,620.0/rectByPixel.height)))
+        addPuntainer(
+            ConveyorBeltPuntainer.create(
+                Rectangle(
+                    0.0,
+                    1.0,
+                    360.0 / rectByPixel.height,
+                    620.0 / rectByPixel.height
+                )
+            )
+        )
 
         resourcesVfs["workshop/Vinegar.png"].readBitmap().also {
             punImage("vinegar", rectByPixel.toRated(Rectangle(Vector(64.0,400.0),240.0,360.0,Rectangle.Corners.TOP_LEFT)), bitmap = it)
@@ -64,8 +73,10 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
 
 
 
-        addPuntainer(JarPuntainer.create(
-            rectByPixel.toRated(Rectangle(Vector(520.0,700.0),240.0,280.0,Rectangle.Corners.TOP_LEFT)))
+        addPuntainer(
+            JarPuntainer.create(
+                rectByPixel.toRated(Rectangle(Vector(520.0, 700.0), 240.0, 280.0, Rectangle.Corners.TOP_LEFT))
+            )
         )
 
         val b1 = Button("pickleButton",Rectangle(0.0,0.4,0.0,620.0/rectByPixel.height),transparentBlock,transparentBlock,hoverBitmap = resourcesVfs["buttons/pickle_jar.png"].readBitmap())
@@ -131,13 +142,13 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle): Punta
             puntainers.remove(it)
             removeChild(it)
             activeBasket = fruitList.random().copy()
-            punImage("fruitBasket",Rectangle(Vector(0.5,836.0/GlobalAccess.windowSize.height),fruitRectangle.width,fruitRectangle.height),activeBasket!!.bitmap)
+            punImage("fruitBasket",Rectangle(Vector(0.5,836.0/ GlobalAccess.windowSize.height),fruitRectangle.width,fruitRectangle.height),activeBasket!!.bitmap)
         }
         val toUp = puntainers.first { it.id=="jarPuntainer" }
         removeChild(toUp)
         addChild(toUp)
         ((puntainers.first { it.id=="jarPuntainer" }) as JarPuntainer).signVisible(-2)
-        fruitPos= Vector(0.5,836.0/GlobalAccess.windowSize.height)
+        fruitPos= Vector(0.5,836.0/ GlobalAccess.windowSize.height)
     }
 
 

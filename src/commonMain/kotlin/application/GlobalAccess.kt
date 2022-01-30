@@ -2,6 +2,7 @@ package application
 
 import com.soywiz.korma.geom.SizeInt
 import pungine.geometry2D.Rectangle
+import pungine.geometry2D.Vector
 
 /** This file contains variables for global access in the application,
  * user can manipulate here during development
@@ -13,6 +14,15 @@ object GlobalAccess {
         get() {
             return Rectangle(0.0, windowSize.width.toDouble(), 0.0, windowSize.height.toDouble())
         }
+
+
+    fun rectFromXD(corner: Vector, width: Int, height: Int, relativeRect: Rectangle?=null): Rectangle {
+        return if(relativeRect!=null){
+            virtualRect.fromRated(relativeRect)
+        }else{
+            virtualRect
+        }.toRated(Rectangle(Vector(corner.x,virtualSize.height-corner.y), width.toDouble(), height.toDouble(), cornerType = Rectangle.Corners.TOP_LEFT))
+    }
 
     val gameState = GameState(level= 0, money= 0)
     var inputList = mutableListOf<Fruit>()
