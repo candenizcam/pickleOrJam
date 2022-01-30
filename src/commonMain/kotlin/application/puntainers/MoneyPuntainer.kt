@@ -17,7 +17,7 @@ class MoneyPuntainer private constructor(relativeRectangle: Rectangle, pixelSize
     }
     val pixelSize = pixelSize
     val clockRectList = mutableListOf<Rectangle>()
-    val digitNo = 6
+    val digitNo = 5
 
     private suspend fun init() {
         val sheet = resourcesVfs["number_sheet.png"].readBitmap()
@@ -38,7 +38,9 @@ class MoneyPuntainer private constructor(relativeRectangle: Rectangle, pixelSize
             }
         )
         if(bg){
-            solidRect("bg", oneRectangle(), colour = Colour.CYAN)
+            punImage("bg", oneRectangle(),
+                resourcesVfs["UI/money.png"].readBitmap()
+            )
         }
 
 
@@ -86,7 +88,7 @@ class MoneyPuntainer private constructor(relativeRectangle: Rectangle, pixelSize
 
 
     fun setMoney(v: Int){
-        val vs = v.toString().padStart(6,'0')
+        val vs = v.toString().padStart(digitNo,'0')
 
         puntainers.filter { it.id!!.contains("digit") }.forEach {
             puntainers.remove(it)
