@@ -2,7 +2,9 @@ package application
 
 import application.puntainers.SheetNumberDisplayer
 import com.soywiz.korim.format.readBitmap
+import com.soywiz.korio.async.launchImmediately
 import com.soywiz.korio.file.std.resourcesVfs
+import kotlinx.coroutines.GlobalScope
 import pungine.PunScene
 import pungine.PunStage
 import pungine.geometry2D.Rectangle
@@ -10,7 +12,7 @@ import pungine.geometry2D.Vector
 import pungine.geometry2D.oneRectangle
 import pungine.uiElements.Button
 
-class LevelEndScene(stage: PunStage) : PunScene("levelEnd", stage, GlobalAccess.virtualSize.width.toDouble(), GlobalAccess.virtualSize.height.toDouble()) {
+class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("levelEnd", stage, GlobalAccess.virtualSize.width.toDouble(), GlobalAccess.virtualSize.height.toDouble()) {
     override suspend fun sceneInit() {
         super.sceneInit()
 
@@ -24,7 +26,6 @@ class LevelEndScene(stage: PunStage) : PunScene("levelEnd", stage, GlobalAccess.
             addPuntainer(it)
             it.clickFunction = {
                 onPlayNextPressed()
-                sfxPlayer.play("cash-register.mp3")
             }
         }
 
@@ -37,10 +38,9 @@ class LevelEndScene(stage: PunStage) : PunScene("levelEnd", stage, GlobalAccess.
                 moneySign = true
 
             ).also {
-                it.setValue(money)
+                it.setValue(gameState.money)
             }
         )
-
 
         addPuntainer(
             SheetNumberDisplayer.create( "levelNo",
@@ -49,7 +49,7 @@ class LevelEndScene(stage: PunStage) : PunScene("levelEnd", stage, GlobalAccess.
                 2,
                 false
             ).also {
-                it.setValue(levelNo)
+                it.setValue(gameState.level)
             }
         )
 
@@ -60,11 +60,12 @@ class LevelEndScene(stage: PunStage) : PunScene("levelEnd", stage, GlobalAccess.
         ).also {
             addPuntainer(it)
             it.clickFunction = {
-               // TODO buy vinegar
-                // probably use update vinegar count, something like, if vinegar < maxVinegar, updateVinegarCount(+1), also update money
+                if(gameState.buy(sugarToBuy = 1)) {
+                    sfxPlayer.play("cash-register.mp3")
+                    updateInfoAfter(money=gameState.money, vinegarCount=gameState.vinegar, sugarCount=gameState.sugar)
+                    println("MONEY: ${gameState.money}, VINEGAR: ${gameState.vinegar}, SUGAR: ${gameState.sugar}")
+                }
             }
-
-
         }
 
         addPuntainer(
@@ -86,11 +87,12 @@ class LevelEndScene(stage: PunStage) : PunScene("levelEnd", stage, GlobalAccess.
         ).also {
             addPuntainer(it)
             it.clickFunction = {
-                // TODO buy sugar
-                // probably use update sugar count, something like, if sugar < maxSugar, updateSugarCount(+1), also update money
+                if(gameState.buy(vinegarToBuy = 1)) {
+                    sfxPlayer.play("cash-register.mp3")
+                    updateInfoAfter(money=gameState.money, vinegarCount=gameState.vinegar, sugarCount=gameState.sugar)
+                    println("MONEY: ${gameState.money}, VINEGAR: ${gameState.vinegar}, SUGAR: ${gameState.sugar}")
+                }
             }
-
-
         }
 
         addPuntainer(
@@ -115,7 +117,7 @@ class LevelEndScene(stage: PunStage) : PunScene("levelEnd", stage, GlobalAccess.
                 moneySign = true
 
             ).also {
-                it.setValue(opCost)
+                it.setValue(GlobalAccess.levels[gameState.level].rent)
             }
         )
 
@@ -134,25 +136,15 @@ class LevelEndScene(stage: PunStage) : PunScene("levelEnd", stage, GlobalAccess.
             )
         )
 
-        updateSugarCount(sugarCount)
-        updateVinCount( vinegarCount)
+        gameState.gameOver = {
 
+        }
+
+        gameState.payRent()
         updateInfoAfter()
     }
 
-    // update these var before calling sceneinit or use the method below to initialize
-    var levelNo = 1
-    var opCost = 1
-    var money = 1
-    var sugarCount = 1
-    var vinegarCount = 1
-
-    fun updateInfoAfter(levelNo: Int = this.levelNo, opCost: Int= this.opCost, money: Int = this.money, vinegarCount: Int = this.vinegarCount, sugarCount: Int = this.sugarCount){
-        this.levelNo = levelNo
-        this.opCost = opCost
-        this.money = money
-        this.vinegarCount = vinegarCount
-        this.sugarCount = sugarCount
+    fun updateInfoAfter(levelNo: Int = gameState.level, opCost: Int= GlobalAccess.levels[gameState.level].rent, money: Int = gameState.money, vinegarCount: Int = gameState.vinegar, sugarCount: Int = gameState.sugar){
         toPuntainer("levelNo", forceReshape = true){  it as SheetNumberDisplayer
             it.setValue(levelNo)
         }
@@ -170,8 +162,13 @@ class LevelEndScene(stage: PunStage) : PunScene("levelEnd", stage, GlobalAccess.
     }
 
     fun onPlayNextPressed(){
-        // TODO play next
-        // write the new level stuff here
+        gameState.level++
+        val newLevel = TestScene(stage, gameState)
+        GlobalScope.launchImmediately {
+            newLevel.initialize()
+            stage.scenesToAdd.add(Pair(newLevel, true))
+            stage.scenesToRemove.add("levelEnd")
+        }
     }
 
     fun updateSugarCount(n: Int){
@@ -180,9 +177,9 @@ class LevelEndScene(stage: PunStage) : PunScene("levelEnd", stage, GlobalAccess.
         }
     }
 
-    fun updateVinCount(n: Int){
-        toPuntainer("vinBar", forceReshape = true){
-            it.resizeRect(GlobalAccess.rectFromXD(Vector(432.0,180.0),(480/10.0*n).toInt(),24))
+    fun updateVinCount(n: Int) {
+        toPuntainer("vinBar", forceReshape = true) {
+            it.resizeRect(GlobalAccess.rectFromXD(Vector(432.0, 180.0), (480 / 10.0 * n).toInt(), 24))
         }
     }
 }
