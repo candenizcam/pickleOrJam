@@ -20,7 +20,7 @@ import pungine.uiElements.PunImage
  */
 
 @OptIn(DelicateCoroutinesApi::class)
-class TestScene(stage: PunStage) : PunScene(
+class TestScene(stage: PunStage, var gameState: GameState = GameState(level= 0, money= 0, vinegar = 10, sugar = 10)) : PunScene(
     "testScene",
     stage,
     GlobalAccess.virtualSize.width.toDouble(),
@@ -30,7 +30,6 @@ class TestScene(stage: PunStage) : PunScene(
     private var clockStep = 0.0
     private var oscillator = 0.0
     private val hardwareClockPulseTime = 0.05
-    val gameState = GameState(level= 0, money= 0, vinegar = 10, sugar = 10)
 
     override suspend fun sceneInit() {
         val a = WorkshopPuntainer.create(oneRectangle())
@@ -143,6 +142,10 @@ class TestScene(stage: PunStage) : PunScene(
         height: 60px;
          */
 
+        GlobalAccess.musicToggle = {
+            musicPlayer.togglePlaying()
+            sfxPlayer.soundOn = !sfxPlayer.soundOn
+        }
         musicPlayer.open("SlowDay.mp3", true)
         sfxPlayer.loadSounds(listOf("cash-register.mp3"))
 
@@ -151,8 +154,8 @@ class TestScene(stage: PunStage) : PunScene(
 
         openLevel(a, l)
 
-        gameState.gameOver = {
-            val levelEnd = LevelEndScene(stage)
+        gameState.levelOver = {
+            val levelEnd = LevelEndScene(stage, gameState)
             GlobalScope.launchImmediately {
                 levelEnd.initialize()
                 stage.scenesToAdd.add(Pair(levelEnd, true))
@@ -261,7 +264,7 @@ class TestScene(stage: PunStage) : PunScene(
             updateClock(timer.left)
         }
         timer.onComplete = {
-            val levelEnd = LevelEndScene(stage)
+            val levelEnd = LevelEndScene(stage, gameState)
             GlobalScope.launchImmediately {
                 levelEnd.initialize()
                 stage.scenesToAdd.add(Pair(levelEnd, true))
