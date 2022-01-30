@@ -99,29 +99,4 @@ open class PunStage(var width: Double = InternalGlobalAccess.virtualSize.width.t
             }
         }
     }
-
-
-    /*
-    fun <T: PunScene> punScene(clazz: KClass<PunScene> , width: Double=virtualWidth, height: Double=virtualHeight, visible: Boolean = true): PunScene {
-
-
-        return T(width,height)
-        //TODO a direct injector to stage
-    }
-
-     */
-
-
-
-    /*
-    fun getPuntainers(): List<Puntainer> {
-        return (sceneView as Puntainer).puntainers.toList()
-    }
-
-
-    fun addPuntainer(p: Puntainer, rectangle: Rectangle=thisRectangle, relative: Boolean=false){
-        (sceneView as Puntainer).addPuntainer(p,rectangle,relative)
-    }
-
-     */
 }
