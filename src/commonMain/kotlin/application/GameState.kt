@@ -3,6 +3,7 @@ package application
 import com.soywiz.korio.async.launchImmediately
 import kotlinx.coroutines.GlobalScope
 
+
 class GameState(var level: Int = 0, var money: Int, var vinegar: Int = 10, var sugar: Int = 10) {
     var jams = 0
     var pickles = 0

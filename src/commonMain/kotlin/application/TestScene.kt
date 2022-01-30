@@ -120,8 +120,10 @@ class TestScene(stage: PunStage) : PunScene(
         )
 
         musicPlayer.open("SlowDay.mp3", true)
+        musicPlayer.open("cash-register.mp3", false)
+
         GlobalAccess.initLevels()
-        val l = GlobalAccess.levels[GlobalAccess.gameState.level]
+        val l = Level(GlobalAccess.levels[GlobalAccess.gameState.level].fruitList, 30,300)
 
         openLevel(a, l)
 
