@@ -21,6 +21,7 @@ open class PunScene(var id: String, open var stage: PunStage, rectangle: Rectang
     var sceneRect: Rectangle
     val puntainers = mutableListOf<Puntainer>()
     val bgColour=bgColour
+    val updatables = mutableListOf<Updatable>()
     lateinit var musicPlayer: MusicPlayer
     lateinit var sceneInput: Input
     lateinit var scenePuntainer: Puntainer
@@ -55,7 +56,7 @@ open class PunScene(var id: String, open var stage: PunStage, rectangle: Rectang
     }
 
     open fun update(sec: Double){
-
+        updatables.forEach { it.update(sec) }
     }
 
     fun relativeMousePoint(id: String): Vector {
