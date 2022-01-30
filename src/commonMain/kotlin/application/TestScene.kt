@@ -105,7 +105,8 @@ class TestScene(stage: PunStage) : PunScene(
         )
 
         musicPlayer.open("SlowDay.mp3", true)
-        musicPlayer.open("cash-register.mp3", false)
+//        musicPlayer.open("cash-register.mp3", false)
+        sfxPlayer.play("cash-register.mp3")
 
         GlobalAccess.initLevels()
         val l = GlobalAccess.levels[gameState.level]
