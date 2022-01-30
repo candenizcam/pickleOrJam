@@ -28,6 +28,7 @@ object GlobalAccess {
     var levels = mutableListOf<Level>()
 
     fun initLevels() {
+
         val fList = listOf("Apple", "Lemon", "Bowling_Ball", "Cherry", "Rubber_Duck", "Cucumber", "Eggplant", "orange")
         val pList = listOf(44, 37, 0, 38, 60, 94, 82, 12) //min 195
 

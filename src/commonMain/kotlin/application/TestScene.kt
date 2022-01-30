@@ -160,14 +160,17 @@ class TestScene(stage: PunStage) : PunScene(
 
         a.onChoice = { type, choice ->
             if (choice == 0 && gameState.vinegar > 0) {
-                 var printableMoney = gameState.getFruit(type)?.jam ?: 0
+                var printableMoney = gameState.getFruit(type)?.jam ?: 0
+                sfxPlayer.play("cash-register.mp3")
                 gameState.pickleIt(type)
             } else if (choice == 1 && gameState.sugar > 0) {
                 var printableMoney = gameState.getFruit(type)?.jam ?: 0
+                sfxPlayer.play("cash-register.mp3")
                 gameState.jamIt(type)
             }
         }
     }
+
 
 
     fun setFruitText(s: String){
