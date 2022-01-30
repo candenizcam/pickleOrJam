@@ -19,7 +19,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
     var fruitPos = Vector(836.0 / GlobalAccess.windowSize.height, 0.5)
         private set
     val choicePos = Vector(0.5, 536.0 / GlobalAccess.windowSize.height)
-    var onChoice = { foodId: String, choice: Int -> } //choice 0-> pickle; choice 1-> jam
+    var onChoice: (String,Int)->Int = { foodId: String, choice: Int -> 0 } //choice 0-> pickle; choice 1-> jam
     var activeBasket: Basket? = null
         private set
     val fruitRectangle =
@@ -31,18 +31,6 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
             punImage("fruitBasket", Rectangle(1.25, 1.5, 0.25, 0.5), bitmap = it)
         }
 
-        resourcesVfs["game_logo.png"].readBitmap().also {
-            punImage(
-                "logo",
-                Rectangle(
-                    0.5 - 240.0 / GlobalAccess.windowSize.width,
-                    0.5 + 240.0 / GlobalAccess.windowSize.width,
-                    1.0 - 310.0 / GlobalAccess.windowSize.height,
-                    1.0
-                ),
-                bitmap = it
-            )
-        }
 
         val rectByPixel = GlobalAccess.virtualRect.fromRated(relativeRectangle)
 
@@ -103,7 +91,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
             Rectangle(0.0, 0.4, 0.0, 620.0 / rectByPixel.height),
             transparentBlock,
             transparentBlock,
-            hoverBitmap = resourcesVfs["buttons/pickle_jar.png"].readBitmap()
+            hoverBitmap = resourcesVfs["workshop/vinegar_glow.png"].readBitmap()
         )
 
         val b2 = Button(
@@ -111,7 +99,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
             Rectangle(0.6, 1.0, 0.0, 620.0 / rectByPixel.height),
             transparentBlock,
             transparentBlock,
-            hoverBitmap = resourcesVfs["buttons/jam_jar.png"].readBitmap()
+            hoverBitmap = resourcesVfs["workshop/sugar_glow.png"].readBitmap()
         )
 
         b1.clickFunction = {
@@ -133,20 +121,31 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
 
     fun picklePressed() {
         if (choicePos == fruitPos) {
-            buttonsActive(false)
-            activeBasket!!.status = 0
-            ((puntainers.first { it.id == "jarPuntainer" }) as JarPuntainer).signVisible(0)
-            onChoice(activeBasket!!.id, activeBasket!!.status)
+
+            val remain = onChoice(activeBasket!!.id, 0)
+            if(remain>=0){
+                buttonsActive(false)
+                activeBasket!!.status = 0
+                ((puntainers.first { it.id == "jarPuntainer" }) as JarPuntainer).signVisible(0)
+            }else{
+                (puntainers.first { id=="pickleButton" } as Button).inactive = true
+            }
         }
 
     }
 
     fun jamPressed() {
         if (choicePos == fruitPos) {
-            buttonsActive(false)
-            activeBasket!!.status = 1
-            ((puntainers.first { it.id == "jarPuntainer" }) as JarPuntainer).signVisible(1)
-            onChoice(activeBasket!!.id, activeBasket!!.status)
+            val remain = onChoice(activeBasket!!.id, 1)
+            if(remain>=0){
+                buttonsActive(false)
+                activeBasket!!.status = 1
+                ((puntainers.first { it.id == "jarPuntainer" }) as JarPuntainer).signVisible(1)
+            }else{
+                (puntainers.first { id=="jamButton" } as Button).inactive = true
+            }
+
+
         }
 
     }

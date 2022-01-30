@@ -25,6 +25,8 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
         ).also {
             addPuntainer(it)
             it.clickFunction = {
+
+                sfxPlayer.play("cash-register.mp3")
                 onPlayNextPressed()
             }
         }
