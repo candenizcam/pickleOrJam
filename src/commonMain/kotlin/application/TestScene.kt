@@ -163,10 +163,14 @@ class TestScene(stage: PunStage) : PunScene(
                 var printableMoney = gameState.getFruit(type)?.jam ?: 0
                 sfxPlayer.play("cash-register.mp3")
                 gameState.pickleIt(type)
+                gameState.vinegar
             } else if (choice == 1 && gameState.sugar > 0) {
                 var printableMoney = gameState.getFruit(type)?.jam ?: 0
                 sfxPlayer.play("cash-register.mp3")
                 gameState.jamIt(type)
+                gameState.sugar
+            }else{
+                -1
             }
         }
     }
