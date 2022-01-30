@@ -1,8 +1,13 @@
 package application
 
+import com.soywiz.korio.async.launchImmediately
+import kotlinx.coroutines.GlobalScope
+
+
 class GameState(var level: Int = 0, var money: Int, var vinegar: Int = 10, var sugar: Int = 10) {
     var jams = 0
     var pickles = 0
+    var fruitName = "Cat"
     var sugarPrice = 20
     var vinegarPrice = 20
     var gameOver = { }
@@ -23,6 +28,9 @@ class GameState(var level: Int = 0, var money: Int, var vinegar: Int = 10, var s
     fun pickleIt(input: String) {
         if(vinegar > 0) {
             val fruit = getFruit(input)
+            if (fruit != null) {
+                fruitName = fruit.type
+            }
             money += fruit?.pickle ?: 0
             vinegar--
             pickles++
@@ -34,6 +42,10 @@ class GameState(var level: Int = 0, var money: Int, var vinegar: Int = 10, var s
     fun jamIt(input: String) {
         if(sugar > 0) {
             val fruit = getFruit(input)
+            if (fruit != null) {
+                fruitName = fruit.type
+            }
+            println(fruitName)
             money += fruit?.jam ?: 0
             sugar--
             jams++
