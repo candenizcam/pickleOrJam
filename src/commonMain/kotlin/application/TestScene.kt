@@ -156,19 +156,6 @@ class TestScene(stage: PunStage) : PunScene(
         }
     }
 
-    fun generateLevel(level: Int) {
-        val fruitList6 = mutableListOf<Fruit>()
-        GlobalAccess.fullFlist.indices.forEach {
-            fruitList6.add(
-                Fruit(
-                    GlobalAccess.fullFlist[it],
-                    GlobalAccess.pFullList[it],
-                    100 - GlobalAccess.pFullList[it]
-                )
-            )
-        }
-        GlobalAccess.levels.add(Level(fruitList6, 30, GlobalAccess.levels.size * 50 + 300))
-    }
 
 
     fun setFruitText(s: String){
