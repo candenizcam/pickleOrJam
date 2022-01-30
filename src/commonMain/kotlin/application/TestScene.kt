@@ -209,12 +209,14 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
         }
     }
 
+    var clockHolder = 0
     private fun updateClock(sec: Int) {
         toPuntainer("clockPuntainer", forceReshape = true) {
             it as ClockPuntainer
             it.setTimeAsSeconds(sec)
         }
     }
+
 
     override fun update(sec: Double) {
         super.update(sec)
@@ -231,6 +233,7 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
         clockStep += 1
 
         updateMoneyDisplay()
+        updateClock(clockHolder)
 
         toPuntainer("clockPuntainer", forceReshape = true) {
             it as ClockPuntainer
@@ -262,7 +265,8 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
         a.openLevel(l.fruitList.map { it.type })
         val timer = CountdownTimer(l.timeLimit)
         timer.onUpdate = {
-            updateClock(timer.left)
+            clockHolder = timer.left
+            //updateClock(timer.left)
         }
         timer.onComplete = {
             val levelEnd = LevelEndScene(stage, gameState)

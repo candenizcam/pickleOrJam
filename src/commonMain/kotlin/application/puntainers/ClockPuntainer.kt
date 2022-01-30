@@ -90,13 +90,21 @@ class ClockPuntainer private constructor(relativeRectangle: Rectangle, pixelSize
         punImage("digit_3",clockRectList[3],sliceList[s2])
         punImage("digit_4",clockRectList[4],sliceList[s1])
 
+        if(blinkHolder>=10){
+            puntainers.first { it.id == "birVarmisBirYokmus" }.also {
+                    it.visible = !it.visible
+                }
+            blinkHolder=0
+        }
         //puntainers.first { it.id == "birVarmisBirYokmus" }.also {
         //    it.visible = !it.visible
         //}
     }
 
+    var blinkHolder =0
 
     fun setTimeAsSeconds(t: Int){
+        blinkHolder+=1
         setTime = t
     }
 
