@@ -32,7 +32,7 @@ class TestScene(stage: PunStage) : PunScene(
     private var clockStep = 0.0
     private var oscillator = 0.0
     private val hardwareClockPulseTime = 0.05
-    val gameState = GameState(level= 0, money= 0, vinegar = 10, sugar = 10)
+    val gameState = GameState(level = 0, money = 0, vinegar = 10, sugar = 10)
 
     override suspend fun sceneInit() {
         val a = WorkshopPuntainer.create(oneRectangle())
@@ -125,22 +125,31 @@ class TestScene(stage: PunStage) : PunScene(
 
         a.onChoice = { type, choice ->
             if (choice == 0 && gameState.vinegar > 0) {
-                 var printableMoney = gameState.getFruit(type)?.jam ?: 0
+                var printableMoney = gameState.getFruit(type)?.jam ?: 0
+                sfxPlayer.play("cash-register.mp3")
                 gameState.pickleIt(type)
             } else if (choice == 1 && gameState.sugar > 0) {
                 var printableMoney = gameState.getFruit(type)?.jam ?: 0
+                sfxPlayer.play("cash-register.mp3")
                 gameState.jamIt(type)
             }
         }
     }
 
-fun generateLevel(level: Int) {
-    val fruitList6 = mutableListOf<Fruit>()
-    GlobalAccess.fullFlist.indices.forEach {
-        fruitList6.add(Fruit(GlobalAccess.fullFlist[it], GlobalAccess.pFullList[it], 100- GlobalAccess.pFullList[it]))
+    fun generateLevel(level: Int) {
+        val fruitList6 = mutableListOf<Fruit>()
+        GlobalAccess.fullFlist.indices.forEach {
+            fruitList6.add(
+                Fruit(
+                    GlobalAccess.fullFlist[it],
+                    GlobalAccess.pFullList[it],
+                    100 - GlobalAccess.pFullList[it]
+                )
+            )
+        }
+        GlobalAccess.levels.add(Level(fruitList6, 30, GlobalAccess.levels.size * 50 + 300))
     }
-    GlobalAccess.levels.add(Level(fruitList6,30, GlobalAccess.levels.size*50+300))
-}
+
     private fun pauseGame(pause: Boolean) {
         active = !pause
     }
