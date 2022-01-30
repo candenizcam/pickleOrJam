@@ -27,6 +27,7 @@ class LevelEndScene(stage: PunStage) : PunScene("levelEnd", stage, GlobalAccess.
         ).also {
             addPuntainer(it)
             it.clickFunction = {
+                sfxPlayer.play("cash-register.mp3")
                 onPlayNextPressed()
             }
 

@@ -50,7 +50,6 @@ open class PunStage(var width: Double = InternalGlobalAccess.virtualSize.width.t
     val scenesToRemove = mutableListOf<String>()
 
     override suspend fun Container.sceneInit() {
-        sfxPlayer.loadSounds()
         addUpdater { dt->
             update(dt)
         }
