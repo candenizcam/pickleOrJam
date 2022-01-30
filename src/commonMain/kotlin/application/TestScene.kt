@@ -20,7 +20,7 @@ import pungine.uiElements.PunImage
  */
 
 @OptIn(DelicateCoroutinesApi::class)
-class TestScene(stage: PunStage, var gameState: GameState = GameState(level= 0, money= 0, vinegar = 10, sugar = 10)) : PunScene(
+class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, money= 0, vinegar = 10, sugar = 10)) : PunScene(
     "testScene",
     stage,
     GlobalAccess.virtualSize.width.toDouble(),
@@ -30,6 +30,12 @@ class TestScene(stage: PunStage, var gameState: GameState = GameState(level= 0, 
     private var clockStep = 0.0
     private var oscillator = 0.0
     private val hardwareClockPulseTime = 0.05
+    var gameState = gameState
+    set(value) {
+        field=value
+        activeName = ""
+    }
+    var activeName = ""
 
     override suspend fun sceneInit() {
         val a = WorkshopPuntainer.create(oneRectangle())
