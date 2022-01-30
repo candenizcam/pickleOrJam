@@ -106,6 +106,10 @@ class TestScene(stage: PunStage) : PunScene(
             )
         )
 
+        GlobalAccess.musicToggle = {
+            musicPlayer.togglePlaying()
+            sfxPlayer.soundOn = !sfxPlayer.soundOn
+        }
         musicPlayer.open("SlowDay.mp3", true)
         sfxPlayer.loadSounds(listOf("cash-register.mp3"))
 

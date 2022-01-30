@@ -51,7 +51,7 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
         addPuntainer(
             Button("sound", thisRectangle.toRated(Rectangle(Vector(566.0,468.0),148.0,44.0,Rectangle.Corners.TOP_LEFT)),start_button_on).also {
                 it.clickFunction = {
-                    // TODO sound on off
+                    GlobalAccess.musicToggle()
                 }
             }
         )

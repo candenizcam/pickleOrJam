@@ -42,6 +42,10 @@ class MusicPlayer {
         if (!playNow) channels.forEach { it.pause() }
     }
 
+    fun togglePlaying() {
+        channels.forEach { it.togglePaused() }
+    }
+
     fun release() {
         channels.forEach { it.stop() }
     }

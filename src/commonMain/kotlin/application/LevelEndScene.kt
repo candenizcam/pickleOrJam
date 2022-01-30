@@ -1,10 +1,8 @@
 package application
 
-import application.puntainers.MoneyPuntainer
 import application.puntainers.SheetNumberDisplayer
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.file.std.resourcesVfs
-import modules.basic.Colour
 import pungine.PunScene
 import pungine.PunStage
 import pungine.geometry2D.Rectangle
@@ -18,8 +16,6 @@ class LevelEndScene(stage: PunStage) : PunScene("levelEnd", stage, GlobalAccess.
 
         punImage("bg", oneRectangle(), resourcesVfs["UI/between.png"].readBitmap())
 
-
-
         Button("nextLevel", GlobalAccess.rectFromXD(Vector(488.0,328.0),304,80),
             resourcesVfs["UI/play_next_normal.png"].readBitmap(),
             resourcesVfs["UI/play_next_pushed.png"].readBitmap(),
@@ -27,11 +23,9 @@ class LevelEndScene(stage: PunStage) : PunScene("levelEnd", stage, GlobalAccess.
         ).also {
             addPuntainer(it)
             it.clickFunction = {
-                sfxPlayer.play("cash-register.mp3")
                 onPlayNextPressed()
+                sfxPlayer.play("cash-register.mp3")
             }
-
-
         }
 
         addPuntainer(
