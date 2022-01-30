@@ -9,7 +9,9 @@ class GameState(var level: Int = 0, var money: Int, var vinegar: Int = 10, var s
     var pickles = 0
     var sugarPrice = 20
     var vinegarPrice = 20
+    var fruitName = "Cat"
     var gameOver = {money: Int -> }
+    var onNameChange = {}
 
     fun getFruit(input: String): Fruit? {
         return GlobalAccess.levels[level].fruitList.find { it.type == input }
@@ -24,6 +26,7 @@ class GameState(var level: Int = 0, var money: Int, var vinegar: Int = 10, var s
     fun pickleIt(input: String) {
         if(vinegar > 0) {
             val fruit = getFruit(input)
+
             money += fruit?.pickle ?: 0
             vinegar--
             pickles++
