@@ -7,6 +7,8 @@ class GameState(var level: Int = 0, var money: Int, var vinegar: Int = 10, var s
     var vinegarPrice = 20
     var gameOver = { }
     var levelOver = { }
+    var maxVin = 10
+    var maxSug = 10
 
     fun getFruit(input: String): Fruit? {
         return GlobalAccess.levels[level].fruitList.find { it.type == input }
@@ -41,7 +43,7 @@ class GameState(var level: Int = 0, var money: Int, var vinegar: Int = 10, var s
     }
 
     fun buy(sugarToBuy: Int = 0, vinegarToBuy: Int = 0) : Boolean{
-        if(money >= (sugarToBuy * sugarPrice + vinegarToBuy * vinegarPrice)) {
+        if((money >= (sugarToBuy * sugarPrice + vinegarToBuy * vinegarPrice)) && (vinegar + vinegarToBuy <= maxVin) && (sugar + sugarToBuy <= maxSug)) {
             money -= (sugarToBuy * sugarPrice + vinegarToBuy * vinegarPrice)
             sugar += sugarToBuy
             vinegar += vinegarToBuy

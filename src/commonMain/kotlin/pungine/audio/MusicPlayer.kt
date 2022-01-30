@@ -37,6 +37,7 @@ class MusicPlayer {
     }
 
     suspend fun open(file: String, playNow: Boolean = true) {
+        release()
         channels.clear()
         channels.add(resourcesVfs["music/$file"].readMusic().play())
         if (!playNow) channels.forEach { it.pause() }

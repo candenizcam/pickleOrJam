@@ -116,11 +116,6 @@ class TestScene(stage: PunStage, var gameState: GameState = GameState(level= 0, 
             )
         )
 
-
-
-
-
-
         addPuntainer(
             SheetLetterDisplayer.create("text",
                     GlobalAccess.rectFromXD(Vector(490.0,372.0),300,60),
