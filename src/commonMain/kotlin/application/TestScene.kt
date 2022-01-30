@@ -8,6 +8,7 @@ import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.async.launch
 import com.soywiz.korio.async.launchAsap
 import com.soywiz.korio.async.launchImmediately
+import com.soywiz.korio.async.runBlockingNoSuspensions
 import com.soywiz.korio.file.std.resourcesVfs
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -107,7 +108,7 @@ class TestScene(stage: PunStage) : PunScene(
 
         musicPlayer.open("SlowDay.mp3", true)
         GlobalAccess.initLevels()
-        val l = Level(GlobalAccess.levels[GlobalAccess.gameState.level].fruitList, 120)
+        val l = Level(GlobalAccess.levels[GlobalAccess.gameState.level].fruitList, 2)
 
         openLevel(a, l)
 
@@ -188,13 +189,16 @@ class TestScene(stage: PunStage) : PunScene(
         timer.onUpdate = {
             updateClock(timer.left) }
         timer.onComplete = {
-
-            launch(Dispatchers.Main.immediate) {
+            launchAsap(stage.coroutineContext){
                 val les = LevelEndScene(stage)
                 les.initialize()
                 stage.scenesToAdd.add(Pair(les, true))
                 stage.scenesToRemove.add("testScene")
             }
+
+
+
+
 
         }
         updatables.add(timer)
