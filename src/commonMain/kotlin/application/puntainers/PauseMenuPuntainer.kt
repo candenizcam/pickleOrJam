@@ -1,9 +1,9 @@
-package application
+package application.puntainers
 
+import application.GlobalAccess
 import com.soywiz.korge.input.onUp
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.file.std.resourcesVfs
-import modules.basic.Colour
 import pungine.Puntainer
 import pungine.geometry2D.Rectangle
 import pungine.geometry2D.Vector

@@ -1,7 +1,10 @@
 package application
 
+import application.puntainers.ClockPuntainer
+import application.puntainers.MoneyPuntainer
+import application.puntainers.PauseMenuPuntainer
+import application.puntainers.WorkshopPuntainer
 import com.soywiz.korim.format.readBitmap
-import com.soywiz.korio.async.launchImmediately
 import com.soywiz.korio.file.std.resourcesVfs
 import kotlinx.coroutines.DelicateCoroutinesApi
 import modules.basic.Colour
