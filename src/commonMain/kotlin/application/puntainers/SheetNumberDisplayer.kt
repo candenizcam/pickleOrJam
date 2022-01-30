@@ -12,12 +12,11 @@ import pungine.geometry2D.Rectangle
 import pungine.geometry2D.Vector
 import pungine.geometry2D.oneRectangle
 
-class MoneyPuntainer private constructor(relativeRectangle: Rectangle, pixelSize: Rectangle, val bg: Boolean=true): Puntainer("moneyPuntainer",relativeRectangle)  {
+class SheetNumberDisplayer private constructor(id: String? =null, relativeRectangle: Rectangle, pixelSize: Rectangle, val digitNo: Int, val bg: Boolean=true): Puntainer(id,relativeRectangle)  {
     init {
     }
     val pixelSize = pixelSize
-    val clockRectList = mutableListOf<Rectangle>()
-    val digitNo = 6
+    val colRectList = mutableListOf<Rectangle>()
 
     private suspend fun init() {
         val sheet = resourcesVfs["number_sheet.png"].readBitmap()
@@ -27,12 +26,12 @@ class MoneyPuntainer private constructor(relativeRectangle: Rectangle, pixelSize
         val slices = (0 until 11).map {base-> sheet.sliceWithBounds(base*w,0,(base+1)*w,h) }
         sliceList.addAll(slices)
 
-        pixelSize.toRated(Rectangle(0.0,w*5.0,0.0,h.toDouble()))
 
-        val wNumber = w*(digitNo)/pixelSize.width
+
+        val wNumber = w*digitNo/pixelSize.width
         val hNumber = h/pixelSize.height
 
-        clockRectList.addAll(
+        colRectList.addAll(
             (0 until digitNo).map {
                 Rectangle(Vector(0.5,0.5),wNumber,hNumber).fromRated(Rectangle(it/digitNo.toDouble(),(it+1)/digitNo.toDouble(),0.0,1.0))
             }
@@ -46,47 +45,18 @@ class MoneyPuntainer private constructor(relativeRectangle: Rectangle, pixelSize
 
         //punImage("id",oneRectangle(),resourcesVfs["number_sheet.png"].readBitmap())
 
-        clockRectList.forEachIndexed { index, rectangle ->
-            if(index==digitNo-1){
-
-
-                punImage("pundollarSign",clockRectList[index],resourcesVfs["Pundollar.png"].readBitmap())
-            }else{
-                punImage("digit_$index",clockRectList[index],slices[0])
-            }
+        colRectList.forEachIndexed { index, rectangle ->
+            punImage("digit_$index",colRectList[index],slices[0])
 
         }
-
-
-        //punImage("digit_2",clockRectList[1],slices[0])
-        //punImage("digit_3",clockRectList[3],slices[0])
-        //punImage("digit_4",clockRectList[4],slices[0])
-
-        //punImage("birVarmisBirYokmus",clockRectList[2], slices[10] )
-
-        /*
-        oneRectangle().split(cols=listOf(0.23,0.23,0.08,0.23,0.23)).also {
-            for (i in 0..4){
-                if(i==2){
-                    punImage("dots",it[1,3],slices[0])
-                }else{
-                    punImage("digit_$i",it[1,i+1],slices[0])
-                }
-            }
-        }
-
-         */
-
-
-
     }
     val sliceList = mutableListOf<BitmapSlice<Bitmap>>()
 
 
 
 
-    fun setMoney(v: Int){
-        val vs = v.toString().padStart(6,'0')
+    fun setValue(v: Int){
+        val vs = v.toString().padStart(digitNo,'0')
 
         puntainers.filter { it.id!!.contains("digit") }.forEach {
             puntainers.remove(it)
@@ -94,8 +64,8 @@ class MoneyPuntainer private constructor(relativeRectangle: Rectangle, pixelSize
         }
 
 
-        clockRectList.forEachIndexed { index, rectangle ->
-            if(index==digitNo-1){
+        colRectList.forEachIndexed { index, rectangle ->
+            if(index==digitNo){
                 //punImage("pundollarSign",clockRectList[0],slices[0])
             }else{
                 val ind = if(vs.length>index){
@@ -112,9 +82,9 @@ class MoneyPuntainer private constructor(relativeRectangle: Rectangle, pixelSize
 
 
     companion object {
-        suspend fun create(relativeRectangle: Rectangle, pixelSize: Rectangle, bg: Boolean=true
-        ): MoneyPuntainer {
-            return MoneyPuntainer(relativeRectangle, pixelSize,bg).also {
+        suspend fun create(id: String?=null, relativeRectangle: Rectangle, pixelSize: Rectangle, digitNo: Int,  bg: Boolean=true
+        ): SheetNumberDisplayer {
+            return SheetNumberDisplayer(id,relativeRectangle, pixelSize,digitNo, bg).also {
                 it.init()
             }
         }
