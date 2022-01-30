@@ -17,7 +17,7 @@ class MoneyPuntainer private constructor(relativeRectangle: Rectangle, pixelSize
     }
     val pixelSize = pixelSize
     val clockRectList = mutableListOf<Rectangle>()
-    val digitNo = 5
+    val digitNo = 6
 
     private suspend fun init() {
         val sheet = resourcesVfs["number_sheet.png"].readBitmap()
