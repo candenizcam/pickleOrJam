@@ -31,11 +31,7 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
     private var oscillator = 0.0
     private val hardwareClockPulseTime = 0.05
     var gameState = gameState
-    set(value) {
-        field=value
-        activeName = ""
-    }
-    var activeName = ""
+
 
     override suspend fun sceneInit() {
         val a = WorkshopPuntainer.create(oneRectangle())
@@ -134,9 +130,13 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
                     16,
                     false,
                 ).also {
-                    it.setValue("VALUE")
+                    it.setValue(gameState.fruitName)
             }
         )
+
+        gameState.onNameChange = {
+            setFruitText(it)
+        }
 
 
 
@@ -189,7 +189,7 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
 
 
     fun setFruitText(s: String){
-        toPuntainer("text"){ it as SheetLetterDisplayer
+        toPuntainer("text", forceReshape = true){ it as SheetLetterDisplayer
             it.setValue(s)
         }
     }

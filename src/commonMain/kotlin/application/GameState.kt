@@ -8,10 +8,18 @@ class GameState(var level: Int = 0, var money: Int, var vinegar: Int = 10, var s
     var jams = 0
     var pickles = 0
     var fruitName = "Cat"
+        set(value) {
+            field=value
+            onNameChange(field)
+        }
     var sugarPrice = 20
     var vinegarPrice = 20
     var gameOver = { }
     var levelOver = { }
+
+    var onNameChange = {name: String->
+        println("this is called")
+    }
 
     fun getFruit(input: String): Fruit? {
         return GlobalAccess.levels[level].fruitList.find { it.type == input }
