@@ -9,7 +9,7 @@ class GameState(var level: Int = 0, var money: Int, var vinegar: Int = 10, var s
     var pickles = 0
     var sugarPrice = 20
     var vinegarPrice = 20
-    var rent = 200
+    var rent = GlobalAccess.levels[level].rent
     var gameOver = {money: Int -> }
 
     fun getFruit(input: String): Fruit? {
