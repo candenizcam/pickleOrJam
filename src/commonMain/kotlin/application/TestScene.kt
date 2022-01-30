@@ -5,8 +5,12 @@ import application.puntainers.MoneyPuntainer
 import application.puntainers.PauseMenuPuntainer
 import application.puntainers.WorkshopPuntainer
 import com.soywiz.korim.format.readBitmap
+import com.soywiz.korio.async.launch
+import com.soywiz.korio.async.launchAsap
+import com.soywiz.korio.async.launchImmediately
 import com.soywiz.korio.file.std.resourcesVfs
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
 import modules.basic.Colour
 import pungine.PunScene
 import pungine.PunStage
@@ -184,9 +188,14 @@ class TestScene(stage: PunStage) : PunScene(
         timer.onUpdate = {
             updateClock(timer.left) }
         timer.onComplete = {
-            val les = LevelEndScene(stage)
-            stage.scenesToAdd.add(Pair(les, true))
-            stage.scenesToRemove.add("testScene")
+
+            launch(Dispatchers.Main.immediate) {
+                val les = LevelEndScene(stage)
+                les.initialize()
+                stage.scenesToAdd.add(Pair(les, true))
+                stage.scenesToRemove.add("testScene")
+            }
+
         }
         updatables.add(timer)
     }
