@@ -17,16 +17,16 @@ class LevelEndScene(stage: PunStage) : PunScene("levelEnd", stage, GlobalAccess.
         punImage("bg", oneRectangle(), resourcesVfs["workshop/Background.png"].readBitmap())
 
 
-        /*
+
         Button("nextLevel", GlobalAccess.rectFromXD(Vector(488.0,328.0),304,80),
-            resourcesVfs["workshop/play_next_normal.png"].readBitmap(),
-            resourcesVfs["workshop/play_next_normal.png"].readBitmap(),
-            resourcesVfs["workshop/play_next_hover.png"].readBitmap(),
+            resourcesVfs["UI/play_next_normal.png"].readBitmap(),
+            resourcesVfs["UI/play_next_pushed.png"].readBitmap(),
+            resourcesVfs["UI/play_next_hover.png"].readBitmap(),
         ).also {
 
         }
 
-         */
+
 
 
         /**
