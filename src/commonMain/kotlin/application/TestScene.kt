@@ -76,19 +76,15 @@ class TestScene(stage: PunStage) : PunScene(
         })
 
         addPuntainer(
-            ClockPuntainer.create(
-                GlobalAccess.virtualRect.toRated(
-                    Rectangle(
-                        Vector(1076.0, 704.0),
-                        196.0,
-                        68.0,
-                        cornerType = Rectangle.Corners.TOP_LEFT
-                    )
-                ),
-                Rectangle(0.0, 196.0, 0.0, 68.0)
-            )
+            PunImage("im",GlobalAccess.virtualRect.toRated(
+                Rectangle(
+                    Vector(874.0, 704.0),
+                    196.0,
+                    68.0,
+                    cornerType = Rectangle.Corners.TOP_LEFT
+                )
+            ), resourcesVfs["UI/money.png"].readBitmap())
         )
-
 
         addPuntainer(
             SheetNumberDisplayer.create("moneyPuntainer",
@@ -106,6 +102,25 @@ class TestScene(stage: PunStage) : PunScene(
                 moneySign = true
             )
         )
+
+        addPuntainer(
+            ClockPuntainer.create(
+                GlobalAccess.virtualRect.toRated(
+                    Rectangle(
+                        Vector(1076.0, 704.0),
+                        196.0,
+                        68.0,
+                        cornerType = Rectangle.Corners.TOP_LEFT
+                    )
+                ),
+                Rectangle(0.0, 196.0, 0.0, 68.0)
+            )
+        )
+
+
+
+
+
 
         addPuntainer(
             SheetLetterDisplayer.create("text",

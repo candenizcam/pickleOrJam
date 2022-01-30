@@ -31,18 +31,6 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
             punImage("fruitBasket", Rectangle(1.25, 1.5, 0.25, 0.5), bitmap = it)
         }
 
-        resourcesVfs["game_logo.png"].readBitmap().also {
-            punImage(
-                "logo",
-                Rectangle(
-                    0.5 - 240.0 / GlobalAccess.windowSize.width,
-                    0.5 + 240.0 / GlobalAccess.windowSize.width,
-                    1.0 - 310.0 / GlobalAccess.windowSize.height,
-                    1.0
-                ),
-                bitmap = it
-            )
-        }
 
         val rectByPixel = GlobalAccess.virtualRect.fromRated(relativeRectangle)
 
