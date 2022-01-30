@@ -1,6 +1,7 @@
 package application
 
 import application.puntainers.MoneyPuntainer
+import application.puntainers.SheetNumberDisplayer
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.file.std.resourcesVfs
 import modules.basic.Colour
@@ -29,23 +30,36 @@ class LevelEndScene(stage: PunStage) : PunScene("levelEnd", stage, GlobalAccess.
                 onPlayNextPressed()
             }
 
-            addPuntainer(
-                MoneyPuntainer.create(
-                    GlobalAccess.virtualRect.toRated(
-                        GlobalAccess.rectFromXD(Vector(872.0,308.0),192,36)
-                    ),
-                    Rectangle(0.0, 192.0, 0.0, 36.0)
-                )
-            )
+
         }
+
+        addPuntainer(
+            MoneyPuntainer.create(
+                GlobalAccess.rectFromXD(Vector(872.0,308.0),192,36),
+                Rectangle(0.0, 192.0, 0.0, 36.0),
+                false
+            )
+        )
+
+
+        addPuntainer(
+            SheetNumberDisplayer.create( "levelNo",
+                GlobalAccess.rectFromXD(Vector(572.0,44.0),52,36),
+                Rectangle(0.0, 52.0, 0.0, 36.0),
+                2,
+                false
+            ).also {
+                it.setValue(12)
+            }
+        )
 
 
 
 
         /**
-        top: 308px;
-        left: 872px;
-        width: 192px;
+        top: 44px;
+        left: 572px;
+        width: 52px;
         height: 36px;
          */
 
