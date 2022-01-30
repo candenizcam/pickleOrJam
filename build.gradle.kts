@@ -33,7 +33,7 @@ korge {
 	supportSwf()
 
 	targetJvm()
-	targetJs()
+//	targetJs()
 	targetDesktop()
 	targetIos()
 	targetAndroidIndirect()
