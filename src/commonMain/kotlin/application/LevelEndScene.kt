@@ -51,7 +51,7 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
                 2,
                 false
             ).also {
-                it.setValue(gameState.level)
+                it.setValue(gameState.level + 1)
             }
         )
 
@@ -139,14 +139,14 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
         )
 
         gameState.gameOver = {
-
+            //TODO GAMEOVER
         }
 
         gameState.payRent()
         updateInfoAfter()
     }
 
-    fun updateInfoAfter(levelNo: Int = gameState.level, opCost: Int= GlobalAccess.levels[gameState.level].rent, money: Int = gameState.money, vinegarCount: Int = gameState.vinegar, sugarCount: Int = gameState.sugar){
+    fun updateInfoAfter(levelNo: Int = gameState.level + 1, opCost: Int= GlobalAccess.levels[gameState.level].rent, money: Int = gameState.money, vinegarCount: Int = gameState.vinegar, sugarCount: Int = gameState.sugar){
         toPuntainer("levelNo", forceReshape = true){  it as SheetNumberDisplayer
             it.setValue(levelNo)
         }
