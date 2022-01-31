@@ -129,19 +129,9 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
             }
         )
 
-        gameState.onNameChange = {
+        a.onNewFruit = {
             setFruitText(it)
         }
-
-
-
-
-        /**
-         * top: 372px;
-        left: 490px;
-        width: 300px;
-        height: 60px;
-         */
 
         GlobalAccess.musicToggle = {
             musicPlayer.togglePlaying()

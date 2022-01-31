@@ -92,19 +92,21 @@ class ClockPuntainer private constructor(relativeRectangle: Rectangle, pixelSize
 
         if(blinkHolder>=10){
             puntainers.first { it.id == "birVarmisBirYokmus" }.also {
-                    it.visible = !it.visible
+                    it.visible = false
                 }
             blinkHolder=0
         }
-        //puntainers.first { it.id == "birVarmisBirYokmus" }.also {
-        //    it.visible = !it.visible
-        //}
     }
 
     var blinkHolder =0
 
     fun setTimeAsSeconds(t: Int){
-        blinkHolder+=1
+        if(setTime!=t){
+            puntainers.first { it.id == "birVarmisBirYokmus" }.visible = true
+            blinkHolder=0
+        }else{
+            blinkHolder+=1
+        }
         setTime = t
     }
 

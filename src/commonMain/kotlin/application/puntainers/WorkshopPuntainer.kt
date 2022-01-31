@@ -20,6 +20,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
         private set
     val choicePos = Vector(0.5, 536.0 / GlobalAccess.windowSize.height)
     var onChoice: (String,Int)->Int = { foodId: String, choice: Int -> 0 } //choice 0-> pickle; choice 1-> jam
+    var onNewFruit = {name: String->}
     var activeBasket: Basket? = null
         private set
     val fruitRectangle =
@@ -169,6 +170,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
             puntainers.remove(it)
             removeChild(it)
             activeBasket = fruitList.random().copy()
+            onNewFruit(activeBasket!!.id)
             punImage(
                 "fruitBasket",
                 Rectangle(
