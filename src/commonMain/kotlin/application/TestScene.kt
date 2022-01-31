@@ -38,6 +38,8 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
         addPuntainer(a)
         a.visible=active
 
+
+
         addPuntainer(
             Button(
                 "pauseButton",
@@ -113,6 +115,11 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
             )
         )
 
+
+
+
+
+
         addPuntainer(
             SheetLetterDisplayer.create("text",
                     GlobalAccess.rectFromXD(Vector(490.0,372.0),300,60),
@@ -123,6 +130,12 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
                     it.setValue("HAPPY GAMING")
             }
         )
+
+
+
+
+
+
 
         a.onNewFruit = {
             setFruitText(it)
@@ -151,22 +164,30 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
         }
 
         a.onChoice = { type, choice ->
+            //coinVisible(true,false)
             if (choice == 0 && gameState.vinegar > 0) {
                 var printableMoney = gameState.getFruit(type)?.jam ?: 0
-                sfxPlayer.play("cash-register.mp3")
                 gameState.pickleIt(type)
+                sfxPlayer.play("cash-register.mp3")
+                a.coinVisible(if(printableMoney>50) 0 else 1)
                 gameState.vinegar
             } else if (choice == 1 && gameState.sugar > 0) {
                 var printableMoney = gameState.getFruit(type)?.jam ?: 0
-                sfxPlayer.play("cash-register.mp3")
                 gameState.jamIt(type)
+                sfxPlayer.play("cash-register.mp3")
+                a.coinVisible(if(printableMoney<50) 0 else 1)
                 gameState.sugar
             }else{
                 -1
             }
         }
 
+        a.updateSugarCount(gameState.sugar)
+        a.updateVinCount(gameState.vinegar)
+
     }
+
+
 
 
 
@@ -226,6 +247,7 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
         }
     }
 
+
     private fun hardwareClockUpdateEmulator() {
         clockStep += 1
 
@@ -242,6 +264,8 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
             it as WorkshopPuntainer
             if (it.fruitPos.x !in -0.1..1.1) {
                 it.deployNewFood()
+                it.coinVisible(-1)
+
             } else {
                 if (it.activeBasket!!.status == -1) {
                     it.discreteMove(x = 0, y = -1)

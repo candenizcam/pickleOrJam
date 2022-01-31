@@ -100,6 +100,7 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
                     println("MONEY: ${gameState.money}, VINEGAR: ${gameState.vinegar}, SUGAR: ${gameState.sugar}")
                 }
             }
+
         }
 
         addPuntainer(
@@ -174,6 +175,7 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
             newGame.active=false
             GlobalScope.launchImmediately {
                 newGame.initialize()
+
                 stage.scenesToAdd.add(Pair(newGame, false))
                 stage.scenesToRemove.add("levelEnd")
             }
@@ -182,6 +184,7 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
             val newLevel = TestScene(stage, gameState)
             GlobalScope.launchImmediately {
                 newLevel.initialize()
+
                 stage.scenesToAdd.add(Pair(newLevel, true))
                 stage.scenesToRemove.add("levelEnd")
             }

@@ -33,6 +33,8 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
         }
 
 
+
+
         val rectByPixel = GlobalAccess.virtualRect.fromRated(relativeRectangle)
 
         val transparentBlock = Bitmap32(10, 10).context2d {
@@ -68,6 +70,8 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
                 bitmap = it
             )
         }
+
+
 
 
 
@@ -117,8 +121,52 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
         addPuntainer(b1)
         addPuntainer(b2)
 
+        addPuntainer(
+            punImage("vinBar",
+                GlobalAccess.rectFromXD(Vector(64.0,636.0),240,24),
+                resourcesVfs["UI/VinBar_inside.png"].readBitmap()
+            )
+        )
+
+        addPuntainer(
+            punImage("sugBar",
+                GlobalAccess.rectFromXD(Vector(976.0,636.0),240,24),
+                resourcesVfs["UI/SugBar_inside.png"].readBitmap()
+            )
+        )
+
+        val cff = resourcesVfs["much_coin.png"].readBitmap()
+        val sc = resourcesVfs["such_coin.png"].readBitmap()
+
+        punImage("muchCoin",
+            GlobalAccess.rectFromXD(Vector(640.0,516.0),144,144),
+            cff
+        ).also { it.visible=false }
+
+        punImage("suchCoin",
+            GlobalAccess.rectFromXD(Vector(640.0,536.0),144,144),
+            sc
+        ).also { it.visible=false }
+
 
     }
+
+    fun coinVisible(n: Int){ // -1 nothing 0 such 1 much
+        puntainers.first { it.id=="muchCoin" }.visible = n==1
+        puntainers.first { it.id=="suchCoin" }.visible = n==0
+    }
+
+    fun updateSugarCount(n: Int){
+        puntainers.first { it.id == "sugBar" }.resizeRect(GlobalAccess.rectFromXD(Vector(976.0,636.0),(240/10.0*n).toInt(),24))
+
+    }
+
+    fun updateVinCount(n: Int) {
+        puntainers.first { it.id == "vinBar" }.resizeRect(GlobalAccess.rectFromXD(Vector(64.0,636.0),(240/10.0*n).toInt(),24))
+    }
+
+
+
 
     fun picklePressed() {
         if (choicePos == fruitPos) {
@@ -128,6 +176,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
                 buttonsActive(false)
                 activeBasket!!.status = 0
                 ((puntainers.first { it.id == "jarPuntainer" }) as JarPuntainer).signVisible(0)
+                updateVinCount(remain)
             }else{
                 (puntainers.first { it.id=="pickleButton" } as Button).inactive = true
             }
@@ -142,6 +191,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
                 buttonsActive(false)
                 activeBasket!!.status = 1
                 ((puntainers.first { it.id == "jarPuntainer" }) as JarPuntainer).signVisible(1)
+                updateSugarCount(remain)
             }else{
                 (puntainers.first { it.id=="jamButton" } as Button).inactive = true
             }
