@@ -142,8 +142,10 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
         }
 
         GlobalAccess.musicToggle = {
-            if (it) {musicPlayer.play()} else {musicPlayer.pause()}
-            sfxPlayer.soundOn = !sfxPlayer.soundOn
+            if (it) {
+                musicPlayer.play()
+            } else {musicPlayer.pause()}
+            sfxPlayer.soundOn = it
         }
 
         musicPlayer.open("SlowDay.mp3", true)
