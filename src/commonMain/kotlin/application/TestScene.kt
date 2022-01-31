@@ -36,6 +36,7 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
     override suspend fun sceneInit() {
         val a = WorkshopPuntainer.create(oneRectangle())
         addPuntainer(a)
+        a.visible=active
 
         addPuntainer(
             Button(
@@ -53,13 +54,7 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
                 resourcesVfs["UI/pause_hover.png"].readBitmap()
             ).also { button ->
                 button.clickFunction = {
-                    toPuntainer("pauseMenuPuntainer") {
-                        it.visible = true
-                    }
 
-                    toPuntainer("workshopPuntainer") {
-                        it.visible = false
-                    }
                     pauseGame(true)
                 }
             })
@@ -67,13 +62,11 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
 
         addPuntainer(PauseMenuPuntainer.create(oneRectangle()).also { puntainer ->
             puntainer.onReturn = {
-                toPuntainer("workshopPuntainer") {
-                    it.visible = true
-                }
                 puntainer.visible = false
                 pauseGame(false)
+                puntainer.resumeButtonVisible(true)
             }
-            puntainer.visible = false
+            puntainer.visible = !active
         })
 
         addPuntainer(
@@ -125,7 +118,7 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
                     16,
                     false,
                 ).also {
-                    it.setValue(gameState.fruitName)
+                    it.setValue("HAPPY GAMING")
             }
         )
 
@@ -169,6 +162,7 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
                 -1
             }
         }
+
     }
 
 
@@ -188,6 +182,16 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
     }
 
     private fun pauseGame(pause: Boolean) {
+
+        toPuntainer("pauseMenuPuntainer") { it as PauseMenuPuntainer
+            it.visible = pause
+            it.resumeButtonVisible(true)
+        }
+
+        toPuntainer("workshopPuntainer") {
+            it.visible = !pause
+        }
+
         active = !pause
     }
 

@@ -20,7 +20,8 @@ class TestStage: PunStage() {
 
     @OptIn(ExperimentalTime::class)
     override suspend fun Container.sceneMain(){
+        testScene.active=false
         testScene.initialize()
-        scenesToAdd.add(Pair(testScene,true))
+        scenesToAdd.add(Pair(testScene,false))
     }
 }

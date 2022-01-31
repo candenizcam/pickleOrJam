@@ -20,9 +20,6 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
 
 
 
-        val start_button_on = resourcesVfs["game_logo.png"].readBitmap()
-
-
         addPuntainer(
             Button("start", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-104.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),
                 resourcesVfs["UI/play_normal.png"].readBitmap(),
@@ -30,7 +27,7 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
                 resourcesVfs["UI/play_hover.png"].readBitmap(),).also {
                 it.clickFunction = {
                     // TODO start game
-                    it.visible= false
+                    it.visible= true
                     onReturn()
                 }
             }
@@ -41,7 +38,7 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
                 resourcesVfs["UI/resume_normal.png"].readBitmap(),
                 resourcesVfs["UI/resume_pushed.png"].readBitmap(),
                 resourcesVfs["UI/resume_hover.png"].readBitmap(),).also {
-                it.visible = true
+                it.visible = false
                 it.clickFunction = {
                     onReturn()
                 }
@@ -96,6 +93,17 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
     }
 
     var onReturn = {}
+    fun resumeButtonVisible(boolean: Boolean=false){
+        puntainers.first { it.id=="start" }.also { it as Button
+            it.visible=false
+            it.inactive = true
+        }
+        puntainers.first { it.id=="resume" }.also { it as Button
+            it.visible=true
+            it.inactive = false
+        }
+    }
+
 
     companion object {
         suspend fun create(relativeRectangle: Rectangle
