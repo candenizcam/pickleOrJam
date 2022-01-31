@@ -24,17 +24,24 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
 
 
         addPuntainer(
-            Button("start", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-104.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),start_button_on).also {
+            Button("start", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-104.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),
+                resourcesVfs["UI/play_normal.png"].readBitmap(),
+                resourcesVfs["UI/play_pushed.png"].readBitmap(),
+                resourcesVfs["UI/play_hover.png"].readBitmap(),).also {
                 it.clickFunction = {
                     // TODO start game
+                    it.visible= false
                     onReturn()
                 }
             }
         )
 
         addPuntainer(
-            Button("resume", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-104.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),start_button_on).also {
-                it.visible = false
+            Button("resume", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-104.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),
+                resourcesVfs["UI/resume_normal.png"].readBitmap(),
+                resourcesVfs["UI/resume_pushed.png"].readBitmap(),
+                resourcesVfs["UI/resume_hover.png"].readBitmap(),).also {
+                it.visible = true
                 it.clickFunction = {
                     onReturn()
                 }
@@ -57,7 +64,7 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
         )
 
         addPuntainer(
-            Button("soundOff", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-280.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),
+            Button("soundOff", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-192.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),
                 resourcesVfs["UI/no_sound_normal.png"].readBitmap(),
                 resourcesVfs["UI/no_sound_pushed.png"].readBitmap(),
                 resourcesVfs["UI/no_sound_hover.png"].readBitmap(),
@@ -74,7 +81,10 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
         )
 
         addPuntainer(
-            Button("credits", thisRectangle.toRated(Rectangle(Vector(566.0,412.0),148.0,44.0,Rectangle.Corners.TOP_LEFT)),start_button_on).also {
+            Button("credits", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-280.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),
+                resourcesVfs["UI/credits_normal.png"].readBitmap(),
+                resourcesVfs["UI/credits_pushed.png"].readBitmap(),
+                resourcesVfs["UI/credits_hover.png"].readBitmap(),).also {
                 it.clickFunction = {
                     // TODO credits
                 }
