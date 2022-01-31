@@ -23,5 +23,8 @@ class TestStage: PunStage() {
         testScene.active=false
         testScene.initialize()
         scenesToAdd.add(Pair(testScene,false))
+
+        musicPlayer.open("SlowDay.mp3", true)
+        sfxPlayer.loadSounds(listOf("cash-register.mp3"))
     }
 }

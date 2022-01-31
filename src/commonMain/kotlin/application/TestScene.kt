@@ -38,8 +38,6 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
         addPuntainer(a)
         a.visible=active
 
-
-
         addPuntainer(
             Button(
                 "pauseButton",
@@ -60,8 +58,6 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
                     pauseGame(true)
                 }
             })
-
-
 
 
         addPuntainer(PauseMenuPuntainer.create(oneRectangle()).also { puntainer ->
@@ -115,11 +111,6 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
             )
         )
 
-
-
-
-
-
         addPuntainer(
             SheetLetterDisplayer.create("text",
                     GlobalAccess.rectFromXD(Vector(490.0,372.0),300,60),
@@ -148,8 +139,6 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
             sfxPlayer.soundOn = it
         }
 
-        musicPlayer.open("SlowDay.mp3", true)
-        sfxPlayer.loadSounds(listOf("cash-register.mp3"))
 
         GlobalAccess.initLevels()
         val l = GlobalAccess.levels[gameState.level]
