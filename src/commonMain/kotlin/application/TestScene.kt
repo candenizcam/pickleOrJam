@@ -31,11 +31,7 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
     private var oscillator = 0.0
     private val hardwareClockPulseTime = 0.05
     var gameState = gameState
-    set(value) {
-        field=value
-        activeName = ""
-    }
-    var activeName = ""
+
 
     override suspend fun sceneInit() {
         val a = WorkshopPuntainer.create(oneRectangle())
@@ -122,11 +118,6 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
             )
         )
 
-
-
-
-
-
         addPuntainer(
             SheetLetterDisplayer.create("text",
                     GlobalAccess.rectFromXD(Vector(490.0,372.0),300,60),
@@ -134,19 +125,13 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
                     16,
                     false,
                 ).also {
-                    it.setValue("VALUE")
+                    it.setValue(gameState.fruitName)
             }
         )
 
-
-
-
-        /**
-         * top: 372px;
-        left: 490px;
-        width: 300px;
-        height: 60px;
-         */
+        a.onNewFruit = {
+            setFruitText(it)
+        }
 
         GlobalAccess.musicToggle = {
             musicPlayer.togglePlaying()
@@ -189,7 +174,7 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
 
 
     fun setFruitText(s: String){
-        toPuntainer("text"){ it as SheetLetterDisplayer
+        toPuntainer("text", forceReshape = true){ it as SheetLetterDisplayer
             it.setValue(s)
         }
     }
@@ -214,12 +199,14 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
         }
     }
 
+    var clockHolder = 0
     private fun updateClock(sec: Int) {
         toPuntainer("clockPuntainer", forceReshape = true) {
             it as ClockPuntainer
             it.setTimeAsSeconds(sec)
         }
     }
+
 
     override fun update(sec: Double) {
         super.update(sec)
@@ -236,6 +223,7 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
         clockStep += 1
 
         updateMoneyDisplay()
+        updateClock(clockHolder)
 
         toPuntainer("clockPuntainer", forceReshape = true) {
             it as ClockPuntainer
@@ -267,7 +255,8 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
         a.openLevel(l.fruitList.map { it.type })
         val timer = CountdownTimer(l.timeLimit)
         timer.onUpdate = {
-            updateClock(timer.left)
+            clockHolder = timer.left
+            //updateClock(timer.left)
         }
         timer.onComplete = {
             val levelEnd = LevelEndScene(stage, gameState)
