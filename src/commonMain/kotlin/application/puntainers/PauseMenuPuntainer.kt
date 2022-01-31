@@ -56,6 +56,8 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
                     it.visible=false
                     puntainers.first{it.id == "soundOff"}.visible=true
                     // TODO sound off
+
+                    GlobalAccess.musicToggle(false)
                 }
             }
         )
@@ -72,7 +74,7 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
                     it.visible=false
                     puntainers.first{it.id == "soundOn"}.visible=true
                     // TODO sound on off
-                    GlobalAccess.musicToggle()
+                    GlobalAccess.musicToggle(true)
                 }
             }
         )

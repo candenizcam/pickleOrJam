@@ -4,6 +4,7 @@ import application.puntainers.SheetNumberDisplayer
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.async.launchImmediately
 import com.soywiz.korio.file.std.resourcesVfs
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import pungine.PunScene
 import pungine.PunStage
@@ -12,7 +13,10 @@ import pungine.geometry2D.Vector
 import pungine.geometry2D.oneRectangle
 import pungine.uiElements.Button
 
+@OptIn(DelicateCoroutinesApi::class)
 class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("levelEnd", stage, GlobalAccess.virtualSize.width.toDouble(), GlobalAccess.virtualSize.height.toDouble()) {
+
+    var gameLost = false
     override suspend fun sceneInit() {
         super.sceneInit()
 
@@ -139,7 +143,7 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
         )
 
         gameState.gameOver = {
-            //TODO GAMEOVER
+            gameLost = true
         }
 
         gameState.payRent()
@@ -164,12 +168,22 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
     }
 
     fun onPlayNextPressed(){
-        gameState.level++
-        val newLevel = TestScene(stage, gameState)
-        GlobalScope.launchImmediately {
-            newLevel.initialize()
-            stage.scenesToAdd.add(Pair(newLevel, true))
-            stage.scenesToRemove.add("levelEnd")
+        if(gameLost) {
+            val newGame = TestScene(stage)
+            newGame.active=false
+            GlobalScope.launchImmediately {
+                newGame.initialize()
+                stage.scenesToAdd.add(Pair(newGame, false))
+                stage.scenesToRemove.add("levelEnd")
+            }
+        } else {
+            gameState.level++
+            val newLevel = TestScene(stage, gameState)
+            GlobalScope.launchImmediately {
+                newLevel.initialize()
+                stage.scenesToAdd.add(Pair(newLevel, true))
+                stage.scenesToRemove.add("levelEnd")
+            }
         }
     }
 

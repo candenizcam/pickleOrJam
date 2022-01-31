@@ -129,9 +129,10 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
         }
 
         GlobalAccess.musicToggle = {
-            musicPlayer.togglePlaying()
+            if (it) {musicPlayer.play()} else {musicPlayer.pause()}
             sfxPlayer.soundOn = !sfxPlayer.soundOn
         }
+
         musicPlayer.open("SlowDay.mp3", true)
         sfxPlayer.loadSounds(listOf("cash-register.mp3"))
 
