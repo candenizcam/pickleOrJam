@@ -15,7 +15,7 @@ object GlobalAccess {
             return Rectangle(0.0, windowSize.width.toDouble(), 0.0, windowSize.height.toDouble())
         }
 
-    var musicToggle = {}
+    var musicToggle = { state : Boolean -> }
 
     fun rectFromXD(corner: Vector, width: Int, height: Int, relativeRect: Rectangle?=null): Rectangle {
         return if(relativeRect!=null){
@@ -58,7 +58,7 @@ object GlobalAccess {
         }
         levels.add(Level(fruitList3,30,levels.size*50+300))
 
-        val fList4 = listOf("Snowman", "Grape", "Pumpkin", "Bubble_Gum", "Nail_Polish", "Pine_Cone", "Rubber_Duck", "Onion", "Plane", "Car", "Bowling_ball", "Atom")
+        val fList4 = listOf("Snowman", "Grape", "Pumpkin", "Bubble_Gum", "Nail_Polish", "Pine_Cone", "Rubber_Duck", "Onion", "Plane", "Car", "Bowling_Ball", "Atom")
         val pList4 = listOf(6, 6, 13, 19, 21, 30, 38, 60, 62, 69, 88, 100) //254
         val fruitList4 = mutableListOf<Fruit>()
         fList4.indices.forEach {

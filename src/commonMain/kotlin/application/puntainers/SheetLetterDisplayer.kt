@@ -64,12 +64,9 @@ class SheetLetterDisplayer private constructor(id: String? =null, relativeRectan
 
         colRectList.forEachIndexed { index, rectangle ->
             if(chars.contains(vs[index])){
-                println("contains")
                 val ind = chars.indexOf( vs[index] )
                 punImage("digit_$index",rectangle,sliceList[ind])
             }
-
-
         }
 
     }

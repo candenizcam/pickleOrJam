@@ -36,6 +36,9 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
     override suspend fun sceneInit() {
         val a = WorkshopPuntainer.create(oneRectangle())
         addPuntainer(a)
+        a.visible=active
+
+
 
         addPuntainer(
             Button(
@@ -53,27 +56,21 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
                 resourcesVfs["UI/pause_hover.png"].readBitmap()
             ).also { button ->
                 button.clickFunction = {
-                    toPuntainer("pauseMenuPuntainer") {
-                        it.visible = true
-                    }
 
-                    toPuntainer("workshopPuntainer") {
-                        it.visible = false
-                    }
                     pauseGame(true)
                 }
             })
 
 
+
+
         addPuntainer(PauseMenuPuntainer.create(oneRectangle()).also { puntainer ->
             puntainer.onReturn = {
-                toPuntainer("workshopPuntainer") {
-                    it.visible = true
-                }
                 puntainer.visible = false
                 pauseGame(false)
+                puntainer.resumeButtonVisible(true)
             }
-            puntainer.visible = false
+            puntainer.visible = !active
         })
 
         addPuntainer(
@@ -118,6 +115,11 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
             )
         )
 
+
+
+
+
+
         addPuntainer(
             SheetLetterDisplayer.create("text",
                     GlobalAccess.rectFromXD(Vector(490.0,372.0),300,60),
@@ -125,18 +127,27 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
                     16,
                     false,
                 ).also {
-                    it.setValue(gameState.fruitName)
+                    it.setValue("HAPPY GAMING")
             }
         )
+
+
+
+
+
+
 
         a.onNewFruit = {
             setFruitText(it)
         }
 
         GlobalAccess.musicToggle = {
-            musicPlayer.togglePlaying()
-            sfxPlayer.soundOn = !sfxPlayer.soundOn
+            if (it) {
+                musicPlayer.play()
+            } else {musicPlayer.pause()}
+            sfxPlayer.soundOn = it
         }
+
         musicPlayer.open("SlowDay.mp3", true)
         sfxPlayer.loadSounds(listOf("cash-register.mp3"))
 
@@ -155,21 +166,30 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
         }
 
         a.onChoice = { type, choice ->
+            //coinVisible(true,false)
             if (choice == 0 && gameState.vinegar > 0) {
                 var printableMoney = gameState.getFruit(type)?.jam ?: 0
-                sfxPlayer.play("cash-register.mp3")
                 gameState.pickleIt(type)
+                sfxPlayer.play("cash-register.mp3")
+                a.coinVisible(if(printableMoney>50) 0 else 1)
                 gameState.vinegar
             } else if (choice == 1 && gameState.sugar > 0) {
                 var printableMoney = gameState.getFruit(type)?.jam ?: 0
-                sfxPlayer.play("cash-register.mp3")
                 gameState.jamIt(type)
+                sfxPlayer.play("cash-register.mp3")
+                a.coinVisible(if(printableMoney<50) 0 else 1)
                 gameState.sugar
             }else{
                 -1
             }
         }
+
+        a.updateSugarCount(gameState.sugar)
+        a.updateVinCount(gameState.vinegar)
+
     }
+
+
 
 
 
@@ -188,6 +208,16 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
     }
 
     private fun pauseGame(pause: Boolean) {
+
+        toPuntainer("pauseMenuPuntainer") { it as PauseMenuPuntainer
+            it.visible = pause
+            it.resumeButtonVisible(true)
+        }
+
+        toPuntainer("workshopPuntainer") {
+            it.visible = !pause
+        }
+
         active = !pause
     }
 
@@ -219,6 +249,7 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
         }
     }
 
+
     private fun hardwareClockUpdateEmulator() {
         clockStep += 1
 
@@ -235,6 +266,8 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
             it as WorkshopPuntainer
             if (it.fruitPos.x !in -0.1..1.1) {
                 it.deployNewFood()
+                it.coinVisible(-1)
+
             } else {
                 if (it.activeBasket!!.status == -1) {
                     it.discreteMove(x = 0, y = -1)

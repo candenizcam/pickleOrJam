@@ -12,14 +12,14 @@ import pungine.geometry2D.Rectangle
 import pungine.geometry2D.Vector
 import pungine.geometry2D.oneRectangle
 
-class SheetNumberDisplayer private constructor(id: String? =null, relativeRectangle: Rectangle, pixelSize: Rectangle, val digitNo: Int, val bg: Boolean=true, val moneySign: Boolean=false): Puntainer(id,relativeRectangle)  {
+class SheetNumberDisplayer private constructor(id: String? =null, relativeRectangle: Rectangle, pixelSize: Rectangle, val digitNo: Int, val bg: Boolean=true, val moneySign: Boolean=false, val minusSign: Boolean=false): Puntainer(id,relativeRectangle)  {
     init {
     }
     val pixelSize = pixelSize
     val colRectList = mutableListOf<Rectangle>()
     val activeDigitNo: Int
     get() {
-        return digitNo+ if(moneySign) 1 else 0
+        return digitNo+ if(moneySign) 1 else 0 + if(minusSign) 1 else 0
     }
 
         private suspend fun init() {
@@ -52,6 +52,8 @@ class SheetNumberDisplayer private constructor(id: String? =null, relativeRectan
         colRectList.forEachIndexed { index, rectangle ->
             if(moneySign && index==colRectList.size-1){
                 punImage("pundollarSign",rectangle,resourcesVfs["Pundollar.png"].readBitmap())
+            }else if(minusSign){
+                punImage("minusSign",rectangle,resourcesVfs["tire.png"].readBitmap())
             }else{
                 punImage("digit_$index",colRectList[index],slices[0])
             }
@@ -75,6 +77,8 @@ class SheetNumberDisplayer private constructor(id: String? =null, relativeRectan
 
         colRectList.forEachIndexed { index, rectangle ->
             if(moneySign &&(index==colRectList.size-1)){
+            }else if (minusSign&& (index==0)){
+                puntainers.first { it.id == "minusSign" }.visible = v<0
             }else{
                 val ind = if(vs.length>index){
                     vs[index].toString().toInt()
@@ -90,9 +94,9 @@ class SheetNumberDisplayer private constructor(id: String? =null, relativeRectan
 
 
     companion object {
-        suspend fun create(id: String?=null, relativeRectangle: Rectangle, pixelSize: Rectangle, digitNo: Int,  bg: Boolean=true, moneySign: Boolean=false
+        suspend fun create(id: String?=null, relativeRectangle: Rectangle, pixelSize: Rectangle, digitNo: Int,  bg: Boolean=true, moneySign: Boolean=false, minusSign: Boolean=false,
         ): SheetNumberDisplayer {
-            return SheetNumberDisplayer(id,relativeRectangle, pixelSize,digitNo, bg, moneySign).also {
+            return SheetNumberDisplayer(id,relativeRectangle, pixelSize,digitNo, bg, moneySign, minusSign).also {
                 it.init()
             }
         }

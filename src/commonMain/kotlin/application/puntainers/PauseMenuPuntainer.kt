@@ -20,20 +20,24 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
 
 
 
-        val start_button_on = resourcesVfs["game_logo.png"].readBitmap()
-
-
         addPuntainer(
-            Button("start", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-104.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),start_button_on).also {
+            Button("start", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-104.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),
+                resourcesVfs["UI/play_normal.png"].readBitmap(),
+                resourcesVfs["UI/play_pushed.png"].readBitmap(),
+                resourcesVfs["UI/play_hover.png"].readBitmap(),).also {
                 it.clickFunction = {
                     // TODO start game
+                    it.visible= true
                     onReturn()
                 }
             }
         )
 
         addPuntainer(
-            Button("resume", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-104.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),start_button_on).also {
+            Button("resume", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-104.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),
+                resourcesVfs["UI/resume_normal.png"].readBitmap(),
+                resourcesVfs["UI/resume_pushed.png"].readBitmap(),
+                resourcesVfs["UI/resume_hover.png"].readBitmap(),).also {
                 it.visible = false
                 it.clickFunction = {
                     onReturn()
@@ -51,13 +55,14 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
                 it.clickFunction = {
                     it.visible=false
                     puntainers.first{it.id == "soundOff"}.visible=true
-                    // TODO sound off
+
+                    GlobalAccess.musicToggle(false)
                 }
             }
         )
 
         addPuntainer(
-            Button("soundOff", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-280.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),
+            Button("soundOff", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-192.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),
                 resourcesVfs["UI/no_sound_normal.png"].readBitmap(),
                 resourcesVfs["UI/no_sound_pushed.png"].readBitmap(),
                 resourcesVfs["UI/no_sound_hover.png"].readBitmap(),
@@ -67,14 +72,16 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
                 it.clickFunction = {
                     it.visible=false
                     puntainers.first{it.id == "soundOn"}.visible=true
-                    // TODO sound on off
-                    GlobalAccess.musicToggle()
+                    GlobalAccess.musicToggle(true)
                 }
             }
         )
 
         addPuntainer(
-            Button("credits", thisRectangle.toRated(Rectangle(Vector(566.0,412.0),148.0,44.0,Rectangle.Corners.TOP_LEFT)),start_button_on).also {
+            Button("credits", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-280.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),
+                resourcesVfs["UI/credits_normal.png"].readBitmap(),
+                resourcesVfs["UI/credits_pushed.png"].readBitmap(),
+                resourcesVfs["UI/credits_hover.png"].readBitmap(),).also {
                 it.clickFunction = {
                     // TODO credits
                 }
@@ -86,6 +93,17 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
     }
 
     var onReturn = {}
+    fun resumeButtonVisible(boolean: Boolean=false){
+        puntainers.first { it.id=="start" }.also { it as Button
+            it.visible=false
+            it.inactive = true
+        }
+        puntainers.first { it.id=="resume" }.also { it as Button
+            it.visible=true
+            it.inactive = false
+        }
+    }
+
 
     companion object {
         suspend fun create(relativeRectangle: Rectangle

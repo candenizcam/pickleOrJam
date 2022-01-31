@@ -4,6 +4,7 @@ import application.puntainers.SheetNumberDisplayer
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.async.launchImmediately
 import com.soywiz.korio.file.std.resourcesVfs
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import pungine.PunScene
 import pungine.PunStage
@@ -12,7 +13,10 @@ import pungine.geometry2D.Vector
 import pungine.geometry2D.oneRectangle
 import pungine.uiElements.Button
 
+@OptIn(DelicateCoroutinesApi::class)
 class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("levelEnd", stage, GlobalAccess.virtualSize.width.toDouble(), GlobalAccess.virtualSize.height.toDouble()) {
+
+    var gameLost = false
     override suspend fun sceneInit() {
         super.sceneInit()
 
@@ -37,7 +41,8 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
                 Rectangle(0.0, 192.0, 0.0, 36.0),
                 5,
                 false,
-                moneySign = true
+                moneySign = true,
+                minusSign = true
 
             ).also {
                 it.setValue(gameState.money)
@@ -51,7 +56,7 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
                 2,
                 false
             ).also {
-                it.setValue(gameState.level)
+                it.setValue(gameState.level + 1)
             }
         )
 
@@ -95,6 +100,7 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
                     println("MONEY: ${gameState.money}, VINEGAR: ${gameState.vinegar}, SUGAR: ${gameState.sugar}")
                 }
             }
+
         }
 
         addPuntainer(
@@ -116,8 +122,8 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
                 Rectangle(0.0, 164.0, 0.0, 36.0),
                 4,
                 false,
-                moneySign = true
-
+                moneySign = true,
+                minusSign = true
             ).also {
                 it.setValue(GlobalAccess.levels[gameState.level].rent)
             }
@@ -139,20 +145,20 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
         )
 
         gameState.gameOver = {
-
+            gameLost = true
         }
 
         gameState.payRent()
         updateInfoAfter()
     }
 
-    fun updateInfoAfter(levelNo: Int = gameState.level, opCost: Int= GlobalAccess.levels[gameState.level].rent, money: Int = gameState.money, vinegarCount: Int = gameState.vinegar, sugarCount: Int = gameState.sugar){
+    fun updateInfoAfter(levelNo: Int = gameState.level + 1, opCost: Int= GlobalAccess.levels[gameState.level].rent, money: Int = gameState.money, vinegarCount: Int = gameState.vinegar, sugarCount: Int = gameState.sugar){
         toPuntainer("levelNo", forceReshape = true){  it as SheetNumberDisplayer
             it.setValue(levelNo)
         }
 
         toPuntainer("operationsCost", forceReshape = true){  it as SheetNumberDisplayer
-            it.setValue(opCost)
+            it.setValue(-1*opCost)
         }
 
         toPuntainer("money", forceReshape = true){  it as SheetNumberDisplayer
@@ -164,12 +170,24 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
     }
 
     fun onPlayNextPressed(){
-        gameState.level++
-        val newLevel = TestScene(stage, gameState)
-        GlobalScope.launchImmediately {
-            newLevel.initialize()
-            stage.scenesToAdd.add(Pair(newLevel, true))
-            stage.scenesToRemove.add("levelEnd")
+        if(gameLost) {
+            val newGame = TestScene(stage)
+            newGame.active=false
+            GlobalScope.launchImmediately {
+                newGame.initialize()
+
+                stage.scenesToAdd.add(Pair(newGame, false))
+                stage.scenesToRemove.add("levelEnd")
+            }
+        } else {
+            gameState.level++
+            val newLevel = TestScene(stage, gameState)
+            GlobalScope.launchImmediately {
+                newLevel.initialize()
+
+                stage.scenesToAdd.add(Pair(newLevel, true))
+                stage.scenesToRemove.add("levelEnd")
+            }
         }
     }
 
