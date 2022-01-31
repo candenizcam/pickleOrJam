@@ -41,7 +41,8 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
                 Rectangle(0.0, 192.0, 0.0, 36.0),
                 5,
                 false,
-                moneySign = true
+                moneySign = true,
+                minusSign = true
 
             ).also {
                 it.setValue(gameState.money)
@@ -120,8 +121,8 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
                 Rectangle(0.0, 164.0, 0.0, 36.0),
                 4,
                 false,
-                moneySign = true
-
+                moneySign = true,
+                minusSign = true
             ).also {
                 it.setValue(GlobalAccess.levels[gameState.level].rent)
             }
@@ -156,7 +157,7 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
         }
 
         toPuntainer("operationsCost", forceReshape = true){  it as SheetNumberDisplayer
-            it.setValue(opCost)
+            it.setValue(-1*opCost)
         }
 
         toPuntainer("money", forceReshape = true){  it as SheetNumberDisplayer
