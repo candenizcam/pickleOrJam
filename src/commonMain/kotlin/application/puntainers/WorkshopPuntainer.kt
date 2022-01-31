@@ -129,7 +129,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
                 activeBasket!!.status = 0
                 ((puntainers.first { it.id == "jarPuntainer" }) as JarPuntainer).signVisible(0)
             }else{
-                (puntainers.first { id=="pickleButton" } as Button).inactive = true
+                (puntainers.first { it.id=="pickleButton" } as Button).inactive = true
             }
         }
 
@@ -143,7 +143,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
                 activeBasket!!.status = 1
                 ((puntainers.first { it.id == "jarPuntainer" }) as JarPuntainer).signVisible(1)
             }else{
-                (puntainers.first { id=="jamButton" } as Button).inactive = true
+                (puntainers.first { it.id=="jamButton" } as Button).inactive = true
             }
 
 
