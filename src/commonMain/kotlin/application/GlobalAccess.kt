@@ -31,8 +31,8 @@ object GlobalAccess {
 
     fun initLevels() {
 
-        val fList = listOf("Apple", "Lemon", "Bowling_Ball", "Cherry", "Rubber_Duck", "Cucumber", "Eggplant", "orange")
-        val pList = listOf(44, 37, 0, 38, 60, 94, 82, 12) //min 195
+        val fList = listOf("Apple", "Lemon", "Bowling_Ball", "Cherry", "Rubber_Duck", "Cucumber", "Eggplant", "Pumpkin")
+        val pList = listOf(44, 37, 0, 38, 60, 94, 82, 13) //min 195
 
         val fList1 = listOf("Apricot", "Cherry", "Lemon", "Carrot", "Tomato", "Onion", "Broccoli", "Cucumber")
         val pList1 = listOf(0, 12, 37, 53, 44, 60, 80, 94) //min 199
@@ -50,15 +50,15 @@ object GlobalAccess {
         }
         levels.add(Level(fruitList2,30,levels.size*50+300))
 
-        val fList3 = listOf("Peach", "Grape", "Donut", "Mug", "Tomato", "Onion", "Lamp", "Shrimp", "Pizza", "Olive")
-        val pList3 = listOf(4, 6, 19, 28, 44, 60, 65, 71, 71, 81) //253
+        val fList3 = listOf("Peach", "Grape", "Lemon", "Mug", "Tomato", "Onion", "Lamp", "Shrimp", "Pizza", "Olive")
+        val pList3 = listOf(4, 6, 37, 28, 44, 60, 65, 71, 71, 81) //253
         val fruitList3 = mutableListOf<Fruit>()
         fList3.indices.forEach {
             fruitList3.add(Fruit(fList3[it], pList3[it], 100-pList3[it]))
         }
         levels.add(Level(fruitList3,30,levels.size*50+300))
 
-        val fList4 = listOf("Snowman", "Grape", "Pumpkin", "Bubble_Gum", "Nail_Polish", "Pine_Cone", "Rubber_Duck", "Onion", "Plane", "Car", "Bowling_Ball", "Atom")
+        val fList4 = listOf("Snowman", "Grape", "Pumpkin", "Bubble_Gum", "Nail_Polish", "Pine_Cone", "Rubber_Duck", "Onion", "Plane", "Car", "Bowling_ball", "CD")
         val pList4 = listOf(6, 6, 13, 19, 21, 30, 38, 60, 62, 69, 88, 100) //254
         val fruitList4 = mutableListOf<Fruit>()
         fList4.indices.forEach {
@@ -66,7 +66,7 @@ object GlobalAccess {
         }
         levels.add(Level(fruitList4,30,levels.size*50+300))
 
-        val fList5 = listOf("Banana", "Strawberry", "Rose", "Cat", "Apple", "Game_Jam", "Donut", "Cinnamon", "Ginger", "Headphones", "Watch", "Controller", "Eggplant", "Anchovy", "Broccoli", "Socks")
+        val fList5 = listOf("Banana", "Strawberry", "Rose", "Cat", "Apple", "Charging_Cable", "Donut", "Cinnamon", "Ginger", "Headphones", "Watch", "Controller", "Eggplant", "Anchovy", "Broccoli", "Socks")
         val pList5 = listOf(0, 0, 0, 100, 0, 0, 19, 31, 33, 52, 53, 54, 59, 77, 80, 88)
         val fruitList5 = mutableListOf<Fruit>()
         fList5.indices.forEach {
@@ -78,7 +78,7 @@ object GlobalAccess {
 
     val fullFlist = listOf(
         "Cat",
-        "Game_Jam",
+        "Charging_Cable",
         "Snowman",
         "Bubble_Gum",
         "Donut",
@@ -97,7 +97,7 @@ object GlobalAccess {
         "Hamburger",
         "Socks",
         "Bowling_Ball",
-        "Atom",
+        "CD",
         "Banana",
         "Strawberry",
         "Rose",
@@ -125,7 +125,16 @@ object GlobalAccess {
         "Garlic",
         "Broccoli",
         "Olive",
-        "Cucumber"
+        "Cucumber",
+        "Fridge",
+        "Green_Beans",
+        "Laptop",
+        "Mask",
+        "Red_Cabbage",
+        "Spaghetti",
+        "Table",
+        "Tent",
+        "Water_Bottle"
     )
     val normalFlist = listOf(
         "Banana",
@@ -155,7 +164,8 @@ object GlobalAccess {
         "Garlic",
         "Broccoli",
         "Olive",
-        "Cucumber"
+        "Cucumber",
+        "Red_Cabbage"
     )
     val pNormalList = listOf(
         0,
@@ -185,11 +195,12 @@ object GlobalAccess {
         80,
         80,
         81,
-        94
+        94,
+        87
     )
     val pFullList = listOf(
         100,
-        0,
+        94,
         6,
         19,
         19,
@@ -208,7 +219,7 @@ object GlobalAccess {
         82,
         88,
         88,
-        100,
+        66,
         0,
         0,
         0,
@@ -236,6 +247,15 @@ object GlobalAccess {
         80,
         80,
         81,
-        94
+        94,
+        63,
+        94,
+        81,
+        81,
+        87,
+        60,
+        76,
+        50,
+        63
     )
 }
