@@ -1,7 +1,5 @@
 import com.soywiz.korge.gradle.*
 
-
-
 buildscript {
 	val korgePluginVersion: String by project
 
@@ -29,6 +27,7 @@ apply(plugin = "kotlinx-serialization")
 korge {
 	id = "com.pungo.pickleorjam"
 	name = "pickleorjam"
+	orientation = Orientation.LANDSCAPE
 
 	supportSwf()
 
