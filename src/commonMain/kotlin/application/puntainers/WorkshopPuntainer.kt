@@ -35,12 +35,10 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
 
 
 
+
         val rectByPixel = GlobalAccess.virtualRect.fromRated(relativeRectangle)
 
-        val transparentBlock = Bitmap32(10, 10).context2d {
-            this.rect(0, 0, 10, 10)
-            this.fill(Colour.rgba(0.0, 0.0, 0.0, 0.0).korgeColor)
-        }
+
 
 
 
@@ -81,6 +79,10 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
 
 
 
+        val transparentBlock = Bitmap32(10, 10).context2d {
+            this.rect(0, 0, 10, 10)
+            this.fill(Colour.rgba(0.0, 0.0, 0.0, 0.0).korgeColor)
+        }
 
 
 
@@ -95,24 +97,27 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
             "pickleButton",
             Rectangle(0.0, 0.4, 0.0, 620.0 / rectByPixel.height),
             transparentBlock,
-            transparentBlock,
+            resourcesVfs["workshop/vinegar_glow.png"].readBitmap(),
             hoverBitmap = resourcesVfs["workshop/vinegar_glow.png"].readBitmap()
+
         )
 
         val b2 = Button(
             "jamButton",
             Rectangle(0.6, 1.0, 0.0, 620.0 / rectByPixel.height),
             transparentBlock,
-            transparentBlock,
-            hoverBitmap = resourcesVfs["workshop/sugar_glow.png"].readBitmap()
+            resourcesVfs["workshop/sugar_glow.png"].readBitmap(),
+            hoverBitmap = resourcesVfs["workshop/sugar_glow.png"].readBitmap(),
         )
 
         b1.clickFunction = {
+
             picklePressed()
 
         }
         b1.inactive = true
         b2.clickFunction = {
+
             jamPressed()
 
         }
@@ -170,7 +175,6 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
 
     fun picklePressed() {
         if (choicePos == fruitPos) {
-
             val remain = onChoice(activeBasket!!.id, 0)
             if(remain>=0){
                 buttonsActive(false)
