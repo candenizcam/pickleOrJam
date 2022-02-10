@@ -67,6 +67,23 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
                 puntainer.resumeButtonVisible(true)
             }
             puntainer.visible = !active
+            puntainer.onCreditsVisible = { b->
+                toPuntainer("moneyPuntainer"){
+                    it.visible = !b
+                }
+                toPuntainer("im"){
+                    it.visible = !b
+                }
+                toPuntainer("clockPuntainer"){
+                    it.visible = !b
+                }
+                toPuntainer("text"){
+                    it.visible = !b
+                }
+
+
+
+            }
         })
 
         addPuntainer(

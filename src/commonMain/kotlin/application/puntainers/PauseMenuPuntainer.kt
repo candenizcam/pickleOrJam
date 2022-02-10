@@ -1,6 +1,7 @@
 package application.puntainers
 
 import application.GlobalAccess
+import com.soywiz.korge.input.onClick
 import com.soywiz.korge.input.onUp
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.file.std.resourcesVfs
@@ -12,11 +13,31 @@ import pungine.uiElements.Button
 
 class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Puntainer("pauseMenuPuntainer",relativeRectangle) {
 
+    var onCreditsVisible = {visible: Boolean->}
+
     private suspend fun init() {
 
         punImage("bg", oneRectangle(), resourcesVfs["workshop/background.png"].readBitmap())
 
         val thisRectangle = GlobalAccess.virtualRect.fromRated(relativeRectangle)
+
+
+
+        val c =Button("credits",
+            oneRectangle(),
+            resourcesVfs["credits_bg.png"].readBitmap(),
+            resourcesVfs["credits_bg.png"].readBitmap(),
+            resourcesVfs["credits_bg.png"].readBitmap(),
+            resourcesVfs["credits_bg.png"].readBitmap()
+        )
+        c.visible=false
+
+        c.onClick {
+            c.visible = false
+            onCreditsVisible(false)
+        }
+
+
 
 
 
@@ -83,9 +104,16 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
                 resourcesVfs["UI/credits_pushed.png"].readBitmap(),
                 resourcesVfs["UI/credits_hover.png"].readBitmap(),).also {
                 it.clickFunction = {
+                    c.visible=true
+                    onCreditsVisible(true)
                     // TODO credits
                 }
             }
+        )
+
+
+        addPuntainer(
+            c
         )
 
 
