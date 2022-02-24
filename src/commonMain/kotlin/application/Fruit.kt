@@ -1,3 +1,3 @@
-package application
 
-data class Fruit(val type: String, val pickle: Int, val jam: Int)
+
+data class Fruit(var string: String, val pickle :Int, val jam :Int)
