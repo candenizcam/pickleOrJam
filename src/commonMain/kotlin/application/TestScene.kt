@@ -2,6 +2,9 @@ package application
 
 import Fruit
 import application.puntainers.*
+import com.pungo.admob.Admob
+import com.soywiz.klock.TimeSpan
+import com.soywiz.klock.blockingSleep
 import com.soywiz.korge.component.onStageResized
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.async.launchImmediately
@@ -36,8 +39,14 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
 
 
     override suspend fun sceneInit() {
-        val a = WorkshopPuntainer.create(oneRectangle())
+        val adActions = Admob.Actions().also { actions ->
+            actions.dismissAction = {
+                println("DISMISSED!")
+            }
+        }
+        (stage as TestStage).admob.interstitialPrepare(Admob.Config("TestAds", "ca-app-pub-3940256099942544/1033173712", actions = adActions))
 
+        val a = WorkshopPuntainer.create(oneRectangle())
 
         addPuntainer(a)
         a.visible=active
@@ -84,9 +93,6 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
                 toPuntainer("text"){
                     it.visible = !b
                 }
-
-
-
             }
         })
 
@@ -142,12 +148,6 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
                     it.setValue("HAPPY GAMING")
             }
         )
-
-
-
-
-
-
 
         a.onNewFruit = {
             setFruitText(it)
@@ -296,10 +296,10 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
 
     private suspend fun openLevel(a: WorkshopPuntainer, l: Level) {
         a.openLevel(l.fruitList.map { it.type })
+
         val timer = CountdownTimer(l.timeLimit)
         timer.onUpdate = {
             clockHolder = timer.left
-            //updateClock(timer.left)
         }
         timer.onComplete = {
             val levelEnd = LevelEndScene(stage, gameState)
