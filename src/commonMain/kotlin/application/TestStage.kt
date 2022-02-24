@@ -1,25 +1,22 @@
 package application
 
-import com.soywiz.korge.view.*
-import com.soywiz.korim.bitmap.Bitmap
-import com.soywiz.korim.format.readBitmap
-import com.soywiz.korio.async.launchImmediately
-import com.soywiz.korio.file.std.resourcesVfs
-import modules.basic.Colour
-import pungine.*
-import pungine.uiElements.PunImage
-import kotlin.time.ExperimentalTime
-import kotlin.time.measureTime
 
+import com.pungo.admob.Admob
+import com.pungo.admob.AdmobCreate
+import com.soywiz.korge.view.*
+import pungine.*
+import kotlin.time.ExperimentalTime
 /** This scene is the template for a PunGineIV game
  *
  */
 
 class TestStage: PunStage() {
     var testScene = TestScene(this)
+    lateinit var admob: Admob
 
     @OptIn(ExperimentalTime::class)
     override suspend fun Container.sceneMain(){
+        admob = AdmobCreate(this@TestStage.views, testing=true)
         testScene.active=false
         testScene.initialize()
         scenesToAdd.add(Pair(testScene,false))

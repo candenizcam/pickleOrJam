@@ -1,6 +1,9 @@
 package application
 
 import application.puntainers.*
+import com.pungo.admob.Admob
+import com.soywiz.klock.TimeSpan
+import com.soywiz.klock.blockingSleep
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.async.launchImmediately
 import com.soywiz.korio.file.std.resourcesVfs
@@ -291,11 +294,22 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
 
 
     private suspend fun openLevel(a: WorkshopPuntainer, l: Level) {
+        val adActions = Admob.Actions().also { actions ->
+            actions.dismissAction = {
+                println("DISMISSED!")
+                GlobalScope.launchImmediately { a.openLevel(l.fruitList.map { it.type }) }
+            }
+            }
+        (stage as TestStage).admob.interstitialPrepare(Admob.Config("TestAds", "ca-app-pub-3940256099942544/1033173712", actions = adActions))
+
+        blockingSleep(TimeSpan(1000.0))
+
+        //interstitialWaitAndShow(Admob.Config("TestAds", "ca-app-pub-3940256099942544/1033173712"))
         a.openLevel(l.fruitList.map { it.type })
+
         val timer = CountdownTimer(l.timeLimit)
         timer.onUpdate = {
             clockHolder = timer.left
-            //updateClock(timer.left)
         }
         timer.onComplete = {
             val levelEnd = LevelEndScene(stage, gameState)
