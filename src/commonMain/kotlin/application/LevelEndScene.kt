@@ -17,12 +17,29 @@ import pungine.uiElements.Button
 
 @OptIn(DelicateCoroutinesApi::class)
 class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("levelEnd", stage, GlobalAccess.virtualSize.width.toDouble(), GlobalAccess.virtualSize.height.toDouble()) {
-
+    var addChance = 0 // bu 1 filan olunca add gösteriyor olucak
+        set(value) {
+            field = value
+            puntainers.firstOrNull { it.id=="toAd" }.also {
+                if(it != null){
+                    if (addChance <= 0) {
+                        it.visible= false
+                    }
+                }
+            }
+        }
     var gameLost = false
         set(value) {
             gameLostList.forEach { it.visible =value }
             gameNotLostList.forEach { it.visible = value.not() }
             field = value
+            puntainers.firstOrNull { it.id=="toAd" }.also {
+                if(it != null){
+                    if (addChance <= 0) {
+                        it.visible= false
+                    }
+                }
+            }
         }
     var gameLostList = mutableListOf<Puntainer>()
     var gameNotLostList = mutableListOf<Puntainer>()
@@ -75,6 +92,8 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
         ).also {
             addPuntainer(it)
             it.clickFunction = {
+                addChance -= 1
+
                 //TODO press ad
                 //sfxPlayer.play("cash-register.mp3")
                 //onPlayNextPressed()
