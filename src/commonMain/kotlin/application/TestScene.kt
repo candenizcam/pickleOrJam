@@ -1,5 +1,6 @@
 package application
 
+import Fruit
 import application.puntainers.*
 import com.soywiz.korge.component.onStageResized
 import com.soywiz.korim.format.readBitmap

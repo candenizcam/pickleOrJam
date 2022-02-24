@@ -1,5 +1,6 @@
 package application
 
+import Fruit
 import com.soywiz.korma.geom.SizeInt
 import pungine.geometry2D.Rectangle
 import pungine.geometry2D.Vector

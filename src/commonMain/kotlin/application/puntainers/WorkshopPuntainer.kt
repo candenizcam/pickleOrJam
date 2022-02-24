@@ -1,9 +1,7 @@
 package application.puntainers
 
 import application.GlobalAccess
-import com.soywiz.korim.bitmap.Bitmap
-import com.soywiz.korim.bitmap.Bitmap32
-import com.soywiz.korim.bitmap.context2d
+import com.soywiz.korim.bitmap.*
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.file.std.resourcesVfs
 import com.soywiz.korma.geom.vector.rect
@@ -25,6 +23,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
         private set
     val fruitRectangle =
         Rectangle(Vector(0.0, 0.0), 200.0 / GlobalAccess.windowSize.width, 200.0 / GlobalAccess.windowSize.height)
+    val allBasketsList = mutableListOf<Basket>()
 
     private suspend fun init() {
         resourcesVfs["workshop/background.png"].readBitmap().also {
@@ -33,6 +32,15 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
         }
 
 
+        val s = resourcesVfs["fruits/Items_Sprite.png"].readBitmap()
+
+        allBasketsList.addAll(
+            GlobalAccess.fullFlist.mapIndexed { index, it->
+
+                Basket(it, s.sliceWithSize(204*(index.mod(8)),204*(index/8),200,200)
+                )
+            }
+        )
 
 
 
@@ -154,6 +162,8 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
         ).also { it.visible=false }
 
 
+
+
     }
 
     fun coinVisible(n: Int){ // -1 nothing 0 such 1 much
@@ -216,7 +226,29 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
 
     suspend fun openConveyorFood(l: List<String>) {
         fruitList.clear()
-        fruitList.addAll(l.map { Basket(it, resourcesVfs["fruits/$it.png"].readBitmap()) })
+
+
+
+
+        fruitList.addAll(
+            l.map { thisl -> allBasketsList.first { it.id== thisl} }
+        )
+
+        /*
+        val s = resourcesVfs["fruits/Items_Sprite.png"].readBitmap()
+
+
+
+
+        fruitList.addAll(
+            l.mapIndexed { index, it->
+
+                Basket(it, s.sliceWithSize(220*(index.mod(8)),220*(index/8),200,200)
+                )
+            }
+        )
+
+         */
     }
 
     fun deployNewFood() {
@@ -309,7 +341,7 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
 
      */
 
-    data class Basket(val id: String, val bitmap: Bitmap, var status: Int = -1)
+    data class Basket(val id: String, val bitmap: BitmapSlice<Bitmap>, var status: Int = -1)
 
 
     companion object {
