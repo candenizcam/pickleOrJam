@@ -1,5 +1,6 @@
 package application
 
+import application.puntainers.PurchaseButtonsPuntainer
 import application.puntainers.SheetNumberDisplayer
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.async.launchImmediately
@@ -29,6 +30,8 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
 
     override suspend fun sceneInit() {
         super.sceneInit()
+
+
 
         punImage("bg", oneRectangle(), resourcesVfs["UI/between.png"].readBitmap())
 
@@ -86,61 +89,31 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
             }
         )
 
-        Button("buyVin", GlobalAccess.rectFromXD(Vector(940.0,86.0),128,72),
-            resourcesVfs["UI/buy_normal.png"].readBitmap(),
-            resourcesVfs["UI/buy_pushed.png"].readBitmap(),
-            resourcesVfs["UI/buy_hover.png"].readBitmap(),
-        ).also {
-            addPuntainer(it)
-            it.clickFunction = {
-                if(gameState.buy(sugarToBuy = 1)) {
-                    sfxPlayer.play("cash-register.mp3")
-                    updateInfoAfter(money=gameState.money, vinegarCount=gameState.vinegar, sugarCount=gameState.sugar)
-                    println("MONEY: ${gameState.money}, VINEGAR: ${gameState.vinegar}, SUGAR: ${gameState.sugar}")
-                }
+
+        val purchaseButtonsPuntainer = PurchaseButtonsPuntainer.create(
+            GlobalAccess.rectFromXD(Vector(940.0,86.0),128,2*72)
+        )
+
+        purchaseButtonsPuntainer.buySugClick = {
+            if(gameState.buy(sugarToBuy = 1)) {
+                sfxPlayer.play("cash-register.mp3")
+                updateInfoAfter(money=gameState.money, vinegarCount=gameState.vinegar, sugarCount=gameState.sugar)
+                println("MONEY: ${gameState.money}, VINEGAR: ${gameState.vinegar}, SUGAR: ${gameState.sugar}")
+            }
+        }
+
+        purchaseButtonsPuntainer.buyVinClick = {
+            if(gameState.buy(vinegarToBuy = 1)) {
+                sfxPlayer.play("cash-register.mp3")
+                updateInfoAfter(money=gameState.money, vinegarCount=gameState.vinegar, sugarCount=gameState.sugar)
+                println("MONEY: ${gameState.money}, VINEGAR: ${gameState.vinegar}, SUGAR: ${gameState.sugar}")
             }
         }
 
         addPuntainer(
-            SheetNumberDisplayer.create( "vinPrice",
-                GlobalAccess.rectFromXD(Vector(964.0,104.0),80,36),
-                Rectangle(0.0, 80.0, 0.0, 36.0),
-                2,
-                false,
-                moneySign = true
-            ).also {
-                it.setValue(20)
-            }
+            purchaseButtonsPuntainer
         )
 
-        Button("buySug", GlobalAccess.rectFromXD(Vector(940.0,158.0),128,72),
-            resourcesVfs["UI/buy_normal.png"].readBitmap(),
-            resourcesVfs["UI/buy_pushed.png"].readBitmap(),
-            resourcesVfs["UI/buy_hover.png"].readBitmap(),
-        ).also {
-            addPuntainer(it)
-            it.clickFunction = {
-                if(gameState.buy(vinegarToBuy = 1)) {
-                    sfxPlayer.play("cash-register.mp3")
-                    updateInfoAfter(money=gameState.money, vinegarCount=gameState.vinegar, sugarCount=gameState.sugar)
-                    println("MONEY: ${gameState.money}, VINEGAR: ${gameState.vinegar}, SUGAR: ${gameState.sugar}")
-                }
-            }
-
-        }
-
-        addPuntainer(
-            SheetNumberDisplayer.create( "sugPrice",
-                GlobalAccess.rectFromXD(Vector(964.0,176.0),80,36),
-                Rectangle(0.0, 80.0, 0.0, 36.0),
-                2,
-                false,
-                moneySign = true
-
-            ).also {
-                it.setValue(20)
-            }
-        )
 
         addPuntainer(
             SheetNumberDisplayer.create( "operationsCost",
@@ -156,19 +129,9 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
         )
 
 
-        addPuntainer(
-            punImage("vinBar",
-                GlobalAccess.rectFromXD(Vector(432.0,180.0),480,24),
-                resourcesVfs["UI/VinBar_inside.png"].readBitmap()
-            )
-        )
 
-        addPuntainer(
-            punImage("sugBar",
-                GlobalAccess.rectFromXD(Vector(432.0,108.0),480,24),
-                resourcesVfs["UI/SugBar_inside.png"].readBitmap()
-            )
-        )
+
+
 
         addPuntainer(
             punImage("gameState",
@@ -179,6 +142,20 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
                 it.visible = false //TODO sadece oyun bitmişse false olması
                 gameLostList.add(it)
             }
+        )
+
+        addPuntainer(
+            punImage("sugBar",
+                GlobalAccess.rectFromXD(Vector(432.0,108.0),480,24),
+                resourcesVfs["UI/SugBar_inside.png"].readBitmap()
+            )
+        )
+
+        addPuntainer(
+            punImage("vinBar",
+                GlobalAccess.rectFromXD(Vector(432.0,180.0),480,24),
+                resourcesVfs["UI/VinBar_inside.png"].readBitmap()
+            )
         )
 
         gameState.gameOver = {

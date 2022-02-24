@@ -28,6 +28,8 @@ open class PunScene(var id: String, open var stage: PunStage, rectangle: Rectang
     lateinit var sceneInput: Input
     lateinit var scenePuntainer: Puntainer
         protected set
+    var initializationComplete = false
+        private set
     init {
         sceneRect = rectangle
 
@@ -56,6 +58,7 @@ open class PunScene(var id: String, open var stage: PunStage, rectangle: Rectang
         sceneBeforeInit()
         sceneInit()
         sceneAfterInit()
+        initializationComplete = true
     }
 
     open fun update(sec: Double){

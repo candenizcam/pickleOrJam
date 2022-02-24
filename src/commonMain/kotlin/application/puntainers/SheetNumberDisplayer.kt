@@ -53,7 +53,9 @@ class SheetNumberDisplayer private constructor(id: String? =null, relativeRectan
             if(moneySign && index==colRectList.size-1){
                 punImage("pundollarSign",rectangle,resourcesVfs["Pundollar.png"].readBitmap())
             }else if(minusSign){
-                punImage("minusSign",rectangle,resourcesVfs["tire.png"].readBitmap())
+                punImage("minusSign",rectangle,resourcesVfs["tire.png"].readBitmap()).also {
+                    it.visible = false
+                }
             }else{
                 punImage("digit_$index",colRectList[index],slices[0])
             }

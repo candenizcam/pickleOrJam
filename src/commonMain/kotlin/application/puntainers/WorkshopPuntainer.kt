@@ -235,22 +235,6 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
                 allBasketsList.first { it.id== thisl}
             }
         )
-
-        /*
-        val s = resourcesVfs["fruits/Items_Sprite.png"].readBitmap()
-
-
-
-
-        fruitList.addAll(
-            l.mapIndexed { index, it->
-
-                Basket(it, s.sliceWithSize(220*(index.mod(8)),220*(index/8),200,200)
-                )
-            }
-        )
-
-         */
     }
 
     fun deployNewFood() {
