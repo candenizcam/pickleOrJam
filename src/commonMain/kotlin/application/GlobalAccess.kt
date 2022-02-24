@@ -40,7 +40,7 @@ object GlobalAccess {
         fList1.indices.forEach {
             fruitList1.add(Fruit(fList1[it], pList1[it], 100-pList1[it]))
         }
-        levels.add(Level(fruitList1,30,levels.size*50+300))
+        levels.add(Level(fruitList1,30,levels.size*100+300))
 
         val fList2 = listOf("Lavender", "Cherry", "Lemon", "Hamburger", "Dandelion", "Shrimp", "Garlic", "Egg")
         val pList2 = listOf(6, 12, 37, 82, 19, 71, 80, 69) //min 172
@@ -48,7 +48,7 @@ object GlobalAccess {
         fList2.indices.forEach {
             fruitList2.add(Fruit(fList2[it], pList2[it], 100-pList2[it]))
         }
-        levels.add(Level(fruitList2,30,levels.size*50+300))
+        levels.add(Level(fruitList2,30,levels.size*100+300))
 
         val fList3 = listOf("Peach", "Grape", "Lemon", "Mug", "Tomato", "Onion", "Lamp", "Shrimp", "Pizza", "Olive")
         val pList3 = listOf(4, 6, 37, 28, 44, 60, 65, 71, 71, 81) //253
@@ -56,7 +56,7 @@ object GlobalAccess {
         fList3.indices.forEach {
             fruitList3.add(Fruit(fList3[it], pList3[it], 100-pList3[it]))
         }
-        levels.add(Level(fruitList3,30,levels.size*50+300))
+        levels.add(Level(fruitList3,30,levels.size*100+300))
 
         val fList4 = listOf("Snowman", "Grape", "Pumpkin", "Bubble_Gum", "Nail_Polish", "Pine_Cone", "Rubber_Duck", "Onion", "Plane", "Car", "Bowling_ball", "CD")
         val pList4 = listOf(6, 6, 13, 19, 21, 30, 38, 60, 62, 69, 88, 100) //254
@@ -72,7 +72,7 @@ object GlobalAccess {
         fList5.indices.forEach {
             fruitList5.add(Fruit(fList5[it], pList5[it], 100-pList5[it]))
         }
-        levels.add(Level(fruitList5,30,levels.size*50+300))
+        levels.add(Level(fruitList5,30,levels.size*100+300))
 
     }
 

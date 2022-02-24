@@ -1,5 +1,7 @@
 package application
 
+import com.soywiz.korge.component.docking.dockedTo
+import com.soywiz.korge.component.onStageResized
 import com.soywiz.korge.view.*
 import com.soywiz.korim.bitmap.Bitmap
 import com.soywiz.korim.format.readBitmap
@@ -16,15 +18,17 @@ import kotlin.time.measureTime
  */
 
 class TestStage: PunStage() {
-    var testScene = TestScene(this)
+    var storyScene = StoryScene(this)
 
     @OptIn(ExperimentalTime::class)
     override suspend fun Container.sceneMain(){
-        testScene.active=false
-        testScene.initialize()
-        scenesToAdd.add(Pair(testScene,false))
+        storyScene.active=false
+        storyScene.initialize()
+        scenesToAdd.add(Pair(storyScene,false))
 
         musicPlayer.open("SlowDay.mp3", true)
         sfxPlayer.loadSounds(listOf("cash-register.mp3"))
+
+
     }
 }
