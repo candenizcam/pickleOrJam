@@ -3,6 +3,8 @@ package application
 
 import com.pungo.admob.Admob
 import com.pungo.admob.AdmobCreate
+import com.soywiz.korge.component.docking.dockedTo
+import com.soywiz.korge.component.onStageResized
 import com.soywiz.korge.view.*
 import pungine.*
 import kotlin.time.ExperimentalTime
@@ -11,17 +13,20 @@ import kotlin.time.ExperimentalTime
  */
 
 class TestStage: PunStage() {
-    var testScene = TestScene(this)
     lateinit var admob: Admob
+    var storyScene = StoryScene(this)
 
     @OptIn(ExperimentalTime::class)
     override suspend fun Container.sceneMain(){
         admob = AdmobCreate(this@TestStage.views, testing=true)
-        testScene.active=false
-        testScene.initialize()
-        scenesToAdd.add(Pair(testScene,false))
+
+        storyScene.active=false
+        storyScene.initialize()
+        scenesToAdd.add(Pair(storyScene,false))
 
         musicPlayer.open("SlowDay.mp3", true)
         sfxPlayer.loadSounds(listOf("cash-register.mp3"))
+
+
     }
 }

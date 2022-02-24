@@ -1,5 +1,6 @@
 package application
 
+import Fruit
 import com.soywiz.korio.async.launchImmediately
 import kotlinx.coroutines.GlobalScope
 
@@ -17,7 +18,7 @@ class GameState(var level: Int = 0, var money: Int, var vinegar: Int = 10, var s
 
 
     fun getFruit(input: String): Fruit? {
-        return GlobalAccess.levels[level].fruitList.find { it.type == input }
+        return GlobalAccess.levels[level].fruitList.find { it!!.type == input }
     }
 
     fun checkEnd() {

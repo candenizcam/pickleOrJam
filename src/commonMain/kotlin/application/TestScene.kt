@@ -1,9 +1,11 @@
 package application
 
+import Fruit
 import application.puntainers.*
 import com.pungo.admob.Admob
 import com.soywiz.klock.TimeSpan
 import com.soywiz.klock.blockingSleep
+import com.soywiz.korge.component.onStageResized
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.async.launchImmediately
 import com.soywiz.korio.file.std.resourcesVfs
@@ -38,6 +40,8 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
 
     override suspend fun sceneInit() {
         val a = WorkshopPuntainer.create(oneRectangle())
+
+
         addPuntainer(a)
         a.visible=active
 

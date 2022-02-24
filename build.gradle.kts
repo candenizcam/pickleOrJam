@@ -21,6 +21,7 @@ buildscript {
 		classpath("com.google.gms:google-services:4.3.10")
 	}
 }
+
 apply<KorgeGradlePlugin>()
 apply(plugin = "kotlinx-serialization")
 
@@ -40,12 +41,10 @@ korge {
 	supportSwf()
 	androidPermission("android.permission.INTERNET")
 
-	//targetJvm()
-	//targetJs()
-	//targetDesktop()
-	//targetIos()
+	targetJvm()
+//	targetJs()
+	targetDesktop()
+	targetIos()
 	targetAndroidIndirect()
 	//targetAndroidDirect()
 }
-
-apply(plugin = "com.google.gms.google-services")

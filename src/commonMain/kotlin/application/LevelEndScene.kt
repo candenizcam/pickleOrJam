@@ -8,6 +8,7 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import pungine.PunScene
 import pungine.PunStage
+import pungine.Puntainer
 import pungine.geometry2D.Rectangle
 import pungine.geometry2D.Vector
 import pungine.geometry2D.oneRectangle
@@ -17,6 +18,15 @@ import pungine.uiElements.Button
 class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("levelEnd", stage, GlobalAccess.virtualSize.width.toDouble(), GlobalAccess.virtualSize.height.toDouble()) {
 
     var gameLost = false
+        set(value) {
+            gameLostList.forEach { it.visible =value }
+            gameNotLostList.forEach { it.visible = value.not() }
+            field = value
+        }
+    var gameLostList = mutableListOf<Puntainer>()
+    var gameNotLostList = mutableListOf<Puntainer>()
+
+
     override suspend fun sceneInit() {
         super.sceneInit()
 
@@ -33,6 +43,22 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
                 sfxPlayer.play("cash-register.mp3")
                 onPlayNextPressed()
             }
+            gameNotLostList.add(it)
+        }
+
+        Button("toMenu", GlobalAccess.rectFromXD(Vector(488.0,328.0),304,80),
+            resourcesVfs["UI/play_next_normal.png"].readBitmap(),
+            resourcesVfs["UI/play_next_pushed.png"].readBitmap(),
+            resourcesVfs["UI/play_next_hover.png"].readBitmap(),
+        ).also {
+            addPuntainer(it)
+            it.clickFunction = {
+
+                sfxPlayer.play("cash-register.mp3")
+                onPlayNextPressed()
+            }
+            gameLostList.add(it)
+            it.visible = false
         }
 
         addPuntainer(
@@ -142,6 +168,17 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
                 GlobalAccess.rectFromXD(Vector(432.0,108.0),480,24),
                 resourcesVfs["UI/SugBar_inside.png"].readBitmap()
             )
+        )
+
+        addPuntainer(
+            punImage("gameState",
+            GlobalAccess.rectFromXD(Vector(640.0,44.0),228,36
+                ),
+                resourcesVfs["UI/game_over.png"].readBitmap()
+            ).also {
+                it.visible = false //TODO sadece oyun bitmişse false olması
+                gameLostList.add(it)
+            }
         )
 
         gameState.gameOver = {
