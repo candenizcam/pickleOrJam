@@ -231,7 +231,9 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
 
 
         fruitList.addAll(
-            l.map { thisl -> allBasketsList.first { it.id== thisl} }
+            l.map { thisl ->
+                allBasketsList.first { it.id== thisl}
+            }
         )
 
         /*

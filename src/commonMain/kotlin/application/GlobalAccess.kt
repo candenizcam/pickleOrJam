@@ -59,7 +59,7 @@ object GlobalAccess {
         }
         levels.add(Level(fruitList3,30,levels.size*100+300))
 
-        val fList4 = listOf("Snowman", "Grape", "Pumpkin", "Bubble_Gum", "Nail_Polish", "Pine_Cone", "Rubber_Duck", "Onion", "Plane", "Car", "Bowling_ball", "CD")
+        val fList4 = listOf("Snowman", "Grape", "Pumpkin", "Bubble_Gum", "Nail_Polish", "Pine_Cone", "Rubber_Duck", "Onion", "Plane", "Car", "Bowling_Ball", "CD")
         val pList4 = listOf(6, 6, 13, 19, 21, 30, 38, 60, 62, 69, 88, 100) //254
         val fruitList4 = mutableListOf<Fruit>()
         fList4.indices.forEach {
