@@ -36,23 +36,26 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
         punImage("bg", oneRectangle(), resourcesVfs["UI/between.png"].readBitmap())
 
         Button("nextLevel", GlobalAccess.rectFromXD(Vector(488.0,328.0),304,80),
-            resourcesVfs["UI/play_next_normal.png"].readBitmap(),
-            resourcesVfs["UI/play_next_pushed.png"].readBitmap(),
-            resourcesVfs["UI/play_next_hover.png"].readBitmap(),
+            GlobalAccess.commonAssets.mediumButtons,
+            Rectangle(Vector(308.0, 248.0),304.0,80.0  , Rectangle.Corners.TOP_LEFT ),
+            Rectangle(Vector(308.0, 164.0),304.0,80.0 , Rectangle.Corners.TOP_LEFT  ),
+            Rectangle(Vector(308.0, 80.0),304.0,80.0 , Rectangle.Corners.TOP_LEFT  )
         ).also {
             addPuntainer(it)
             it.clickFunction = {
-
                 sfxPlayer.play("cash-register.mp3")
                 onPlayNextPressed()
             }
             gameNotLostList.add(it)
         }
 
-        Button("toMenu", GlobalAccess.rectFromXD(Vector(488.0,328.0),304,80),
-            resourcesVfs["UI/play_next_normal.png"].readBitmap(),
-            resourcesVfs["UI/play_next_pushed.png"].readBitmap(),
-            resourcesVfs["UI/play_next_hover.png"].readBitmap(),
+
+        val largeButtons = GlobalAccess.commonAssets.largeButtons
+        Button("toMenu", GlobalAccess.rectFromXD(Vector(488.0,328.0),480,80),
+            largeButtons,
+            Rectangle(Vector(484.0, 248.0),480.0,80.0  , Rectangle.Corners.TOP_LEFT ),
+            Rectangle(Vector(484.0, 164.0),480.0,80.0 , Rectangle.Corners.TOP_LEFT  ),
+            Rectangle(Vector(484.0, 80.0),480.0,80.0 , Rectangle.Corners.TOP_LEFT  ),
         ).also {
             addPuntainer(it)
             it.clickFunction = {
@@ -63,6 +66,23 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
             gameLostList.add(it)
             it.visible = false
         }
+
+        Button("toAd", GlobalAccess.rectFromXD(Vector(8.0,328.0),480,80),
+            largeButtons,
+            Rectangle(Vector(0.0, 248.0),480.0,80.0 , Rectangle.Corners.TOP_LEFT  ),
+            Rectangle(Vector(0.0, 164.0),480.0,80.0  , Rectangle.Corners.TOP_LEFT ),
+            Rectangle(Vector(0.0, 80.0),480.0,80.0  , Rectangle.Corners.TOP_LEFT ),
+        ).also {
+            addPuntainer(it)
+            it.clickFunction = {
+                //TODO press ad
+                //sfxPlayer.play("cash-register.mp3")
+                //onPlayNextPressed()
+            }
+            gameLostList.add(it)
+            it.visible = false
+        }
+
 
         addPuntainer(
             SheetNumberDisplayer.create( "money",
@@ -98,7 +118,7 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
             if(gameState.buy(sugarToBuy = 1)) {
                 sfxPlayer.play("cash-register.mp3")
                 updateInfoAfter(money=gameState.money, vinegarCount=gameState.vinegar, sugarCount=gameState.sugar)
-                println("MONEY: ${gameState.money}, VINEGAR: ${gameState.vinegar}, SUGAR: ${gameState.sugar}")
+                //println("MONEY: ${gameState.money}, VINEGAR: ${gameState.vinegar}, SUGAR: ${gameState.sugar}")
             }
         }
 
@@ -106,7 +126,7 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
             if(gameState.buy(vinegarToBuy = 1)) {
                 sfxPlayer.play("cash-register.mp3")
                 updateInfoAfter(money=gameState.money, vinegarCount=gameState.vinegar, sugarCount=gameState.sugar)
-                println("MONEY: ${gameState.money}, VINEGAR: ${gameState.vinegar}, SUGAR: ${gameState.sugar}")
+                //println("MONEY: ${gameState.money}, VINEGAR: ${gameState.vinegar}, SUGAR: ${gameState.sugar}")
             }
         }
 

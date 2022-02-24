@@ -29,6 +29,7 @@ object GlobalAccess {
     var inputList = mutableListOf<Fruit>()
 
     var levels = mutableListOf<Level>()
+    val commonAssets = CommonAssets()
 
     fun initLevels() {
 
@@ -257,4 +258,7 @@ object GlobalAccess {
         50,
         63
     )
+
+
+
 }

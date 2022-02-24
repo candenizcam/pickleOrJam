@@ -14,9 +14,10 @@ class PurchaseButtonsPuntainer private constructor(relativeRectangle: Rectangle)
 
     private suspend fun init() {
         Button("buySug", Rectangle(0.0,1.0,0.5,1.0),
-            resourcesVfs["UI/buy_normal.png"].readBitmap(),
-            resourcesVfs["UI/buy_pushed.png"].readBitmap(),
-            resourcesVfs["UI/buy_hover.png"].readBitmap(),
+            GlobalAccess.commonAssets.miscButtons,
+            Rectangle(Vector(72.0, 224.0),128.0,72.0  , Rectangle.Corners.TOP_LEFT ),
+            Rectangle(Vector(72.0, 148.0),128.0,72.0 , Rectangle.Corners.TOP_LEFT  ),
+            Rectangle(Vector(72.0, 72.0),128.0,72.0 , Rectangle.Corners.TOP_LEFT  )
         ).also {
             addPuntainer(it)
 
@@ -41,9 +42,10 @@ class PurchaseButtonsPuntainer private constructor(relativeRectangle: Rectangle)
         )
 
         Button("buyVin", Rectangle(0.0,1.0,0.0,0.5),
-            resourcesVfs["UI/buy_normal.png"].readBitmap(),
-            resourcesVfs["UI/buy_pushed.png"].readBitmap(),
-            resourcesVfs["UI/buy_hover.png"].readBitmap(),
+            GlobalAccess.commonAssets.miscButtons,
+            Rectangle(Vector(72.0, 224.0),128.0,72.0  , Rectangle.Corners.TOP_LEFT ),
+            Rectangle(Vector(72.0, 148.0),128.0,72.0 , Rectangle.Corners.TOP_LEFT  ),
+            Rectangle(Vector(72.0, 72.0),128.0,72.0 , Rectangle.Corners.TOP_LEFT  )
         ).also {
             addPuntainer(it)
             it.clickFunction = {

@@ -62,9 +62,10 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
                         Rectangle.Corners.TOP_LEFT
                     )
                 ),
-                resourcesVfs["UI/pause_normal.png"].readBitmap(),
-                resourcesVfs["UI/pause_pushed.png"].readBitmap(),
-                resourcesVfs["UI/pause_hover.png"].readBitmap()
+                GlobalAccess.commonAssets.miscButtons,
+                Rectangle(Vector(0.0, 224.0),68.0,68.0  , Rectangle.Corners.TOP_LEFT ),
+                Rectangle(Vector(0.0, 152.0),68.0,68.0 , Rectangle.Corners.TOP_LEFT  ),
+                Rectangle(Vector(0.0, 80.0),68.0,68.0 , Rectangle.Corners.TOP_LEFT  )
             ).also { button ->
                 button.clickFunction = {
 
