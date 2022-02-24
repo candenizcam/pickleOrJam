@@ -18,13 +18,13 @@ import kotlin.time.measureTime
  */
 
 class TestStage: PunStage() {
-    var testScene = TestScene(this)
+    var storyScene = StoryScene(this)
 
     @OptIn(ExperimentalTime::class)
     override suspend fun Container.sceneMain(){
-        testScene.active=false
-        testScene.initialize()
-        scenesToAdd.add(Pair(testScene,false))
+        storyScene.active=false
+        storyScene.initialize()
+        scenesToAdd.add(Pair(storyScene,false))
 
         musicPlayer.open("SlowDay.mp3", true)
         sfxPlayer.loadSounds(listOf("cash-register.mp3"))
