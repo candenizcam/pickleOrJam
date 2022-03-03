@@ -68,7 +68,7 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
 
 
         val largeButtons = GlobalAccess.commonAssets.largeButtons
-        Button("toMenu", GlobalAccess.rectFromXD(Vector(488.0,328.0),480,80),
+        Button("toMenu", GlobalAccess.rectFromXD(Vector(650.0,372.0),480,80),
             largeButtons,
             Rectangle(Vector(484.0, 248.0),480.0,80.0  , Rectangle.Corners.TOP_LEFT ),
             Rectangle(Vector(484.0, 164.0),480.0,80.0 , Rectangle.Corners.TOP_LEFT  ),
@@ -84,7 +84,7 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
             it.visible = false
         }
 
-        Button("toAd", GlobalAccess.rectFromXD(Vector(8.0,328.0),480,80),
+        Button("toAd", GlobalAccess.rectFromXD(Vector(150.0,372.0),480,80),
             largeButtons,
             Rectangle(Vector(0.0, 248.0),480.0,80.0 , Rectangle.Corners.TOP_LEFT  ),
             Rectangle(Vector(0.0, 164.0),480.0,80.0  , Rectangle.Corners.TOP_LEFT ),
