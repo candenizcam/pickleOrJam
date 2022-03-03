@@ -76,14 +76,16 @@ open class PunStage(var width: Double = InternalGlobalAccess.virtualSize.width.t
                 scenes.remove(s)
                 sceneContainer.removeChild(s.scenePuntainer)
             }
-            scenesToAdd.forEach {
+            val staPair = scenesToAdd.partition { it.first.initializationComplete }
+            scenesToAdd.clear()
+            scenesToAdd.addAll(staPair.second)
+            staPair.first.forEach {
                 scenePuntainer.addChild(it.first.scenePuntainer)
                 add(it.first, it.second)
             }
         }catch (e: Exception){
             println("Error in scene change ${e.message}")
         } finally {
-            scenesToAdd.clear()
             scenesToRemove.clear()
         }
     }

@@ -2,6 +2,7 @@ package pungine.uiElements
 
 import com.soywiz.korge.input.*
 import com.soywiz.korim.bitmap.Bitmap
+import com.soywiz.korim.bitmap.sliceWithSize
 import com.soywiz.korim.color.RGBA
 import modules.basic.Colour
 import pungine.Puntainer
@@ -50,6 +51,25 @@ class Button: Puntainer {
         PunImage("hover",bitmap = newBitmap).also { hover->
             this.addPuntainer(hover)
             hover.visible=false
+        }
+        events()
+        adjustVisibility()
+    }
+
+
+    constructor(id: String?=null, relativeRectangle: Rectangle= oneRectangle(), bitmap: Bitmap, upRect: Rectangle, downRect: Rectangle, hoverRect: Rectangle?=null, inactiveRect: Rectangle?=null, zOrder: Int=0): super(id,relativeRectangle,zOrder){
+        val upBitmap = bitmap.sliceWithSize(upRect.left.toInt(), bitmap.height-upRect.top.toInt(), upRect.width.toInt(), upRect.height.toInt())
+        val downBitmap = bitmap.sliceWithSize(downRect.left.toInt(), bitmap.height-downRect.top.toInt(), downRect.width.toInt(), downRect.height.toInt())
+        this.addPuntainer(PunImage("up",bitmapSlice = upBitmap))
+        this.addPuntainer(PunImage("down",bitmapSlice = downBitmap))
+        if(hoverRect!=null){
+            val hoverBitmap = bitmap.sliceWithSize(hoverRect.left.toInt(), bitmap.height-hoverRect.top.toInt(), hoverRect.width.toInt(), hoverRect.height.toInt())
+            this.addPuntainer(PunImage("hover",bitmapSlice = hoverBitmap))
+        }
+        if(inactiveRect!=null){
+
+            val inactiveBitmap = bitmap.sliceWithSize(inactiveRect.left.toInt(), bitmap.height-inactiveRect.top.toInt(), inactiveRect.width.toInt(), inactiveRect.height.toInt())
+            this.addPuntainer(PunImage("inactive",bitmapSlice = inactiveBitmap))
         }
         events()
         adjustVisibility()

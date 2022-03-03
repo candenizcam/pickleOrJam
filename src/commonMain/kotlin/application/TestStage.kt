@@ -1,27 +1,28 @@
 package application
 
+
+import com.pungo.admob.Admob
+import com.pungo.admob.AdmobCreate
 import com.soywiz.korge.component.docking.dockedTo
 import com.soywiz.korge.component.onStageResized
 import com.soywiz.korge.view.*
-import com.soywiz.korim.bitmap.Bitmap
-import com.soywiz.korim.format.readBitmap
-import com.soywiz.korio.async.launchImmediately
-import com.soywiz.korio.file.std.resourcesVfs
-import modules.basic.Colour
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import pungine.*
-import pungine.uiElements.PunImage
 import kotlin.time.ExperimentalTime
-import kotlin.time.measureTime
-
 /** This scene is the template for a PunGineIV game
  *
  */
 
 class TestStage: PunStage() {
+    lateinit var admob: Admob
     var storyScene = StoryScene(this)
 
     @OptIn(ExperimentalTime::class)
     override suspend fun Container.sceneMain(){
+        admob = AdmobCreate(this@TestStage.views, testing=true)
+
+
         storyScene.active=false
         storyScene.initialize()
         scenesToAdd.add(Pair(storyScene,false))
@@ -29,6 +30,9 @@ class TestStage: PunStage() {
         musicPlayer.open("SlowDay.mp3", true)
         sfxPlayer.loadSounds(listOf("cash-register.mp3"))
 
+        GlobalScope.async {
+            GlobalAccess.commonAssets.load()
+        }
 
     }
 }

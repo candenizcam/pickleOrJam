@@ -32,12 +32,10 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
         }
 
 
-        val s = resourcesVfs["fruits/Items_Sprite.png"].readBitmap()
-
         allBasketsList.addAll(
             GlobalAccess.fullFlist.mapIndexed { index, it->
 
-                Basket(it, s.sliceWithSize(204*(index.mod(8)),204*(index/8),200,200)
+                Basket(it, GlobalAccess.commonAssets.fruits.sliceWithSize(204*(index.mod(8)),204*(index/8),200,200)
                 )
             }
         )
@@ -231,24 +229,10 @@ class WorkshopPuntainer private constructor(relativeRectangle: Rectangle) :
 
 
         fruitList.addAll(
-            l.map { thisl -> allBasketsList.first { it.id== thisl} }
-        )
-
-        /*
-        val s = resourcesVfs["fruits/Items_Sprite.png"].readBitmap()
-
-
-
-
-        fruitList.addAll(
-            l.mapIndexed { index, it->
-
-                Basket(it, s.sliceWithSize(220*(index.mod(8)),220*(index/8),200,200)
-                )
+            l.map { thisl ->
+                allBasketsList.first { it.id== thisl}
             }
         )
-
-         */
     }
 
     fun deployNewFood() {

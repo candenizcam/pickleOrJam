@@ -43,9 +43,11 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
 
         addPuntainer(
             Button("start", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-104.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),
-                resourcesVfs["UI/play_normal.png"].readBitmap(),
-                resourcesVfs["UI/play_pushed.png"].readBitmap(),
-                resourcesVfs["UI/play_hover.png"].readBitmap(),).also {
+                GlobalAccess.commonAssets.smallButtons,
+                Rectangle(Vector(0.0, 248.0),240.0,80.0  , Rectangle.Corners.TOP_LEFT ),
+                Rectangle(Vector(0.0, 164.0),240.0,80.0 , Rectangle.Corners.TOP_LEFT  ),
+                Rectangle(Vector(0.0, 80.0),240.0,80.0 , Rectangle.Corners.TOP_LEFT  )
+            ).also {
                 it.clickFunction = {
                     // TODO start game
                     it.visible= true
@@ -56,9 +58,11 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
 
         addPuntainer(
             Button("resume", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-104.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),
-                resourcesVfs["UI/resume_normal.png"].readBitmap(),
-                resourcesVfs["UI/resume_pushed.png"].readBitmap(),
-                resourcesVfs["UI/resume_hover.png"].readBitmap(),).also {
+                GlobalAccess.commonAssets.smallButtons,
+                Rectangle(Vector(244.0, 248.0),240.0,80.0  , Rectangle.Corners.TOP_LEFT ),
+                Rectangle(Vector(244.0, 164.0),240.0,80.0 , Rectangle.Corners.TOP_LEFT  ),
+                Rectangle(Vector(244.0, 80.0),240.0,80.0 , Rectangle.Corners.TOP_LEFT  )
+            ).also {
                 it.visible = false
                 it.clickFunction = {
                     onReturn()
@@ -68,9 +72,10 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
 
         addPuntainer(
             Button("soundOn", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-192.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),
-                resourcesVfs["UI/sound_on_normal.png"].readBitmap(),
-                resourcesVfs["UI/sound_on_pushed.png"].readBitmap(),
-                resourcesVfs["UI/sound_on_hover.png"].readBitmap(),
+                GlobalAccess.commonAssets.smallButtons,
+                Rectangle(Vector(488.0, 248.0),240.0,80.0  , Rectangle.Corners.TOP_LEFT ),
+                Rectangle(Vector(488.0, 164.0),240.0,80.0 , Rectangle.Corners.TOP_LEFT  ),
+                Rectangle(Vector(488.0, 80.0),240.0,80.0 , Rectangle.Corners.TOP_LEFT  )
 
                 ).also {
                 it.clickFunction = {
@@ -84,10 +89,10 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
 
         addPuntainer(
             Button("soundOff", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-192.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),
-                resourcesVfs["UI/no_sound_normal.png"].readBitmap(),
-                resourcesVfs["UI/no_sound_pushed.png"].readBitmap(),
-                resourcesVfs["UI/no_sound_hover.png"].readBitmap(),
-
+                GlobalAccess.commonAssets.smallButtons,
+                Rectangle(Vector(732.0, 248.0),240.0,80.0  , Rectangle.Corners.TOP_LEFT ),
+                Rectangle(Vector(732.0, 164.0),240.0,80.0 , Rectangle.Corners.TOP_LEFT  ),
+                Rectangle(Vector(732.0, 80.0),240.0,80.0 , Rectangle.Corners.TOP_LEFT  )
                 ).also {
                 it.visible=false
                 it.clickFunction = {
@@ -100,9 +105,11 @@ class PauseMenuPuntainer private constructor(relativeRectangle: Rectangle): Punt
 
         addPuntainer(
             Button("credits", thisRectangle.toRated(Rectangle(Vector(520.0,720.0-280.0),240.0,80.0,Rectangle.Corners.TOP_LEFT)),
-                resourcesVfs["UI/credits_normal.png"].readBitmap(),
-                resourcesVfs["UI/credits_pushed.png"].readBitmap(),
-                resourcesVfs["UI/credits_hover.png"].readBitmap(),).also {
+                GlobalAccess.commonAssets.smallButtons,
+                Rectangle(Vector(976.0, 248.0),240.0,80.0  , Rectangle.Corners.TOP_LEFT ),
+                Rectangle(Vector(976.0, 164.0),240.0,80.0 , Rectangle.Corners.TOP_LEFT  ),
+                Rectangle(Vector(976.0, 80.0),240.0,80.0 , Rectangle.Corners.TOP_LEFT  )
+            ).also {
                 it.clickFunction = {
                     c.visible=true
                     onCreditsVisible(true)
