@@ -16,27 +16,28 @@ import pungine.geometry2D.oneRectangle
 import pungine.uiElements.Button
 
 @OptIn(DelicateCoroutinesApi::class)
-class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("levelEnd", stage, GlobalAccess.virtualSize.width.toDouble(), GlobalAccess.virtualSize.height.toDouble()) {
+class LevelEndScene(stage: PunStage, val gameState: GameState) :
+    PunScene("levelEnd", stage, GlobalAccess.virtualSize.width.toDouble(), GlobalAccess.virtualSize.height.toDouble()) {
     var addChance = 0 // bu 1 filan olunca add gösteriyor olucak
         set(value) {
             field = value
-            puntainers.firstOrNull { it.id=="toAd" }.also {
-                if(it != null){
+            puntainers.firstOrNull { it.id == "toAd" }.also {
+                if (it != null) {
                     if (addChance <= 0) {
-                        it.visible= false
+                        it.visible = false
                     }
                 }
             }
         }
     var gameLost = false
         set(value) {
-            gameLostList.forEach { it.visible =value }
+            gameLostList.forEach { it.visible = value }
             gameNotLostList.forEach { it.visible = value.not() }
             field = value
-            puntainers.firstOrNull { it.id=="toAd" }.also {
-                if(it != null){
+            puntainers.firstOrNull { it.id == "toAd" }.also {
+                if (it != null) {
                     if (addChance <= 0) {
-                        it.visible= false
+                        it.visible = false
                     }
                 }
             }
@@ -52,11 +53,12 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
 
         punImage("bg", oneRectangle(), resourcesVfs["UI/between.png"].readBitmap())
 
-        Button("nextLevel", GlobalAccess.rectFromXD(Vector(488.0,328.0),304,80),
+        Button(
+            "nextLevel", GlobalAccess.rectFromXD(Vector(488.0, 328.0), 304, 80),
             GlobalAccess.commonAssets.mediumButtons,
-            Rectangle(Vector(308.0, 248.0),304.0,80.0  , Rectangle.Corners.TOP_LEFT ),
-            Rectangle(Vector(308.0, 164.0),304.0,80.0 , Rectangle.Corners.TOP_LEFT  ),
-            Rectangle(Vector(308.0, 80.0),304.0,80.0 , Rectangle.Corners.TOP_LEFT  )
+            Rectangle(Vector(308.0, 248.0), 304.0, 80.0, Rectangle.Corners.TOP_LEFT),
+            Rectangle(Vector(308.0, 164.0), 304.0, 80.0, Rectangle.Corners.TOP_LEFT),
+            Rectangle(Vector(308.0, 80.0), 304.0, 80.0, Rectangle.Corners.TOP_LEFT)
         ).also {
             addPuntainer(it)
             it.clickFunction = {
@@ -68,11 +70,12 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
 
 
         val largeButtons = GlobalAccess.commonAssets.largeButtons
-        Button("toMenu", GlobalAccess.rectFromXD(Vector(650.0,372.0),480,80),
+        Button(
+            "toMenu", GlobalAccess.rectFromXD(Vector(650.0, 372.0), 480, 80),
             largeButtons,
-            Rectangle(Vector(484.0, 248.0),480.0,80.0  , Rectangle.Corners.TOP_LEFT ),
-            Rectangle(Vector(484.0, 164.0),480.0,80.0 , Rectangle.Corners.TOP_LEFT  ),
-            Rectangle(Vector(484.0, 80.0),480.0,80.0 , Rectangle.Corners.TOP_LEFT  ),
+            Rectangle(Vector(484.0, 248.0), 480.0, 80.0, Rectangle.Corners.TOP_LEFT),
+            Rectangle(Vector(484.0, 164.0), 480.0, 80.0, Rectangle.Corners.TOP_LEFT),
+            Rectangle(Vector(484.0, 80.0), 480.0, 80.0, Rectangle.Corners.TOP_LEFT),
         ).also {
             addPuntainer(it)
             it.clickFunction = {
@@ -84,18 +87,19 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
             it.visible = false
         }
 
-        Button("toAd", GlobalAccess.rectFromXD(Vector(150.0,372.0),480,80),
+        Button(
+            "toAd", GlobalAccess.rectFromXD(Vector(150.0, 372.0), 480, 80),
             largeButtons,
-            Rectangle(Vector(0.0, 248.0),480.0,80.0 , Rectangle.Corners.TOP_LEFT  ),
-            Rectangle(Vector(0.0, 164.0),480.0,80.0  , Rectangle.Corners.TOP_LEFT ),
-            Rectangle(Vector(0.0, 80.0),480.0,80.0  , Rectangle.Corners.TOP_LEFT ),
+            Rectangle(Vector(0.0, 248.0), 480.0, 80.0, Rectangle.Corners.TOP_LEFT),
+            Rectangle(Vector(0.0, 164.0), 480.0, 80.0, Rectangle.Corners.TOP_LEFT),
+            Rectangle(Vector(0.0, 80.0), 480.0, 80.0, Rectangle.Corners.TOP_LEFT),
         ).also {
             addPuntainer(it)
             it.clickFunction = {
                 addChance -= 1
 
                 //TODO press ad
-                //sfxPlayer.play("cash-register.mp3")
+                showAd
                 //onPlayNextPressed()
             }
             gameLostList.add(it)
@@ -104,8 +108,9 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
 
 
         addPuntainer(
-            SheetNumberDisplayer.create( "money",
-                GlobalAccess.rectFromXD(Vector(872.0,308.0),192,36),
+            SheetNumberDisplayer.create(
+                "money",
+                GlobalAccess.rectFromXD(Vector(872.0, 308.0), 192, 36),
                 Rectangle(0.0, 192.0, 0.0, 36.0),
                 5,
                 false,
@@ -118,8 +123,9 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
         )
 
         addPuntainer(
-            SheetNumberDisplayer.create( "levelNo",
-                GlobalAccess.rectFromXD(Vector(572.0,44.0),52,36),
+            SheetNumberDisplayer.create(
+                "levelNo",
+                GlobalAccess.rectFromXD(Vector(572.0, 44.0), 52, 36),
                 Rectangle(0.0, 52.0, 0.0, 36.0),
                 2,
                 false
@@ -130,21 +136,21 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
 
 
         val purchaseButtonsPuntainer = PurchaseButtonsPuntainer.create(
-            GlobalAccess.rectFromXD(Vector(940.0,86.0),128,2*72)
+            GlobalAccess.rectFromXD(Vector(940.0, 86.0), 128, 2 * 72)
         )
 
         purchaseButtonsPuntainer.buySugClick = {
-            if(gameState.buy(sugarToBuy = 1)) {
+            if (gameState.buy(sugarToBuy = 1)) {
                 sfxPlayer.play("cash-register.mp3")
-                updateInfoAfter(money=gameState.money, vinegarCount=gameState.vinegar, sugarCount=gameState.sugar)
+                updateInfoAfter(money = gameState.money, vinegarCount = gameState.vinegar, sugarCount = gameState.sugar)
                 //println("MONEY: ${gameState.money}, VINEGAR: ${gameState.vinegar}, SUGAR: ${gameState.sugar}")
             }
         }
 
         purchaseButtonsPuntainer.buyVinClick = {
-            if(gameState.buy(vinegarToBuy = 1)) {
+            if (gameState.buy(vinegarToBuy = 1)) {
                 sfxPlayer.play("cash-register.mp3")
-                updateInfoAfter(money=gameState.money, vinegarCount=gameState.vinegar, sugarCount=gameState.sugar)
+                updateInfoAfter(money = gameState.money, vinegarCount = gameState.vinegar, sugarCount = gameState.sugar)
                 //println("MONEY: ${gameState.money}, VINEGAR: ${gameState.vinegar}, SUGAR: ${gameState.sugar}")
             }
         }
@@ -155,8 +161,9 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
 
 
         addPuntainer(
-            SheetNumberDisplayer.create( "operationsCost",
-                GlobalAccess.rectFromXD(Vector(900.0,240.0),164,36),
+            SheetNumberDisplayer.create(
+                "operationsCost",
+                GlobalAccess.rectFromXD(Vector(900.0, 240.0), 164, 36),
                 Rectangle(0.0, 164.0, 0.0, 36.0),
                 4,
                 false,
@@ -173,8 +180,10 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
 
 
         addPuntainer(
-            punImage("gameState",
-            GlobalAccess.rectFromXD(Vector(640.0,44.0),228,36
+            punImage(
+                "gameState",
+                GlobalAccess.rectFromXD(
+                    Vector(640.0, 44.0), 228, 36
                 ),
                 resourcesVfs["UI/game_over.png"].readBitmap()
             ).also {
@@ -184,15 +193,17 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
         )
 
         addPuntainer(
-            punImage("sugBar",
-                GlobalAccess.rectFromXD(Vector(432.0,108.0),480,24),
+            punImage(
+                "sugBar",
+                GlobalAccess.rectFromXD(Vector(432.0, 108.0), 480, 24),
                 resourcesVfs["UI/SugBar_inside.png"].readBitmap()
             )
         )
 
         addPuntainer(
-            punImage("vinBar",
-                GlobalAccess.rectFromXD(Vector(432.0,180.0),480,24),
+            punImage(
+                "vinBar",
+                GlobalAccess.rectFromXD(Vector(432.0, 180.0), 480, 24),
                 resourcesVfs["UI/VinBar_inside.png"].readBitmap()
             )
         )
@@ -205,16 +216,28 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
         updateInfoAfter()
     }
 
-    fun updateInfoAfter(levelNo: Int = gameState.level + 1, opCost: Int= GlobalAccess.levels[gameState.level].rent, money: Int = gameState.money, vinegarCount: Int = gameState.vinegar, sugarCount: Int = gameState.sugar){
-        toPuntainer("levelNo", forceReshape = true){  it as SheetNumberDisplayer
+    fun showAd() {
+        GlobalScope.launchImmediately { (stage as TestStage).admob.rewardvideoShowAndWait() }
+    }
+    fun updateInfoAfter(
+        levelNo: Int = gameState.level + 1,
+        opCost: Int = GlobalAccess.levels[gameState.level].rent,
+        money: Int = gameState.money,
+        vinegarCount: Int = gameState.vinegar,
+        sugarCount: Int = gameState.sugar
+    ) {
+        toPuntainer("levelNo", forceReshape = true) {
+            it as SheetNumberDisplayer
             it.setValue(levelNo)
         }
 
-        toPuntainer("operationsCost", forceReshape = true){  it as SheetNumberDisplayer
-            it.setValue(-1*opCost)
+        toPuntainer("operationsCost", forceReshape = true) {
+            it as SheetNumberDisplayer
+            it.setValue(-1 * opCost)
         }
 
-        toPuntainer("money", forceReshape = true){  it as SheetNumberDisplayer
+        toPuntainer("money", forceReshape = true) {
+            it as SheetNumberDisplayer
             it.setValue(money)
         }
 
@@ -222,10 +245,10 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
         updateVinCount(vinegarCount)
     }
 
-    fun onPlayNextPressed(){
-        if(gameLost) {
+    fun onPlayNextPressed() {
+        if (gameLost) {
             val newGame = TestScene(stage)
-            newGame.active=false
+            newGame.active = false
             GlobalScope.launchImmediately {
                 newGame.initialize()
 
@@ -244,9 +267,9 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) : PunScene("level
         }
     }
 
-    fun updateSugarCount(n: Int){
-        toPuntainer("sugBar", forceReshape = true){
-            it.resizeRect(GlobalAccess.rectFromXD(Vector(432.0,108.0),(480/10.0*n).toInt(),24))
+    fun updateSugarCount(n: Int) {
+        toPuntainer("sugBar", forceReshape = true) {
+            it.resizeRect(GlobalAccess.rectFromXD(Vector(432.0, 108.0), (480 / 10.0 * n).toInt(), 24))
         }
     }
 

@@ -26,6 +26,7 @@ abstract class Admob(val views: Views) {
 
 	class Actions {
 		var dismissAction: () -> Unit = {}
+		var rewardAction: (amount: Int, type: String) -> Unit = { _: Int, _: String -> }
 	}
 
 	open suspend fun available() = false

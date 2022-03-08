@@ -3,9 +3,6 @@ package application
 import Fruit
 import application.puntainers.*
 import com.pungo.admob.Admob
-import com.soywiz.klock.TimeSpan
-import com.soywiz.klock.blockingSleep
-import com.soywiz.korge.component.onStageResized
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.async.launchImmediately
 import com.soywiz.korio.file.std.resourcesVfs
@@ -25,13 +22,14 @@ import pungine.uiElements.PunImage
  */
 
 @OptIn(DelicateCoroutinesApi::class)
-class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, money= 0, vinegar = 10, sugar = 10)) : PunScene(
-    "testScene",
-    stage,
-    GlobalAccess.virtualSize.width.toDouble(),
-    GlobalAccess.virtualSize.height.toDouble(),
-    Colour.GRIZEL
-) {
+class TestScene(stage: PunStage, gameState: GameState = GameState(level = 0, money = 0, vinegar = 10, sugar = 10)) :
+    PunScene(
+        "testScene",
+        stage,
+        GlobalAccess.virtualSize.width.toDouble(),
+        GlobalAccess.virtualSize.height.toDouble(),
+        Colour.GRIZEL
+    ) {
     private var clockStep = 0.0
     private var oscillator = 0.0
     private val hardwareClockPulseTime = 0.05
@@ -40,16 +38,23 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
 
     override suspend fun sceneInit() {
         val adActions = Admob.Actions().also { actions ->
-            actions.dismissAction = {
-                println("DISMISSED!")
+            actions.rewardAction = { reward: Int, type: String ->
+                //TODO burdan verilen ödülle ne yapılcağı ayarlanıyo
+                println("REWARD: $reward, TYPE: $type")
             }
         }
-        (stage as TestStage).admob.interstitialPrepare(Admob.Config("TestAds", "ca-app-pub-3940256099942544/1033173712", actions = adActions))
+        (stage as TestStage).admob.rewardvideolPrepare(
+            Admob.Config(
+                "RewardTest",
+                "ca-app-pub-3940256099942544/1033173712",
+                actions = adActions
+            )
+        )
 
         val a = WorkshopPuntainer.create(oneRectangle())
 
         addPuntainer(a)
-        a.visible=active
+        a.visible = active
 
         addPuntainer(
             Button(
@@ -63,9 +68,9 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
                     )
                 ),
                 GlobalAccess.commonAssets.miscButtons,
-                Rectangle(Vector(0.0, 224.0),68.0,68.0  , Rectangle.Corners.TOP_LEFT ),
-                Rectangle(Vector(0.0, 152.0),68.0,68.0 , Rectangle.Corners.TOP_LEFT  ),
-                Rectangle(Vector(0.0, 80.0),68.0,68.0 , Rectangle.Corners.TOP_LEFT  )
+                Rectangle(Vector(0.0, 224.0), 68.0, 68.0, Rectangle.Corners.TOP_LEFT),
+                Rectangle(Vector(0.0, 152.0), 68.0, 68.0, Rectangle.Corners.TOP_LEFT),
+                Rectangle(Vector(0.0, 80.0), 68.0, 68.0, Rectangle.Corners.TOP_LEFT)
             ).also { button ->
                 button.clickFunction = {
 
@@ -81,35 +86,38 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
                 puntainer.resumeButtonVisible(true)
             }
             puntainer.visible = !active
-            puntainer.onCreditsVisible = { b->
-                toPuntainer("moneyPuntainer"){
+            puntainer.onCreditsVisible = { b ->
+                toPuntainer("moneyPuntainer") {
                     it.visible = !b
                 }
-                toPuntainer("im"){
+                toPuntainer("im") {
                     it.visible = !b
                 }
-                toPuntainer("clockPuntainer"){
+                toPuntainer("clockPuntainer") {
                     it.visible = !b
                 }
-                toPuntainer("text"){
+                toPuntainer("text") {
                     it.visible = !b
                 }
             }
         })
 
         addPuntainer(
-            PunImage("im",GlobalAccess.virtualRect.toRated(
-                Rectangle(
-                    Vector(874.0, 704.0),
-                    196.0,
-                    68.0,
-                    cornerType = Rectangle.Corners.TOP_LEFT
-                )
-            ), resourcesVfs["UI/money.png"].readBitmap())
+            PunImage(
+                "im", GlobalAccess.virtualRect.toRated(
+                    Rectangle(
+                        Vector(874.0, 704.0),
+                        196.0,
+                        68.0,
+                        cornerType = Rectangle.Corners.TOP_LEFT
+                    )
+                ), resourcesVfs["UI/money.png"].readBitmap()
+            )
         )
 
         addPuntainer(
-            SheetNumberDisplayer.create("moneyPuntainer",
+            SheetNumberDisplayer.create(
+                "moneyPuntainer",
                 GlobalAccess.virtualRect.toRated(
                     Rectangle(
                         Vector(874.0, 704.0),
@@ -140,13 +148,14 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
         )
 
         addPuntainer(
-            SheetLetterDisplayer.create("text",
-                    GlobalAccess.rectFromXD(Vector(490.0,372.0),300,60),
-                    Rectangle(0.0, 300.0, 0.0, 60.0),
-                    16,
-                    false,
-                ).also {
-                    it.setValue("HAPPY GAMING")
+            SheetLetterDisplayer.create(
+                "text",
+                GlobalAccess.rectFromXD(Vector(490.0, 372.0), 300, 60),
+                Rectangle(0.0, 300.0, 0.0, 60.0),
+                16,
+                false,
+            ).also {
+                it.setValue("HAPPY GAMING")
             }
         )
 
@@ -157,7 +166,9 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
         GlobalAccess.musicToggle = {
             if (it) {
                 musicPlayer.play()
-            } else {musicPlayer.pause()}
+            } else {
+                musicPlayer.pause()
+            }
             sfxPlayer.soundOn = it
         }
 
@@ -182,15 +193,15 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
                 var printableMoney = gameState.getFruit(type)?.jam ?: 0
                 gameState.pickleIt(type)
                 sfxPlayer.play("cash-register.mp3")
-                a.coinVisible(if(printableMoney>50) 0 else 1)
+                a.coinVisible(if (printableMoney > 50) 0 else 1)
                 gameState.vinegar
             } else if (choice == 1 && gameState.sugar > 0) {
                 var printableMoney = gameState.getFruit(type)?.jam ?: 0
                 gameState.jamIt(type)
                 sfxPlayer.play("cash-register.mp3")
-                a.coinVisible(if(printableMoney<50) 0 else 1)
+                a.coinVisible(if (printableMoney < 50) 0 else 1)
                 gameState.sugar
-            }else{
+            } else {
                 -1
             }
         }
@@ -201,11 +212,9 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
     }
 
 
-
-
-
-    fun setFruitText(s: String){
-        toPuntainer("text", forceReshape = true){ it as SheetLetterDisplayer
+    fun setFruitText(s: String) {
+        toPuntainer("text", forceReshape = true) {
+            it as SheetLetterDisplayer
             it.setValue(s)
         }
     }
@@ -213,14 +222,21 @@ class TestScene(stage: PunStage, gameState: GameState = GameState(level= 0, mone
     fun generateLevel(level: Int) {
         val fruitList6 = mutableListOf<Fruit>()
         GlobalAccess.fullFlist.indices.forEach {
-            fruitList6.add(Fruit(GlobalAccess.fullFlist[it], GlobalAccess.pFullList[it], 100- GlobalAccess.pFullList[it]))
+            fruitList6.add(
+                Fruit(
+                    GlobalAccess.fullFlist[it],
+                    GlobalAccess.pFullList[it],
+                    100 - GlobalAccess.pFullList[it]
+                )
+            )
         }
-        GlobalAccess.levels.add(Level(fruitList6,30, GlobalAccess.levels.size*50+300))
+        GlobalAccess.levels.add(Level(fruitList6, 30, GlobalAccess.levels.size * 50 + 300))
     }
 
     private fun pauseGame(pause: Boolean) {
 
-        toPuntainer("pauseMenuPuntainer") { it as PauseMenuPuntainer
+        toPuntainer("pauseMenuPuntainer") {
+            it as PauseMenuPuntainer
             it.visible = pause
             it.resumeButtonVisible(true)
         }

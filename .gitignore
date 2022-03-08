@@ -3,3 +3,4 @@
 *.iml
 /build
 /src/commonMain/resources/fruits/Notebook-2.png
+local.properties

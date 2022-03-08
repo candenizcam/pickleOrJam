@@ -6,6 +6,10 @@ import android.widget.*
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.interstitial.InterstitialAd
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import com.google.android.gms.ads.rewarded.RewardedAd
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
+
+import com.google.android.gms.ads.rewarded.RewardItem
 import com.soywiz.korio.android.*
 import com.soywiz.korio.async.*
 import com.soywiz.korio.lang.close
@@ -31,34 +35,13 @@ private class AndroidAdmob(views: Views, val activity: Activity, val testing: Bo
         initialRootView = activity.window.decorView.findViewById<android.view.View>(android.R.id.content).let {
             if (it is FrameLayout) it.getChildAt(0) else it
         }
-        android.util.Log.d("ADMOB", "AdmobCreate: InitialRootView initialized.")
-       /* rootView = if (initialRootView !is RelativeLayout) {
-            //if (rootView !is LinearLayout) {
-            android.util.Log.d("ADMOB", "AdmobCreate: InitialRootView is NOT relative.")
-            RelativeLayout(activity).apply {
-                initialRootView.removeFromParent()
-                addView(
-                    initialRootView,
-                    RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.WRAP_CONTENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT
-                    )
-                )
-                activity.setContentView(this)
-            }
-        } else {
-            initialRootView
-        }
-
-        */
         android.util.Log.d("ADMOB", "AdmobCreate: RootView initialized.")
     }
 
-    // Let's convert the rootView into a suitable format
-
-
+    lateinit var config: Admob.Config
 
     var interstitialAd: InterstitialAd? = null
+    var rewardVideo: RewardedAd? = null
 
     override suspend fun available() = true
 
@@ -113,15 +96,16 @@ private class AndroidAdmob(views: Views, val activity: Activity, val testing: Bo
          */
     }
 
-    override suspend fun interstitialPrepare(config: Config) {
+    override suspend fun interstitialPrepare(c: Config) {
         activity.runOnUiThread {
+            config = c
             var adRequest = AdRequest.Builder().build()
             val id = if (testing) {
                 "ca-app-pub-3940256099942544/1033173712"
             } else {
                 config.id
             }
-            InterstitialAd.load(activity, id, adRequest, object: InterstitialAdLoadCallback(){
+            InterstitialAd.load(activity, id, adRequest, object : InterstitialAdLoadCallback() {
                 override fun onAdFailedToLoad(error: LoadAdError) {
                     // TODO error handling
                     interstitialAd = null
@@ -129,7 +113,7 @@ private class AndroidAdmob(views: Views, val activity: Activity, val testing: Bo
 
                 override fun onAdLoaded(ad: InterstitialAd) {
                     interstitialAd = ad
-                    interstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
+                    interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
                         override fun onAdDismissedFullScreenContent() {
                             //TODO error handling
                             android.util.Log.d("ADMOB", "Ad dismissed.")
@@ -156,56 +140,6 @@ private class AndroidAdmob(views: Views, val activity: Activity, val testing: Bo
                             android.util.Log.d("ADMOB", "Ad impressed?")
                         }
                     }
-                    interstitialAd!!.show(activity)
-                }
-            })
-
-        }
-    }
-
-    suspend fun interstitialPrepare(adUnitID: String) {
-        activity.runOnUiThread {
-            var adRequest = AdRequest.Builder().build()
-            val id = if (testing) {
-                "ca-app-pub-3940256099942544/1033173712"
-            } else {
-                adUnitID
-            }
-            InterstitialAd.load(activity, id, adRequest, object: InterstitialAdLoadCallback(){
-                override fun onAdFailedToLoad(error: LoadAdError) {
-                    // TODO error handling
-                    interstitialAd = null
-                }
-
-                override fun onAdLoaded(ad: InterstitialAd) {
-                    interstitialAd = ad
-                    interstitialAd?.fullScreenContentCallback = object: FullScreenContentCallback() {
-                        override fun onAdDismissedFullScreenContent() {
-                            //TODO error handling
-                            android.util.Log.d("ADMOB", "Ad dismissed.")
-                        }
-
-                        override fun onAdFailedToShowFullScreenContent(p0: AdError) {
-                            android.util.Log.d("ADMOB", "Ad failed")
-                            //TODO error handling
-                        }
-
-                        override fun onAdShowedFullScreenContent() {
-                            interstitialAd = null
-                            android.util.Log.d("ADMOB", "Ad showed.")
-                        }
-
-                        override fun onAdClicked() {
-                            //TODO ad stuff maybe
-                            android.util.Log.d("ADMOB", "Ad clicked.")
-                        }
-
-                        override fun onAdImpression() {
-                            //TODO ad stuff maybe and also learn what this means
-                            android.util.Log.d("ADMOB", "Ad impressed?")
-                        }
-                    }
-                    interstitialAd!!.show(activity)
                 }
             })
 
@@ -213,47 +147,60 @@ private class AndroidAdmob(views: Views, val activity: Activity, val testing: Bo
     }
 
     override suspend fun interstitialShowAndWait() {
-        /*
-        val result = mapOf(
-            interstitialSignals.onAdClosed to "closed",
-            interstitialSignals.onAdClicked to "clicked"
-        ).executeAndWaitAnySignal {
-            activity.runOnUiThread {
-                interstitial.show()
-            }
-        }
-
-         */
+        interstitialAd!!.show(activity)
     }
 
-    override suspend fun rewardvideolPrepare(config: Admob.Config) {
-        /*
+    override suspend fun rewardvideolPrepare(c: Admob.Config) {
         activity.runOnUiThread {
-            rewardVideo.userId = config.userId
-            if (config.immersiveMode != null) {
-                rewardVideo.setImmersiveMode(config.immersiveMode)
+            config = c
+            var adRequest = AdRequest.Builder().build()
+            RewardedAd.load(
+                activity,
+                "ca-app-pub-3940256099942544/5224354917",
+                adRequest,
+                object : RewardedAdLoadCallback() {
+                    override fun onAdFailedToLoad(adError: LoadAdError) {
+                        rewardVideo = null
+                    }
+
+                    override fun onAdLoaded(rewardedAd: RewardedAd) {
+                        rewardVideo = rewardedAd
+                    }
+                })
+
+            rewardVideo?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                override fun onAdShowedFullScreenContent() {
+
+                    android.util.Log.d("ADMOB", "Ad shown")
+                }
+
+                override fun onAdFailedToShowFullScreenContent(adError: AdError?) {
+                    android.util.Log.d("ADMOB", "Ad failed")
+                }
+
+                override fun onAdDismissedFullScreenContent() {
+                    android.util.Log.d("ADMOB", "Ad dismissed")
+                    rewardVideo = null
+                }
             }
-            rewardVideo.loadAd(
-                if (testing) "ca-app-pub-3940256099942544/5224354917" else config.id,
-                config.toAdRequest()
-            )
-        }
 
-         */
     }
+}
 
-   // override suspend fun rewardvideolIsLoaded(): Boolean = rewardVideo.isLoaded
+//    override suspend fun rewardvideolIsLoaded(): Boolean = rewardVideo.isLoaded
 
-    override suspend fun rewardvideoShowAndWait() {
-        /*
-        rewardVideoSignals.onRewardedVideoAdClosed.executeAndWaitSignal {
-            activity.runOnUiThread {
-                rewardVideo.show()
+override suspend fun rewardvideoShowAndWait() {
+    activity.runOnUiThread {
+        if (rewardVideo != null) {
+            rewardVideo?.show(activity) {
+                config.actions.rewardAction(it.amount, it.type)
+                android.util.Log.d("ADMOB", "Reward earned: ${it.amount}, Type: ${it.type}")
             }
+        } else {
+            android.util.Log.d("ADMOB", "Ad wasnt ready")
         }
-
-         */
     }
+}
 }
 
 private suspend inline fun <T> Map<Signal<Unit>, T>.executeAndWaitAnySignal(callback: () -> Unit): T {
