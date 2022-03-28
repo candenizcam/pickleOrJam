@@ -99,7 +99,7 @@ class LevelEndScene(stage: PunStage, val gameState: GameState) :
                 addChance -= 1
 
                 //TODO press ad
-                showAd
+                showAd()
                 //onPlayNextPressed()
             }
             gameLostList.add(it)
